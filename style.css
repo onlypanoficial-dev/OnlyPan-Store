@@ -1,0 +1,64 @@
+body {
+  font-family: "Poppins", sans-serif;
+  background: #fff8f0;
+  color: #4a2c0a;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+header {
+  background-color: #f8d17a;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+button {
+  background-color: #f4a261;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+button:hover {
+  background-color: #e76f51;
+}
+
+.productos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 2rem;
+}
+
+.producto {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.producto img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.hidden {
+  display: none;
+}
+
+.login-container {
+  margin-top: 5rem;
+}
+
+.prod-item {
+  background: white;
+  padding: 1rem;
+  margin: 0.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}

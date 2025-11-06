@@ -1,0 +1,30 @@
+!DOCTYPE html
+html lang=es
+head
+  meta charset=UTF-8
+  meta name=viewport content=width=device-width, initial-scale=1.0
+  titlePanel Admin - OnlyPantitle
+  link rel=stylesheet href=style.css
+head
+body
+  div id=loginContainer class=login-container
+    h2Acceso administradorh2
+    input id=email type=email placeholder=Correo
+    input id=password type=password placeholder=Contraseña
+    button id=loginBtnIniciar sesiónbutton
+    p id=loginMsgp
+  div
+
+  div id=adminPanel class=hidden
+    h2Panel de administraciónh2
+    input id=nombre placeholder=Nombre del producto
+    input id=precio placeholder=Precio type=number
+    input id=descripcion placeholder=Descripción
+    input id=imagen placeholder=URL de la imagen
+    button id=agregarBtnAgregar productobutton
+    div id=listaProductosdiv
+  div
+
+  script type=module src=admin.jsscript
+body
+html
