@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OnlyPan — Panadería</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;600;800&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <style>
+    /* Minimal, modern, bakery-inspired styles */
+    :root{--bg:#fff8f1;--accent:#c77b39;--muted:#6b6b6b;--card:#fff;}
+    *{box-sizing:border-box}
+    body{font-family:Nunito,system-ui,Arial;line-height:1.4;margin:0;background:linear-gradient(180deg,#fff8f1 0%, #fff 60%);color:#222}
+    header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-bottom:1px solid rgba(0,0,0,.05);background:transparent}
+    .brand{display:flex;align-items:center;gap:14px}
+    .logo{width:64px;height:64px;border-radius:12px;background:linear-gradient(90deg,#ffd9b3,#f6c89a);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:22px;color:var(--accent);box-shadow:0 6px 18px rgba(199,123,57,.12)}
+    nav a{margin-left:18px;text-decoration:none;color:var(--muted);font-weight:600}
+    .hero{display:grid;grid-template-columns:1fr 360px;gap:22px;padding:26px}
+    .hero-left{padding:28px;border-radius:18px;background:linear-gradient(180deg,#fff,#fffefc);box-shadow:0 8px 30px rgba(15,10,5,.04)}
+    .hero h1{font-family:'Playfair Display',serif;font-size:36px;margin:0 0 8px}
+    .hero p{margin:0 0 16px;color:var(--muted)}
+    .cta{display:inline-block;padding:10px 18px;border-radius:12px;background:var(--accent);color:white;text-decoration:none;font-weight:700}
+    .categories{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+    .cat{padding:8px 12px;border-radius:12px;background:#fff6ef;border:1px solid rgba(199,123,57,.08);font-weight:700;color:var(--accent)}
+    .hero-right{border-radius:18px;overflow:hidden;background-image:url('https://images.unsplash.com/photo-1542831371-d531d36971e6?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=');background-size:cover;background-position:center;min-height:260px}
+
+    main{padding:22px}
+    .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
+    .card{background:var(--card);border-radius:12px;padding:12px;box-shadow:0 6px 18px rgba(0,0,0,.04);display:flex;flex-direction:column}
+    .card img{width:100%;height:140px;object-fit:cover;border-radius:8px}
+    .card h3{margin:10px 0 6px;font-size:18px}
+    .card p{margin:0;color:var(--muted);font-size:14px}
+    .price{margin-top:auto;font-weight:800;color:var(--accent);font-size:16px}
+
+    footer{padding:22px;text-align:center;color:var(--muted)}
+
+    /* Admin button */
+    .admin-btn{position:fixed;right:18px;bottom:18px;background:#222;color:#fff;padding:12px 14px;border-radius:999px;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.18)}
+
+    /* Modal */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.45);z-index:40}
+    .modal .box{width:920px;max-width:94%;background:white;border-radius:12px;padding:18px;max-height:85vh;overflow:auto}
+    .modal .row{display:flex;gap:8px;margin-bottom:10px}
+    .modal input,.modal textarea{flex:1;padding:8px;border-radius:8px;border:1px solid #eee}
+    .small{width:120px}
+
+    @media(max-width:880px){.hero{grid-template-columns:1fr;}.hero-right{min-height:180px}.nav{display:none}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">Only<span style="font-weight:300">Pan</span></div>
+      <div>
+        <div style="font-weight:800">OnlyPan</div>
+        <div style="font-size:12px;color:var(--muted)">Panadería & recetas</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="#">Inicio</a>
+      <a href="#productos">Productos</a>
+      <a href="#recetas">Recetas</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-left">
+      <h1>Pan fresco hecho con cariño</h1>
+      <p>Recetas tradicionales y productos listos para tu mesa. Inspirado en panaderías locales: ingredientes naturales, sabores auténticos.</p>
+      <a class="cta" href="#productos">Ver productos</a>
+
+      <div class="categories" aria-hidden>
+        <div class="cat">Panadería</div>
+        <div class="cat">Hamburguesas</div>
+        <div class="cat">Tortas</div>
+        <div class="cat">Promos</div>
+      </div>
+    </div>
+    <div class="hero-right" aria-hidden></div>
+  </section>
+
+  <main>
+    <h2 id="productos">Nuestros productos</h2>
+    <p style="color:var(--muted);margin-top:6px">Productos actualizados en vivo (si está conectado a un servidor que sirva <code>/data/products.json</code>).</p>
+
+    <div class="products-grid" id="productsGrid">
+      <!-- productos se cargan con JS -->
+    </div>
+
+    <h2 id="recetas" style="margin-top:28px">Recetas destacadas</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:12px">
+      <article class="card">
+        <img src="https://cuk-it.com/wp-content/uploads/2020/11/pan-hamburguesa.webp" alt="Pan de hamburguesa">
+        <h3>Pan de hamburguesa</h3>
+        <p>Suave, dorado y perfecto para tus hamburguesas caseras.</p>
+      </article>
+      <article class="card">
+        <img src="https://images.unsplash.com/photo-1542826438-3e1f1e3b1efb?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=" alt="Pan rústico">
+        <h3>Pan rústico</h3>
+        <p>Miga aireada y corteza crujiente — ideal para compartir.</p>
+      </article>
+    </div>
+
+  </main>
+
+  <footer id="contacto">
+    <div>© OnlyPan — Creado por estudiantes · Seguinos en Instagram</div>
+  </footer>
+
+  <button class="admin-btn" id="openAdmin">Admin</button>
+
+  <div class="modal" id="adminModal">
+    <div class="box">
+      <h3>Panel administrador — Productos</h3>
+      <div style="margin-bottom:10px;color:var(--muted);font-size:13px">Puedes editar los productos aquí. Si alojas el sitio con un servidor y creas un endpoint <code>/admin/update</code>, el ejemplo intentará enviar los cambios al servidor. Si no, los cambios se guardan en <code>localStorage</code> (válido en esta máquina).</div>
+
+      <div id="productFormList"></div>
+
+      <div style="margin-top:10px;display:flex;gap:8px">
+        <button id="addProductBtn">Agregar producto</button>
+        <button id="saveBtn">Guardar cambios</button>
+        <button id="closeModal">Cerrar</button>
+      </div>
+
+      <hr style="margin:18px 0">
+      <h4>Instrucciones rápidas para ver cambios en otros dispositivos</h4>
+      <pre style="background:#f7f7f7;border-radius:8px;padding:10px;font-size:13px;overflow:auto">1) Coloca el archivo <strong>data/products.json</strong> en la carpeta <em>data/</em> del servidor.
+2) Crea un endpoint POST <strong>/admin/update</strong> que sobrescriba ese JSON con el body enviado.
+
+Ejemplo simple (node.js/express):
+
+const express = require('express');
+const fs = require('fs');
+const app = express();
+app.use(express.json());
+app.post('/admin/update',(req,res)=>{fs.writeFileSync('./data/products.json',JSON.stringify(req.body, null, 2));res.send({ok:true})});
+app.use(express.static('.'));
+app.listen(3000);
+
+Luego inicia: node server.js  y accede desde otra máquina a http://TU_IP:3000</pre>
+
+    </div>
+  </div>
+
+  <script>
+    // Manejador de muestra + carga dinámica
+    const sampleProducts = [
+      {id:1,title:'Baguette artesanal',desc:'80% harina local, corteza dorada',price:'$260',img:'https://images.unsplash.com/photo-1546549039-8a7b4b0d2d6f?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s='},
+      {id:2,title:'Medialunas',desc:'Manteca y crocante',price:'$180',img:'https://images.unsplash.com/photo-1542831371-d531d36971e6?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s='},
+      {id:3,title:'Pan de hamburguesa',desc:'Suave y esponjoso',price:'$300',img:'https://cuk-it.com/wp-content/uploads/2020/11/pan-hamburguesa.webp'}
+    ];
+
+    const productsGrid = document.getElementById('productsGrid');
+
+    async function loadProducts(){
+      try{
+        const resp = await fetch('/data/products.json?t=' + Date.now());
+        if(!resp.ok) throw new Error('no file');
+        const data = await resp.json();
+        renderProducts(data);
+      }catch(e){
+        // fallback a localStorage o sample
+        const local = localStorage.getItem('onlypan_products');
+        const data = local ? JSON.parse(local) : sampleProducts;
+        renderProducts(data);
+      }
+    }
+
+    function renderProducts(list){
+      productsGrid.innerHTML = '';
+      list.forEach(p=>{
+        const el = document.createElement('article');el.className='card';
+        el.innerHTML = `<img src="${p.img}" alt="${p.title}"><h3>${p.title}</h3><p>${p.desc}</p><div class="price">${p.price}</div>`;
+        productsGrid.appendChild(el);
+      });
+      // mantener la versión en localStorage para edición local
+      localStorage.setItem('onlypan_products', JSON.stringify(list));
+    }
+
+    // Admin modal
+    const adminModal = document.getElementById('adminModal');
+    document.getElementById('openAdmin').addEventListener('click',()=>{adminModal.style.display='flex';populateAdminForms();});
+    document.getElementById('closeModal').addEventListener('click',()=>adminModal.style.display='none');
+
+    function populateAdminForms(){
+      const container = document.getElementById('productFormList');
+      const list = JSON.parse(localStorage.getItem('onlypan_products') || JSON.stringify(sampleProducts));
+      container.innerHTML='';
+      list.forEach((p,idx)=>{
+        const row = document.createElement('div');row.className='row';
+        row.innerHTML = `
+          <input data-idx="${idx}" class="small" value="${p.id}" placeholder="id">
+          <input data-idx="${idx}" value="${escapeHtml(p.title)}" placeholder="Título">
+          <input data-idx="${idx}" value="${escapeHtml(p.price)}" class="small" placeholder="Precio">
+          <input data-idx="${idx}" value="${escapeHtml(p.img)}" placeholder="URL imagen">
+          <button data-idx="${idx}" class="delBtn">Eliminar</button>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function escapeHtml(s){return s.replaceAll('\"','\&quot;')}
+
+    document.getElementById('addProductBtn').addEventListener('click',()=>{
+      const list = JSON.parse(localStorage.getItem('onlypan_products') || '[]');
+      const nextId = Date.now();
+      list.push({id:nextId,title:'Nuevo producto',desc:'Descripción',price:'$0',img:''});
+      localStorage.setItem('onlypan_products',JSON.stringify(list));
+      populateAdminForms();
+      loadProducts();
+    });
+
+    document.getElementById('productFormList').addEventListener('click', (e)=>{
+      if(e.target.classList.contains('delBtn')){
+        const i = Number(e.target.dataset.idx);
+        const list = JSON.parse(localStorage.getItem('onlypan_products')||'[]');
+        list.splice(i,1);
+        localStorage.setItem('onlypan_products',JSON.stringify(list));
+        populateAdminForms();
+        loadProducts();
+      }
+    });
+
+    // Guardar: intenta enviar al servidor /admin/update, si falla guarda localmente
+    document.getElementById('saveBtn').addEventListener('click',async ()=>{
+      // reconstruir lista desde inputs
+      const rows = document.querySelectorAll('#productFormList .row');
+      const list = [];
+      rows.forEach(r=>{
+        const inputs = r.querySelectorAll('input');
+        const id = inputs[0].value;
+        const title = inputs[1].value;
+        const price = inputs[2].value;
+        const img = inputs[3].value;
+        list.push({id,title,desc:'',price,img});
+      });
+
+      // intenta POST a /admin/update
+      try{
+        const resp = await fetch('/admin/update',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(list)});
+        if(!resp.ok) throw new Error('server failed');
+        alert('Guardado en servidor.');
+      }catch(e){
+        // fallback: guardar en localStorage
+        localStorage.setItem('onlypan_products',JSON.stringify(list));
+        alert('No se pudo guardar en servidor. Cambios guardados en esta máquina (localStorage).');
+      }
+      populateAdminForms();
+      loadProducts();
+    });
+
+    // Sync inputs to localStorage when edited
+    document.getElementById('productFormList').addEventListener('input', (e)=>{
+      // reconstruct list when any input changes to keep preview live
+      const rows = document.querySelectorAll('#productFormList .row');
+      const list = [];
+      rows.forEach(r=>{
+        const inputs = r.querySelectorAll('input');
+        list.push({id:inputs[0].value,title:inputs[1].value,price:inputs[2].value,img:inputs[3].value,desc:''});
+      });
+      localStorage.setItem('onlypan_products',JSON.stringify(list));
+      loadProducts();
+    });
+
+    // util
+    loadProducts();
+  </script>
+</body>
+</html>
