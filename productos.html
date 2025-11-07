@@ -5,15 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Todos los productos — OnlyPan Store</title>
   <meta name="description" content="Catálogo completo de panes de OnlyPan Store. Pedí por Instagram." />
-
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-
   <style>
-    :root{
-      --bg:#fff8f1; --text:#2b2b2b; --primary:#d4a373; --primary-700:#8c5e3c; --card:#ffffff;
-      --line:#00000014; --muted:#5a4a41; --shadow:0 10px 30px #00000010; --shadow-hover:0 16px 40px #00000018; --radius:16px;
-      --danger:#c53b3b; --ok:#2e7d32;
-    }
+    :root{ --bg:#fff8f1; --text:#2b2b2b; --primary:#d4a373; --primary-700:#8c5e3c; --card:#ffffff; --line:#00000014; --muted:#5a4a41; --shadow:0 10px 30px #00000010; --shadow-hover:0 16px 40px #00000018; --radius:16px; --danger:#c53b3b; --ok:#2e7d32; }
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text)}
     a{text-decoration:none;color:inherit}
@@ -22,24 +16,16 @@
     .nav{position:sticky;top:0;background:linear-gradient(180deg, rgba(255,248,241,.95), rgba(255,248,241,.7));backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:50}
     .nav-inner{max-width:1100px;margin:auto;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
     .brand{display:flex;align-items:center;gap:10px;font-family:'Playfair Display',serif;font-weight:700;font-size:1.2rem}
-    .btn{padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--primary);color:#fff;font-weight:700;box-shadow:0 6px 18px #d4a37355}
+    .btn{padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--primary);color:#fff;font-weight:700;box-shadow:0 6px 18px #d4a37355;cursor:pointer}
     .btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px #d4a37366}
     .btn-ghost{background:#fff;color:var(--text)}
 
-    /* WRAP */
     .wrap{max-width:1100px;margin:auto;padding:24px 20px}
-
-    /* BACK BUTTON */
     .back-btn{display:inline-block;margin-bottom:15px;padding:10px 14px;border-radius:12px;background:#fff;border:1px solid var(--line);font-weight:600}
-    .back-btn:hover{background:#f9efe3}
-
     h1{font-family:'Playfair Display',serif;font-size:clamp(26px,4.5vw,40px);margin:10px 0}
     .muted{color:var(--muted)}
 
-    /* SEARCH */
-    .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .search{width:100%;max-width:380px;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:#fff;outline:0;font-size:1rem}
-    .search:focus{border-color:#0003;box-shadow:0 0 0 4px #d4a37333}
+    .search{width:100%;max-width:380px;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:#fff;font-size:1rem}
 
     /* GRID */
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin-top:20px}
@@ -55,39 +41,36 @@
     .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
     .chip{padding:6px 10px;font-size:.78rem;background:#0001;border:1px dashed #0002;border-radius:999px}
 
-    /* ADMIN BADGE/BTNS */
-    .admin-badge{position:fixed;right:18px;bottom:18px;z-index:60;display:flex;gap:10px}
-    .fab{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:12px 14px;border:1px solid var(--line);background:#fff;font-weight:700;box-shadow:0 8px 18px #00000018}
+    /* ADMIN */
+    .admin-badge{position:fixed;right:18px;bottom:18px;z-index:60;display:none;gap:10px}
+    .fab{padding:12px 14px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:700;box-shadow:0 8px 18px #00000018;cursor:pointer}
     .fab-primary{background:var(--primary);color:#fff}
     .row-actions{position:absolute;top:10px;right:10px;display:flex;gap:6px}
     .iconbtn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:6px 8px;font-size:.85rem;cursor:pointer}
     .iconbtn.danger{color:#fff;background:var(--danger);border-color:#b33030}
 
-    /* MODAL */
-    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.28);z-index:70}
+    /* MODALS */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.25);z-index:70}
     .modal.open{display:flex}
-    .sheet{width:min(680px,92vw);background:#fff;border-radius:16px;border:1px solid var(--line);box-shadow:0 20px 60px #00000033;overflow:hidden}
+    .sheet{width:min(680px,92vw);background:#fff;border-radius:16px;border:1px solid var(--line)}
     .sheet header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line)}
-    .sheet h3{margin:0;font-family:'Playfair Display',serif}
-    .sheet .body{display:grid;gap:12px;padding:16px}
-    .sheet label{font-weight:600;font-size:.92rem}
+    .sheet .body{padding:16px;display:grid;gap:12px}
     .input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line)}
-    .row{display:grid;gap:10px;grid-template-columns:1fr}
-    @media(min-width:720px){.row{grid-template-columns:1fr 1fr}}
-    .sheet footer{display:flex;gap:10px;justify-content:flex-end;padding:12px 16px;border-top:1px solid var(--line);background:#fff8}
+    .sheet footer{display:flex;gap:10px;justify-content:flex-end;padding:12px 16px;border-top:1px solid var(--line)}
     .btn-danger{background:var(--danger);color:#fff;border:1px solid #b33030}
     .btn-ok{background:var(--ok);color:#fff;border:1px solid #1b5e20}
+
+    .empty{text-align:center;padding:40px;border:1px dashed var(--line);border-radius:14px;background:#fff6eb;color:#6b5b4e;margin-top:20px;display:none}
   </style>
 </head>
 <body>
-
   <!-- NAV -->
   <nav class="nav">
     <div class="nav-inner">
       <a class="brand" href="index.html">OnlyPan Store</a>
       <div style="display:flex;gap:10px;align-items:center">
         <button id="adminToggle" class="btn btn-ghost" type="button">Admin</button>
-        <a class="btn" href="https://instagram.com/Onlypansrl" target="_blank">Hacer pedido ↗</a>
+        <a class="btn" href="https://instagram.com/Onlypansrl" target="_blank" rel="noopener">Hacer pedido ↗</a>
       </div>
     </div>
   </nav>
@@ -97,24 +80,22 @@
     <a class="back-btn" href="index.html">← Volver al inicio</a>
     <h1>Todos los productos</h1>
     <p class="muted">Buscá por nombre o etiqueta. Para editar el catálogo iniciá sesión con el botón <strong>Admin</strong>.</p>
-    <div class="toolbar">
-      <input id="q" class="search" type="search" placeholder="Buscar por nombre o etiqueta…" />
-    </div>
+    <input id="q" class="search" type="search" placeholder="Buscar por nombre o etiqueta…"/>
   </div>
 
   <!-- GRID -->
   <div class="wrap">
     <div id="grid" class="grid"></div>
-    <div id="empty" class="empty" style="display:none">No encontramos resultados. Probá otro término.</div>
+    <div id="empty" class="empty">No encontramos resultados. Probá otro término.</div>
   </div>
 
   <!-- ADMIN FLOATING ACTIONS -->
-  <div class="admin-badge" id="adminBadge" style="display:none">
+  <div class="admin-badge" id="adminBadge">
     <button id="addBtn" class="fab fab-primary" type="button">＋ Nuevo producto</button>
     <button id="logoutBtn" class="fab" type="button">Salir admin</button>
   </div>
 
-  <!-- MODAL FORM -->
+  <!-- MODAL: PRODUCTO -->
   <div class="modal" id="modal">
     <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="dlgTitle">
       <header>
@@ -122,14 +103,14 @@
         <button id="closeModal" class="iconbtn" aria-label="Cerrar">✕</button>
       </header>
       <div class="body">
-        <div class="row">
+        <div style="display:grid;gap:10px;grid-template-columns:1fr 1fr">
           <div>
             <label>Nombre</label>
-            <input id="f_titulo" class="input" type="text" placeholder="Ej: Baguette clásica" />
+            <input id="f_titulo" class="input" type="text" placeholder="Ej: Baguette clásica"/>
           </div>
           <div>
             <label>Imagen (URL)</label>
-            <input id="f_img" class="input" type="url" placeholder="https://…" />
+            <input id="f_img" class="input" type="url" placeholder="https://…"/>
           </div>
         </div>
         <div>
@@ -138,7 +119,7 @@
         </div>
         <div>
           <label>Etiquetas (separadas por coma)</label>
-          <input id="f_tags" class="input" type="text" placeholder="Masa madre, Integral, Semillas" />
+          <input id="f_tags" class="input" type="text" placeholder="Masa madre, Integral, Semillas"/>
         </div>
       </div>
       <footer>
@@ -149,33 +130,57 @@
     </div>
   </div>
 
-  <footer style="margin-top:40px;padding:24px 20px;border-top:1px solid var(--line);background:linear-gradient(180deg,#fff3e3,var(--bg))">
-    <div class="wrap">
-      <p class="muted">¿Listo para pedir? Escribinos a Instagram @Onlypansrl, TikTok o Gmail.</p>
+  <!-- MODAL: LOGIN (escribís vos, no se ve en HTML) -->
+  <div class="modal" id="loginModal">
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+      <header>
+        <h3 id="loginTitle">Iniciar sesión (Admin)</h3>
+        <button id="closeLogin" class="iconbtn" aria-label="Cerrar">✕</button>
+      </header>
+      <div class="body">
+        <div style="display:grid;gap:10px;grid-template-columns:1fr 1fr">
+          <div>
+            <label>Email</label>
+            <input id="auth_email" class="input" type="email" placeholder="tuemail@dominio.com"/>
+          </div>
+          <div>
+            <label>Contraseña</label>
+            <input id="auth_password" class="input" type="password" placeholder="********"/>
+          </div>
+        </div>
+        <small class="muted">Las credenciales no están guardadas en el HTML: se envían directo a Supabase.</small>
+      </div>
+      <footer>
+        <button id="loginBtn" class="btn btn-ok" type="button">Entrar</button>
+      </footer>
     </div>
-  </footer>
+  </div>
 
+  <!-- Supabase JS -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <script>
-    // ====== CONFIG SIMPLE DE ADMIN (solo front-end)
-    const ADMIN_PASS = 'onlypanadmin'; // Cambiá este valor
-    const LS_KEY = 'onlypan_catalogo_v1';
-    const LS_ADMIN = 'onlypan_admin';
+    // ========================
+    //   CONFIG
+    // ========================
+    const SUPABASE_URL = "https://dlmgvrejatqhjhxoejdm.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsbWd2cmVqYXRxaGpoeG9lamRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzM4MTcsImV4cCI6MjA3ODA0OTgxN30.5WfDT6qUBfXvvon-io4g-JntQ_EnptAUFyeue1v8tBc";
+    const TABLE = "productos";
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // ====== CATALOGO BASE (se puede sobrescribir desde localStorage)
-    const DEFAULTS = [
-      {img:"https://images.unsplash.com/photo-1549931296-3c132f3fc650?q=80&w=1200&auto=format&fit=crop",titulo:"Baguette clásica",desc:"Corte crujiente y miga aireada.",tags:["Trigo","Crusty"]},
-      {img:"https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=1200&auto=format&fit=crop",titulo:"Pan de campo",desc:"Masa madre, larga fermentación.",tags:["Masa madre","Lenta"]},
-      {img:"https://images.unsplash.com/photo-1617195737496-89ae090afcca?q=80&w=1200&auto=format&fit=crop",titulo:"Pan integral",desc:"Harinas integrales y semillas.",tags:["Semillas","Fibra"]}
-    ];
+    // ========================
+    //   ESTADO
+    // ========================
+    let CATALOGO = [];
+    let session = null; // sesión de supabase auth
+    let editingId = null;
 
-    let CATALOGO = loadCatalog();
-    let admin = !!localStorage.getItem(LS_ADMIN);
-    let editingIndex = null;
-
-    // ====== UI ELEMENTS
+    // ========================
+    //   ELEMENTOS
+    // ========================
     const grid  = document.getElementById('grid');
     const empty = document.getElementById('empty');
     const q     = document.getElementById('q');
+
     const adminToggle = document.getElementById('adminToggle');
     const adminBadge  = document.getElementById('adminBadge');
     const addBtn      = document.getElementById('addBtn');
@@ -185,25 +190,28 @@
     const closeModal  = document.getElementById('closeModal');
     const cancelBtn   = document.getElementById('cancelBtn');
     const saveBtn     = document.getElementById('saveBtn');
-    const delBtn      = document.getElementById('deleteBtn');
+    const deleteBtn   = document.getElementById('deleteBtn');
 
     const f_titulo = document.getElementById('f_titulo');
     const f_img    = document.getElementById('f_img');
     const f_desc   = document.getElementById('f_desc');
     const f_tags   = document.getElementById('f_tags');
 
-    // ====== ANIMACIONES
-    const observer = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('reveal'); observer.unobserve(e.target); } });
-    },{threshold:.15});
+    const loginModal   = document.getElementById('loginModal');
+    const closeLogin   = document.getElementById('closeLogin');
+    const auth_email   = document.getElementById('auth_email');
+    const auth_password= document.getElementById('auth_password');
+    const loginBtn     = document.getElementById('loginBtn');
 
-    // ====== RENDER
-    function cardHTML(p, i){
+    // ========================
+    //   RENDER
+    // ========================
+    function cardHTML(p){
       const chips = (p.tags||[]).map(t=>`<span class="chip">${t}</span>`).join('');
-      const adminBtns = admin ? `
+      const adminBtns = session ? `
         <div class="row-actions">
-          <button class="iconbtn" data-edit="${i}" title="Editar">✏️</button>
-          <button class="iconbtn danger" data-del="${i}" title="Eliminar">🗑️</button>
+          <button class="iconbtn" data-edit="${p.id}" title="Editar">✏️</button>
+          <button class="iconbtn danger" data-del="${p.id}" title="Eliminar">🗑️</button>
         </div>` : '';
       return `
         <article class="card">
@@ -217,107 +225,147 @@
         </article>`;
     }
 
-    function attachEnh(card){
-      const img=card.querySelector('img');
-      if(img){ if(img.complete) img.classList.add('loaded'); else img.addEventListener('load',()=>img.classList.add('loaded'),{once:true}); }
-      observer.observe(card);
-    }
-
     function render(list){
-      grid.innerHTML = list.map(cardHTML).join('');
-      grid.querySelectorAll('.card').forEach(attachEnh);
-      empty.style.display = list.length ? 'none' : 'block';
-
-      if(admin){
-        grid.querySelectorAll('[data-edit]').forEach(btn=>btn.addEventListener('click',()=>openEditor(parseInt(btn.dataset.edit))));
-        grid.querySelectorAll('[data-del]').forEach(btn=>btn.addEventListener('click',()=>delProduct(parseInt(btn.dataset.del))));
-      }
-      adminBadge.style.display = admin ? 'flex' : 'none';
-      adminToggle.textContent = admin ? 'Admin (activo)' : 'Admin';
-    }
-
-    // ====== BUSQUEDA
-    function filter(){
       const term = (q.value||'').trim().toLowerCase();
-      if(!term) return render(CATALOGO);
-      const out = CATALOGO.filter(p =>
-        p.titulo.toLowerCase().includes(term) ||
+      const data = term ? list.filter(p =>
+        (p.titulo||'').toLowerCase().includes(term) ||
         (p.desc||'').toLowerCase().includes(term) ||
-        (p.tags||[]).some(t=>t.toLowerCase().includes(term))
-      );
-      render(out);
+        (p.tags||[]).some(t => (t||'').toLowerCase().includes(term))
+      ) : list;
+
+      grid.innerHTML = data.map(cardHTML).join('');
+      grid.querySelectorAll('.card').forEach(el=>el.classList.add('reveal'));
+      empty.style.display = data.length ? 'none' : 'block';
+
+      if(session){
+        adminBadge.style.display = 'flex';
+        adminToggle.textContent = 'Cerrar sesión (admin)';
+        grid.querySelectorAll('[data-edit]').forEach(btn=>btn.addEventListener('click',()=>openEditor(btn.dataset.edit)));
+        grid.querySelectorAll('[data-del]').forEach(btn=>btn.addEventListener('click',()=>delProduct(btn.dataset.del)));
+      } else {
+        adminBadge.style.display = 'none';
+        adminToggle.textContent = 'Admin';
+      }
     }
 
-    q.addEventListener('input', filter);
+    // ========================
+    //   CRUD
+    // ========================
+    async function loadCatalog(){
+      const { data, error } = await sb.from(TABLE).select('*').order('created_at', { ascending: false });
+      if(error){ console.error(error); alert("Error cargando productos"); return; }
+      CATALOGO = (data||[]).map(r => ({
+        id: r.id, titulo: r.titulo, img: r.img,
+        desc: r.desc, // columna "desc" en la DB
+        tags: Array.isArray(r.tags) ? r.tags : (r.tags ? String(r.tags).split(',').map(s=>s.trim()) : [])
+      }));
+      render(CATALOGO);
+    }
 
-    // ====== ADMIN LOGIN/LOGOUT
-    adminToggle.addEventListener('click', ()=>{
-      if(admin){ alert('Ya estás en modo admin.'); return; }
-      const k = prompt('Clave admin');
-      if(k===ADMIN_PASS){ admin = true; localStorage.setItem(LS_ADMIN,'1'); render(CATALOGO); }
-      else if(k!==null){ alert('Clave incorrecta'); }
-    });
+    async function upsertProduct(obj){
+      const payload = {
+        id: obj.id || undefined,
+        titulo: obj.titulo,
+        img: obj.img,
+        desc: obj.desc || null,
+        tags: obj.tags || []
+      };
+      const { error } = await sb.from(TABLE).upsert(payload);
+      if(error){ console.error(error); alert("Error guardando el producto: " + error.message); return false; }
+      return true;
+    }
 
-    logoutBtn.addEventListener('click', ()=>{ admin=false; localStorage.removeItem(LS_ADMIN); render(CATALOGO); });
+    async function delProduct(id){
+      if(!session) return alert('Necesitás iniciar sesión');
+      if(!confirm('¿Eliminar este producto?')) return;
+      const { error } = await sb.from(TABLE).delete().eq('id', id);
+      if(error){ console.error(error); alert("No se pudo eliminar: " + error.message + "\n\nRevisá las políticas RLS."); return; }
+      modal.classList.remove('open');
+      await loadCatalog();
+    }
 
-    // ====== MODAL HELPERS
+    // ========================
+    //   MODAL PRODUCTO
+    // ========================
     function openModal(){ modal.classList.add('open'); }
-    function closeModalFn(){ modal.classList.remove('open'); editingIndex=null; clearForm(); delBtn.style.display='none'; }
-
+    function closeModalFn(){ modal.classList.remove('open'); editingId=null; clearForm(); deleteBtn.style.display='none'; }
     closeModal.addEventListener('click', closeModalFn);
     cancelBtn.addEventListener('click', closeModalFn);
 
     function clearForm(){ f_titulo.value=''; f_img.value=''; f_desc.value=''; f_tags.value=''; }
 
-    function openEditor(i){
-      const p = CATALOGO[i];
+    function openEditor(id){
+      const p = CATALOGO.find(x=>String(x.id)===String(id));
       if(!p) return;
-      editingIndex = i;
+      editingId = p.id;
       f_titulo.value = p.titulo||'';
       f_img.value    = p.img||'';
       f_desc.value   = p.desc||'';
       f_tags.value   = (p.tags||[]).join(', ');
-      delBtn.style.display='inline-flex';
+      deleteBtn.style.display='inline-flex';
       openModal();
     }
 
-    addBtn.addEventListener('click', ()=>{ editingIndex=null; clearForm(); delBtn.style.display='none'; openModal(); });
+    addBtn?.addEventListener('click', ()=>{ editingId=null; clearForm(); deleteBtn.style.display='none'; openModal(); });
 
-    delBtn.addEventListener('click', ()=>{
-      if(editingIndex===null) return;
-      if(confirm('¿Eliminar este producto?')){
-        CATALOGO.splice(editingIndex,1);
-        persist();
-        render(CATALOGO);
-        closeModalFn();
-      }
-    });
-
-    saveBtn.addEventListener('click', ()=>{
+    saveBtn.addEventListener('click', async ()=>{
+      if(!session){ alert('Necesitás iniciar sesión'); return; }
       const data = {
+        id: editingId || undefined,
         titulo: f_titulo.value.trim(),
         img:    f_img.value.trim(),
         desc:   f_desc.value.trim(),
         tags:   f_tags.value.split(',').map(s=>s.trim()).filter(Boolean)
       };
-      if(!data.titulo){ alert('El nombre es obligatorio'); return; }
-      if(!data.img){ alert('La imagen (URL) es obligatoria'); return; }
+      if(!data.titulo) return alert('El nombre es obligatorio');
+      if(!data.img)    return alert('La imagen (URL) es obligatoria');
 
-      if(editingIndex===null) CATALOGO.push(data); else CATALOGO[editingIndex]=data;
-      persist();
-      render(CATALOGO);
-      closeModalFn();
+      const ok = await upsertProduct(data);
+      if(ok){ await loadCatalog(); closeModalFn(); }
     });
 
-    // ====== STORAGE
-    function persist(){ localStorage.setItem(LS_KEY, JSON.stringify(CATALOGO)); }
-    function loadCatalog(){
-      try{ const raw = localStorage.getItem(LS_KEY); return raw ? JSON.parse(raw) : [...DEFAULTS]; }
-      catch(e){ console.warn('Catálogo corrupto, reseteando', e); localStorage.removeItem(LS_KEY); return [...DEFAULTS]; }
-    }
+    // ========================
+    //   AUTH (login simple)
+    // ========================
+    function openLogin(){ loginModal.classList.add('open'); }
+    function closeLoginFn(){ loginModal.classList.remove('open'); auth_email.value=''; auth_password.value=''; }
+    closeLogin.addEventListener('click', closeLoginFn);
 
-    // ====== INIT
-    render(CATALOGO);
+    adminToggle.addEventListener('click', async ()=>{
+      if(session){ await sb.auth.signOut(); session = null; render(CATALOGO); }
+      else { openLogin(); }
+    });
+
+    logoutBtn.addEventListener('click', async ()=>{ await sb.auth.signOut(); session = null; render(CATALOGO); });
+
+    loginBtn.addEventListener('click', async ()=>{
+      const email = auth_email.value.trim();
+      const pass  = auth_password.value;
+      if(!email || !pass) return alert('Completá email y contraseña');
+      const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+      if(error){ alert('Login inválido'); return; }
+      session = data.session; closeLoginFn(); render(CATALOGO);
+    });
+
+    auth_password.addEventListener('keydown', e=>{ if(e.key==='Enter') loginBtn.click(); });
+
+    // Persistir sesión al recargar
+    sb.auth.getSession().then(({ data })=>{ session = data.session; render(CATALOGO); });
+    sb.auth.onAuthStateChange((_event, s)=>{ session = s; render(CATALOGO); });
+
+    // ========================
+    //   INIT + (opcional) realtime
+    // ========================
+    q.addEventListener('input', ()=>render(CATALOGO));
+    loadCatalog();
+
+    // Si activás Realtime en Supabase, auto-refresca el catálogo en cambios
+    try {
+      sb.channel('realtime:public:productos')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'productos' }, () => { loadCatalog(); })
+        .subscribe();
+    } catch(_) {}
   </script>
 </body>
 </html>
+
