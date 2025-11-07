@@ -1,253 +1,247 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>OnlyPan Store — Panes artesanales</title>
-  <meta name="description" content="OnlyPan Store: panes artesanales frescos. Elegí del catálogo y pedí por Instagram." />
-
-  <!-- Fav / Tipografías -->
-  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'><circle cx='128' cy='128' r='120' fill='%23d4a373'/><path d='M208 144c0 35-36 64-80 64s-80-29-80-64 36-64 80-64 80 29 80 64Z' fill='%23fff8f1'/><path d='M80 144c0-26 22-48 48-48s48 22 48 48' fill='none' stroke='%238c5e3c' stroke-width='14' stroke-linecap='round'/></svg>">
+  <meta name="description" content="OnlyPan Store: panes artesanales recién horneados. Catálogo claro y pedidos por Instagram."/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-
   <style>
     :root{
-      --bg:#fff8f1;        /* crema suave */
-      --text:#2c2c2c;      /* gris oscuro legible */
-      --muted:#6b5a50;     /* texto secundario */
-      --card:#ffffff;      /* tarjetas */
-      --stroke:#00000012;  /* bordes sutiles */
-      --primary:#d4a373;   /* caramelo */
-      --primary-800:#8c5e3c;
-      --ring:#d4a37355;
-      --radius:16px;
-      --max:1000px;
+      --bg:#fff8f1;
+      --card:#ffffff;
+      --text:#2b2b2b;
+      --muted:#5a4a41;
+      --brand:#d4a373;        /* caramelo */
+      --brand-700:#b5814f;     /* caramelo más tostado */
+      --stroke:#00000012;
+      --shadow: 0 10px 24px rgba(0,0,0,.08);
+      --radius: 18px;
     }
 
     *{box-sizing:border-box}
     html,body{margin:0}
     body{
-      background:var(--bg);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color:var(--text);
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      -webkit-font-smoothing:antialiased;
+      background:var(--bg);
+      line-height:1.45;
     }
     a{color:inherit;text-decoration:none}
 
-    /* NAV (mobile-first) */
+    /* Shell */
+    .container{max-width:1080px;margin:0 auto;padding:16px 18px}
+    .section{padding:36px 0}
+    .title{
+      font-family:"Playfair Display", serif;
+      font-size:clamp(28px,6.4vw,44px);
+      line-height:1.08;
+      margin:0 0 8px;
+      letter-spacing:.2px;
+    }
+    .lead{color:var(--muted);margin:0 0 16px;font-size:1.05rem}
+
+    /* Header / Nav */
     .nav{
-      position:sticky; top:0; z-index:50;
-      backdrop-filter:saturate(1.1) blur(8px);
-      background:linear-gradient(180deg, rgba(255,248,241,.92), rgba(255,248,241,.70));
+      position:sticky;top:0;z-index:40;
+      backdrop-filter:saturate(1.2) blur(8px);
+      background:linear-gradient(180deg, rgba(255,248,241,.95), rgba(255,248,241,.78));
       border-bottom:1px solid var(--stroke);
     }
-    .nav__inner{
-      max-width:var(--max); margin:0 auto;
-      padding:10px 16px; display:flex; align-items:center; gap:10px;
+    .nav-inner{
+      display:flex;align-items:center;gap:14px;justify-content:space-between;
     }
-    .brand{display:flex; align-items:center; gap:10px; font-weight:700}
-    .logo{
-      width:34px;height:34px;border-radius:10px;
-      display:grid;place-items:center;
-      background:radial-gradient(120px 60px at 50% 30%, #ffe8cf, #d4a373);
-      border:1px solid var(--stroke);
+    .brand{
+      display:flex;align-items:center;gap:10px;
     }
-    .brand__name{font-family:"Playfair Display",serif; letter-spacing:.2px}
-
-    .tabs{margin-left:auto; display:flex; gap:8px}
+    .brand img{
+      width:38px;height:38px;border-radius:999px;object-fit:cover;
+      box-shadow:0 4px 12px rgba(0,0,0,.06);
+      background:#fff;
+    }
+    .brand .name{
+      display:flex;flex-direction:column;
+      font-family:"Playfair Display", serif;
+      font-weight:700;
+      font-size:1.05rem;
+      line-height:1.02;
+      letter-spacing:.2px;
+    }
+    .tabs{
+      display:flex;align-items:center;gap:10px;
+    }
     .tab{
-      padding:10px 14px; border-radius:12px;
-      background:#fff; border:1px solid var(--stroke);
-      font-weight:600;
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:12px 14px;border-radius:14px;
+      background:#fff;border:1px solid var(--stroke);
+      font-weight:700;min-width:122px;
+      box-shadow:0 6px 18px rgba(0,0,0,.04);
     }
-    .tab--cta{
-      background:var(--primary); color:#fff; border-color:transparent;
-      box-shadow:0 6px 16px var(--ring);
+    .tab:hover{transform:translateY(-1px)}
+    .cta{
+      background:var(--brand);
+      color:#fff;border:1px solid transparent;
+      box-shadow:0 10px 24px rgba(212,163,115,.45);
     }
+    .cta:hover{background:var(--brand-700)}
 
-    /* LAYOUT */
-    .wrap{max-width:var(--max); margin:0 auto; padding:24px 16px}
-    .h1{font-family:"Playfair Display",serif; font-size:clamp(28px,6vw,48px); line-height:1.05; margin:6px 0 10px}
-    .lead{color:var(--muted); font-size:1.05rem}
-
-    .cta-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px}
+    /* Hero */
+    .hero-grid{
+      display:grid;gap:20px;align-items:center;
+      grid-template-columns:1fr;
+    }
+    .hero-actions{
+      display:grid;gap:12px;justify-items:center; /* centrados */
+      grid-template-columns:1fr;
+      max-width:520px;margin:10px auto 0;
+    }
     .btn{
-      padding:12px 16px; border-radius:12px; font-weight:700;
-      border:1px solid var(--stroke); background:#fff;
+      display:inline-flex;align-items:center;justify-content:center;
+      font-weight:800;padding:14px 16px;border-radius:16px;border:1px solid var(--stroke);
+      background:#fff;min-height:48px;width:100%;
     }
-    .btn--primary{background:var(--primary); color:#fff; border-color:transparent; box-shadow:0 6px 16px var(--ring)}
-    .btn:active{transform:translateY(1px)}
+    .btn-primary{
+      background:var(--brand);color:#fff;border-color:transparent;
+      box-shadow:0 10px 24px rgba(212,163,115,.45);
+    }
+    .btn-primary:hover{background:var(--brand-700)}
+    .btn-ghost{background:#fff}
 
+    .hero-card{
+      background:var(--card);border:1px solid var(--stroke);border-radius:var(--radius);
+      box-shadow:var(--shadow);overflow:hidden;
+      max-width:780px;margin:8px auto 0;
+    }
+    .hero-card img{display:block;width:100%;height:260px;object-fit:cover;background:#f4eadf}
+    .chips{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px}
+    .chip{font-size:.85rem;background:#00000008;border:1px dashed #00000018;border-radius:999px;padding:7px 10px}
+
+    /* Nosotros + bloques */
+    .subhead{font-family:"Playfair Display",serif;font-size:clamp(22px,4.8vw,30px);margin:0 0 10px}
+    .text{color:var(--muted);margin:0}
     .card{
-      background:var(--card); border:1px solid var(--stroke);
-      border-radius:var(--radius); box-shadow:0 10px 30px #0000000a;
-      overflow:hidden;
+      background:var(--card);border:1px solid var(--stroke);border-radius:var(--radius);
+      box-shadow:var(--shadow);padding:18px;
     }
-    .hero-card{margin-top:18px}
-    .hero-img{width:100%; height:240px; object-fit:cover; display:block}
+    .grid-2{display:grid;gap:16px;grid-template-columns:1fr}
 
-    /* SECCIONES */
-    section{margin-top:26px}
-    .title{font-family:"Playfair Display",serif; font-size:clamp(22px,4.4vw,32px); margin:0 0 8px}
-    .muted{color:var(--muted)}
-    .prose{line-height:1.6}
-
-    /* CONTACTO */
-    .chips{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px}
-    .chip{
-      padding:10px 14px; border-radius:999px; background:#fff; border:1px solid var(--stroke); font-weight:700;
-      display:inline-flex; align-items:center; gap:8px;
+    /* Contactos */
+    .pills{display:flex;flex-wrap:wrap;gap:10px}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;border:1px solid var(--stroke);
+      padding:10px 14px;border-radius:999px;background:#fff;font-weight:700;
     }
-    .chip svg{width:18px;height:18px}
 
-    /* FOOTER */
-    footer{margin-top:30px; border-top:1px solid var(--stroke); background:linear-gradient(180deg,#fff3e3,var(--bg))}
-    footer .wrap{padding:20px 16px}
+    /* Footer */
+    footer{border-top:1px solid var(--stroke);background:linear-gradient(180deg,#fff3e3,var(--bg))}
+    small.muted{color:var(--muted)}
 
-    /* DESKTOP pequeños ajustes */
-    @media (min-width:780px){
-      .hero{
-        display:grid; grid-template-columns:1.1fr .9fr; gap:20px; align-items:center;
-      }
-      .hero-img{height:300px}
+    /* Desktop tweaks */
+    @media (min-width:900px){
+      .hero-grid{grid-template-columns:1.1fr .9fr}
+      .hero-actions{grid-template-columns:repeat(2,minmax(0,1fr));max-width:620px}
+      .grid-2{grid-template-columns:1fr 1fr}
+      .hero-card img{height:300px}
     }
+
+    /* Scroll anchors spacing */
+    :target{scroll-margin-top:84px}
   </style>
 </head>
 <body>
 
   <!-- NAV -->
-  <nav class="nav">
-    <div class="nav__inner">
+  <header class="nav">
+    <div class="container nav-inner">
       <a class="brand" href="#home" aria-label="Ir al inicio">
-        <span class="logo" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 14c0 3.866 4.03 7 9 7s9-3.134 9-7-4.03-7-9-7-9 3.134-9 7Z" fill="#fff"/>
-            <path d="M8 14a4 4 0 1 1 8 0" stroke="#8c5e3c" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </span>
-        <span class="brand__name">OnlyPan Store</span>
+        <img src="logo.png" alt="OnlyPan Store logo" />
+        <span class="name">OnlyPan<br/>Store</span>
       </a>
 
-      <div class="tabs">
+      <nav class="tabs">
         <a class="tab" href="productos.html">Productos</a>
         <a class="tab" href="#nosotros">Nosotros</a>
-        <a class="tab tab--cta" target="_blank" rel="noopener" href="https://instagram.com/Onlypansrl">Instagram ↗</a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- HERO -->
-  <header id="home" class="wrap hero">
-    <div>
-      <h1 class="h1">Panes artesanales, recién horneados.</h1>
-      <p class="lead">Elegí tus favoritos y escribinos por Instagram. ¡Así de simple!</p>
-      <div class="cta-row">
-        <a class="btn btn--primary" href="productos.html">Ver catálogo completo</a>
-        <a class="btn" target="_blank" rel="noopener" href="https://instagram.com/Onlypansrl">Pedir por Instagram</a>
-      </div>
-    </div>
-
-    <div class="card hero-card" aria-hidden="true">
-      <img class="hero-img" src="https://images.unsplash.com/photo-1549931319-a545dcf3bc73?q=80&w=1400&auto=format&fit=crop" alt="Pan artesanal rebanado">
-      <div style="padding:12px">
-        <span class="muted">Masa madre • Horneado diario • Ingredientes seleccionados</span>
-      </div>
+        <a class="tab cta" href="https://instagram.com/Onlypansrl" target="_blank" rel="noopener">Instagram ↗</a>
+      </nav>
     </div>
   </header>
 
+  <!-- HERO -->
+  <main id="home" class="container section">
+    <div class="hero-grid">
+      <div>
+        <h1 class="title">Panes artesanales, recién horneados.</h1>
+        <p class="lead">Elegí tus favoritos y escribinos por Instagram. ¡Así de simple!</p>
+
+        <!-- Botones CENTRADOS (mobile y desktop) -->
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="productos.html">Ver catálogo completo</a>
+          <a class="btn btn-ghost" href="https://instagram.com/Onlypansrl" target="_blank" rel="noopener">Pedir por Instagram</a>
+        </div>
+
+        <!-- Tarjeta hero -->
+        <div class="hero-card" aria-label="Ejemplo de producto">
+          <img src="https://images.unsplash.com/photo-1549931319-a545dcf3bc73?q=80&w=1280&auto=format&fit=crop" alt="Pan artesanal rebanado"/>
+          <div class="chips">
+            <span class="chip">Masa madre</span>
+            <span class="chip">Horneado diario</span>
+            <span class="chip">Ingredientes seleccionados</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
   <!-- NOSOTROS -->
-  <section id="nosotros" class="wrap">
-    <h2 class="title">Nosotros</h2>
-    <p class="prose">
-      OnlyPan Store nació en <strong>2025</strong>, creado por alumnos del <strong>Juan Bautista Alberdi</strong>.
-      Elaboramos panes con procesos cuidados, ingredientes reales y fermentaciones largas. Nuestro objetivo es
-      ofrecer calidad, cercanía y un catálogo claro desde el celular.
+  <section id="nosotros" class="container section">
+    <h2 class="subhead">Nosotros</h2>
+    <p class="text" style="margin-bottom:16px">
+      OnlyPan Store nació en <strong>2025</strong>, creado por alumnos del <strong>Juan Bautista Alberdi</strong>. Elaboramos panes con procesos cuidados, ingredientes reales y fermentaciones largas.
+      Nuestro objetivo es ofrecer calidad, cercanía y un catálogo claro desde el celular.
     </p>
-  </section>
 
-  <!-- VISIÓN -->
-  <section class="wrap">
-    <h2 class="title">Visión</h2>
-    <p class="prose">
-      Convertirnos en una empresa escolar modelo, reconocida por la calidad y variedad de nuestros productos de panadería artesanal,
-      así como por el trabajo en equipo, la responsabilidad y el compromiso de cada integrante. Buscamos que OnlyPan sea un proyecto
-      donde aprendamos sobre producción, administración, ventas y valores empresariales, aplicando lo aprendido para lograr un
-      resultado real en la feria de fin de año y dejar una experiencia positiva para los futuros estudiantes que continúen con
-      el emprendimiento.
-    </p>
-  </section>
+    <div class="grid-2" style="margin-top:12px">
+      <article class="card">
+        <h3 class="subhead" style="font-size:22px">Visión</h3>
+        <p class="text">
+          Convertirnos en una empresa escolar modelo, reconocida por la calidad y variedad de nuestros productos de panadería artesanal,
+          así como por el trabajo en equipo, la responsabilidad y el compromiso de cada integrante. Buscamos que OnlyPan sea un proyecto
+          donde aprendamos sobre producción, administración, ventas y valores empresariales, aplicando lo aprendido para lograr un resultado
+          real en la feria de fin de año y dejar una experiencia positiva para los futuros estudiantes que continúen con el emprendimiento.
+        </p>
+      </article>
 
-  <!-- MISIÓN -->
-  <section class="wrap">
-    <h2 class="title">Misión</h2>
-    <p class="prose">
-      Elaborar distintos tipos de panes frescos y de calidad. Trabajamos en equipo para ofrecer productos ricos, variados y
-      elaborados con responsabilidad, higiene y compromiso.
-    </p>
-  </section>
-
-  <!-- CTA CATÁLOGO (en lugar de “destacados”) -->
-  <section class="wrap">
-    <div class="card" style="padding:18px; display:flex; flex-direction:column; gap:10px; align-items:flex-start;">
-      <h3 class="title" style="font-size:22px;margin:0">¿Querés ver el catálogo?</h3>
-      <p class="muted" style="margin:0">Tocá el botón y explorá todos los productos.</p>
-      <a class="btn btn--primary" href="productos.html">Ir a todos los productos</a>
+      <article class="card">
+        <h3 class="subhead" style="font-size:22px">Misión</h3>
+        <p class="text">
+          Elaborar distintos tipos de panes frescos y de calidad. Trabajamos en equipo para ofrecer productos ricos, variados y
+          elaborados con responsabilidad, higiene y compromiso.
+        </p>
+      </article>
     </div>
   </section>
 
-  <!-- CONTACTO -->
-  <section class="wrap">
-    <h2 class="title">Contacto</h2>
-    <p class="muted">Escribinos por el canal que prefieras:</p>
-    <div class="chips">
-      <a class="chip" target="_blank" rel="noopener" href="https://instagram.com/Onlypansrl">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="5" stroke="#8c5e3c"/><circle cx="12" cy="12" r="4.2" stroke="#8c5e3c"/><circle cx="17.3" cy="6.7" r="1.1" fill="#8c5e3c"/></svg>
-        Instagram
-      </a>
-      <a class="chip" target="_blank" rel="noopener" href="https://tiktok.com/@Onlypansrl">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 3v9.5a3.5 3.5 0 1 1-3.5-3.5" stroke="#8c5e3c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 5c1.3 2.4 3.3 3.5 6 3.7" stroke="#8c5e3c" stroke-width="1.6" stroke-linecap="round"/></svg>
-        TikTok
-      </a>
-      <a class="chip" href="mailto:Onlypanoficial@gmail.com">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2" stroke="#8c5e3c"/><path d="M4 7l8 6 8-6" stroke="#8c5e3c"/></svg>
-        Gmail
-      </a>
+  <!-- CONTACTOS -->
+  <section id="contacto" class="container section">
+    <h2 class="subhead">Contactos</h2>
+    <p class="text" style="margin-bottom:14px">Elegí tu canal favorito para pedir o consultarnos:</p>
+    <div class="pills">
+      <a class="pill" href="https://instagram.com/Onlypansrl" target="_blank" rel="noopener">Instagram</a>
+      <a class="pill" href="https://tiktok.com/@Onlypansrl" target="_blank" rel="noopener">TikTok</a>
+      <a class="pill" href="mailto:Onlypanoficial@gmail.com">Gmail</a>
     </div>
   </section>
 
-  <footer>
-    <div class="wrap" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+  <footer class="section">
+    <div class="container">
       <small class="muted">© <span id="y"></span> OnlyPan Store — onlypan.store</small>
-      <a class="muted" href="#home">Volver arriba ↑</a>
     </div>
   </footer>
 
   <script>
-    // Año dinámico
     document.getElementById('y').textContent = new Date().getFullYear();
-
-    // Scroll suave para anclas internas
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click',e=>{
-        const id=a.getAttribute('href').slice(1);
-        const el=document.getElementById(id);
-        if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth',block:'start'}); }
-      });
-    });
-  </script>
-
-  <!-- Datos estructurados básicos -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Bakery",
-    "name": "OnlyPan Store",
-    "url": "https://onlypan.store",
-    "sameAs": ["https://instagram.com/Onlypansrl","https://tiktok.com/@Onlypansrl"],
-    "email": "Onlypanoficial@gmail.com"
-  }
   </script>
 </body>
 </html>
