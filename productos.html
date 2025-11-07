@@ -1,360 +1,387 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OnlyPan Store – Productos</title>
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OnlyPan Store — Todos los productos</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 <style>
-body{
-  margin:0;
-  font-family: Inter, system-ui;
-  background:#f7ebdd;
-  color:#2b2b2b;
-}
+  :root{
+    --bg:#fff8f1; --card:#ffffff; --ink:#2b2b2b; --muted:#6b5b4e; --line:#0002;
+    --primary:#d4a373; --primary-700:#8c5e3c; --danger:#c53b3b; --ok:#2e7d32;
+    --shadow:0 10px 30px #00000010; --shadow2:0 16px 40px #00000018;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui}
+  a{color:inherit;text-decoration:none}
 
-/* Contenedor */
-.wrapper{
-  max-width:1100px;
-  margin:auto;
-  padding:20px;
-}
+  /* NAV */
+  .nav{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rgba(255,248,241,.95),rgba(255,248,241,.7));backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav-inner{max-width:1100px;margin:auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+  .brand{display:flex;gap:10px;align-items:center;font-family:"Playfair Display",serif;font-weight:700}
+  .brand .dot{width:26px;height:26px;border-radius:8px;background:radial-gradient(120px 60px at 50% 30%, #ffe8cf, #d4a373)}
+  .btn{display:inline-flex;align-items:center;gap:8px;border-radius:12px;border:1px solid var(--line);background:var(--primary);color:#fff;font-weight:700;padding:10px 14px;box-shadow:0 6px 18px #d4a37355;cursor:pointer}
+  .btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px #d4a37366}
+  .btn-ghost{background:#fff;color:var(--ink)}
 
-/* Header */
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
-}
+  /* CONTENT */
+  .wrap{max-width:1100px;margin:auto;padding:22px 18px}
+  .back{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);padding:10px 14px;border-radius:12px;font-weight:600}
+  h1{font-family:"Playfair Display",serif;font-size:clamp(26px,5.5vw,42px);margin:12px 0 6px}
+  .muted{color:var(--muted)}
+  .toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:14px}
+  .search{flex:1;min-width:220px;max-width:420px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:#fff}
 
-header h1{
-  font-size:26px;
-  font-weight:700;
-}
+  /* GRID CATÁLOGO */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-top:18px}
+  .card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);transform:translateY(6px);opacity:0;transition:.35s}
+  .card.reveal{transform:translateY(0);opacity:1}
+  .card:hover{box-shadow:var(--shadow2)}
+  .imgbox{width:100%;aspect-ratio:4/3;background:#f4eadf;position:relative}
+  .imgbox img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:.3s}
+  .imgbox img.loaded{opacity:1}
+  .content{padding:14px}
+  .title{margin:0 0 6px;font-weight:700;font-size:1.05rem}
+  .desc{margin:0;color:#6b5b4e}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .chip{padding:6px 10px;font-size:.78rem;background:#0001;border:1px dashed #0002;border-radius:999px}
+  .empty{text-align:center;padding:38px;border:1px dashed var(--line);border-radius:14px;background:#fff6eb;color:#6b5b4e;margin-top:18px;display:none}
 
-.btn{
-  background:#d4a06e;
-  color:white;
-  padding:8px 20px;
-  border-radius:10px;
-  border:none;
-  cursor:pointer;
-  font-size:15px;
-}
-.btn:hover{opacity:.85}
+  /* DRAWER ADMIN */
+  .drawer{
+    position:fixed; inset:0 auto 0 0; width:min(420px,90vw);
+    background:#fff; border-right:1px solid var(--line);
+    box-shadow:10px 0 30px #00000018; transform:translateX(-100%);
+    transition:transform .35s cubic-bezier(.2,.8,.2,1); z-index:120;
+    display:flex; flex-direction:column;
+  }
+  .drawer.open{ transform:translateX(0); }
+  .drawer header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line)}
+  .drawer h3{margin:0;font-size:1.05rem}
+  .drawer .inner{padding:12px 14px 16px;display:grid;gap:12px;overflow:auto}
+  .input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line)}
+  .list{display:grid;gap:8px;max-height:38vh;overflow:auto;border:1px dashed var(--line);border-radius:12px;background:#fff8}
+  .row{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid #00000010}
+  .row:last-child{border-bottom:none}
+  .tags{font-size:.8rem;color:#6b5b4e}
+  .actions{display:flex;gap:6px}
+  .icon{border:1px solid var(--line);background:#fff;border-radius:10px;padding:6px 8px;cursor:pointer}
+  .icon.danger{background:var(--danger);color:#fff;border-color:#b33030}
+  .save{background:var(--ok);color:#fff;border:1px solid #1b5e20}
+  .line{height:1px;background:var(--line);margin:6px 0}
+  .small{font-size:.86rem;color:#6b5b4e}
 
-/* Input */
-.input{
-  width:100%;
-  padding:10px;
-  border:2px solid #d4a06e;
-  border-radius:8px;
-  margin-top:5px;
-  font-size:16px;
-}
+  /* MODAL LOGIN */
+  .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.28);backdrop-filter:blur(2px);z-index:150}
+  .modal.open{display:flex}
+  .sheet{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow2);padding:16px; width:min(520px,92vw)}
+  .sheet header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .btn-danger{background:var(--danger);color:#fff;border:1px solid #b33030}
 
-.grid{
-  margin-top:20px;
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-  gap:20px;
-}
-
-.card{
-  background:white;
-  border-radius:12px;
-  padding:15px;
-  position:relative;
-  box-shadow:0 5px 15px #0001;
-}
-
-.card img{
-  width:100%;
-  border-radius:10px;
-  margin-bottom:10px;
-}
-
-.card h3{
-  margin:0 0 5px 0;
-  font-size:18px;
-}
-
-.card p{
-  margin:0;
-  opacity:.85;
-}
-
-/* Botones admin sobre la tarjeta */
-.row-actions{
-  position:absolute;
-  top:10px;
-  right:10px;
-  display:flex;
-  gap:7px;
-}
-
-.iconbtn{
-  background:white;
-  border:1px solid #0003;
-  padding:5px 7px;
-  border-radius:6px;
-  cursor:pointer;
-  font-size:16px;
-}
-.iconbtn:hover{background:#eee}
-.iconbtn.danger{border-color:#c44;color:#c44}
-
-/* MODAL */
-.modal{
-  position:fixed; inset:0;
-  display:none;              /* Oculto de fábrica */
-  align-items:center;
-  justify-content:center;
-  background:rgba(0,0,0,.28);
-  backdrop-filter:blur(3px);
-  z-index:2000;
-}
-.modal.open{ display:flex; }
-
-.sheet{
-  background:white;
-  border-radius:15px;
-  padding:20px;
-  width:min(600px,92vw);
-  box-shadow:0 5px 20px #0003;
-}
-
-.sheet header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:15px;
-}
-
-.sheet h3{margin:0;}
-
-/* Mobile */
-@media(max-width:600px){
-  header h1{font-size:22px;}
-  .grid{grid-template-columns:1fr;}
-}
+  /* MOBILE */
+  @media (max-width:640px){
+    .grid{grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+    .nav-inner{padding:12px 14px}
+    .btn,.btn-ghost,.icon{min-height:44px}
+    .drawer{width:100vw}
+  }
 </style>
-
 </head>
 <body>
-
-<div class="wrapper">
-
-<header>
-  <button onclick="location.href='index.html'" class="btn">← Volver</button>
-  <h1>Todos los productos</h1>
-  <button id="adminToggle" class="btn">Admin</button>
-</header>
-
-<p>Catálogo completo. Para editar necesitás acceso Admin.</p>
-
-<input id="search" class="input" placeholder="Buscar…">
-
-<div id="grid" class="grid"></div>
-
-</div>
-
-<!-- ✅ MODAL LOGIN -->
-<div class="modal" id="loginModal">
-  <div class="sheet">
-    <header>
-      <h3>Iniciar sesión (Admin)</h3>
-      <button id="closeLogin" class="iconbtn">✕</button>
-    </header>
-
-    <label>Email</label>
-    <input id="auth_email" class="input" type="email" placeholder="tuemail@dominio.com">
-
-    <label style="margin-top:10px;">Contraseña</label>
-    <input id="auth_password" class="input" type="password" placeholder="********">
-
-    <button id="loginBtn" class="btn" style="margin-top:15px;width:100%;">Entrar</button>
-  </div>
-</div>
-
-<!-- ✅ MODAL EDITOR -->
-<div class="modal" id="editModal">
-  <div class="sheet">
-    <header>
-      <h3>Editar Producto</h3>
-      <button id="closeEdit" class="iconbtn">✕</button>
-    </header>
-
-    <label>Título</label>
-    <input id="edit_titulo" class="input">
-
-    <label style="margin-top:10px;">Imagen (URL)</label>
-    <input id="edit_img" class="input">
-
-    <label style="margin-top:10px;">Descripción</label>
-    <input id="edit_desc" class="input">
-
-    <label style="margin-top:10px;">Tags (separados por coma)</label>
-    <input id="edit_tags" class="input">
-
-    <button id="saveEdit" class="btn" style="margin-top:15px;width:100%;">Guardar cambios</button>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-// ✅ CONFIGURÁ ESTO CON TU SUPABASE
-const SUPABASE_URL = "https://dlmgvrejatqhjhxoejdm.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsbWd2cmVqYXRxaGpoeG9lamRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzM4MTcsImV4cCI6MjA3ODA0OTgxN30.5WfDT6qUBfXvvon-io4g-JntQ_EnptAUFyeue1v8tBc";
-
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-let session = null;
-let EDITING_ID = null;
-
-const grid = document.getElementById("grid");
-const search = document.getElementById("search");
-
-const loginModal = document.getElementById("loginModal");
-const editModal = document.getElementById("editModal");
-
-const adminToggle = document.getElementById("adminToggle");
-
-// ✅ FUNCIONES MODAL
-function openLogin(){
-  loginModal.style.display="flex";
-  loginModal.classList.add("open");
-}
-function closeLogin(){
-  loginModal.classList.remove("open");
-  loginModal.style.display="none";
-}
-
-function openEdit(){
-  editModal.style.display="flex";
-  editModal.classList.add("open");
-}
-function closeEdit(){
-  editModal.classList.remove("open");
-  editModal.style.display="none";
-  EDITING_ID = null;
-}
-
-// ✅ EVENTOS BOTONES MODAL
-document.getElementById("closeLogin").onclick = closeLogin;
-document.getElementById("closeEdit").onclick = closeEdit;
-
-document.getElementById("adminToggle").onclick = async ()=>{
-  if(session){
-    await sb.auth.signOut();
-    session = null;
-    adminToggle.textContent = "Admin";
-    loadProducts();
-  } else {
-    openLogin();
-  }
-};
-
-// ✅ LOGIN
-document.getElementById("loginBtn").onclick = async ()=>{
-  const email = document.getElementById("auth_email").value;
-  const pass  = document.getElementById("auth_password").value;
-
-  const { data, error } = await sb.auth.signInWithPassword({
-    email, password: pass
-  });
-
-  if(error){ alert("Credenciales incorrectas"); return; }
-
-  session = data.session;
-  adminToggle.textContent = "Cerrar sesión (Admin)";
-  closeLogin();
-  loadProducts();
-};
-
-// ✅ CARGAR PRODUCTOS
-async function loadProducts(){
-  const { data } = await sb.from("productos").select("*").order("created_at", { ascending:false });
-
-  render(data);
-}
-
-// ✅ RENDER
-function render(list){
-  let filtro = search.value.toLowerCase();
-
-  const filtrados = list.filter(p =>
-    p.titulo.toLowerCase().includes(filtro) ||
-    p.desc.toLowerCase().includes(filtro)
-  );
-
-  grid.innerHTML = filtrados.map(p=>`
-    <div class="card">
-      ${session ? `
-        <div class="row-actions">
-          <button class="iconbtn" onclick="editProduct('${p.id}')">✏️</button>
-          <button class="iconbtn danger" onclick="deleteProduct('${p.id}')">🗑️</button>
-        </div>
-      ` : ""}
-
-      <img src="${p.img}">
-      <h3>${p.titulo}</h3>
-      <p>${p.desc}</p>
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html"><span class="dot"></span>OnlyPan Store</a>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button id="adminToggle" class="btn-ghost btn" type="button">Admin</button>
+        <a class="btn" href="https://instagram.com/Onlypansrl" target="_blank" rel="noopener">Hacer pedido ↗</a>
+      </div>
     </div>
-  `).join("");
-}
+  </nav>
 
-search.oninput = loadProducts;
+  <!-- CONTENT -->
+  <div class="wrap">
+    <a class="back" href="index.html">← Volver al inicio</a>
+    <h1>Todos los productos</h1>
+    <p class="muted">Catálogo completo. Para editar usá el panel <strong>Admin</strong>.</p>
 
-// ✅ EDITAR PRODUCTO
-async function editProduct(id){
-  EDITING_ID = id;
+    <div class="toolbar">
+      <input id="q" class="search" type="search" placeholder="Buscar productos, descripciones o tags…">
+    </div>
 
-  const { data } = await sb.from("productos").select("*").eq("id", id).single();
+    <div id="grid" class="grid"></div>
+    <div id="empty" class="empty">Sin resultados.</div>
+  </div>
 
-  document.getElementById("edit_titulo").value = data.titulo;
-  document.getElementById("edit_img").value    = data.img;
-  document.getElementById("edit_desc").value   = data.desc;
-  document.getElementById("edit_tags").value   = data.tags.join(",");
+  <!-- DRAWER ADMIN -->
+  <aside id="drawer" class="drawer" aria-hidden="true">
+    <header>
+      <h3>Panel Admin</h3>
+      <div class="actions">
+        <button id="drawerClose" class="icon" title="Cerrar">✕</button>
+      </div>
+    </header>
 
-  openEdit();
-}
+    <div class="inner">
+      <div class="small" id="adminInfo">No autenticado</div>
 
-// ✅ GUARDAR EDICIÓN
-document.getElementById("saveEdit").onclick = async ()=>{
-  if(!EDITING_ID) return;
+      <div class="line"></div>
+      <div style="display:grid;gap:8px">
+        <strong>Crear / Editar</strong>
+        <input id="f_titulo" class="input" placeholder="Título">
+        <input id="f_img" class="input" placeholder="Imagen (URL)">
+        <textarea id="f_desc" class="input" rows="3" placeholder="Descripción"></textarea>
+        <input id="f_tags" class="input" placeholder="Etiquetas (coma)">
+        <div class="actions" style="justify-content:flex-end">
+          <button id="deleteBtn" class="icon btn-danger" style="display:none">🗑️ Eliminar</button>
+          <button id="saveBtn" class="icon save">💾 Guardar</button>
+        </div>
+      </div>
 
-  const nuevo = {
-    titulo: document.getElementById("edit_titulo").value,
-    img: document.getElementById("edit_img").value,
-    desc: document.getElementById("edit_desc").value,
-    tags: document.getElementById("edit_tags").value.split(",").map(t=>t.trim())
-  };
+      <div class="line"></div>
+      <div style="display:grid;gap:8px">
+        <strong>Productos</strong>
+        <input id="adm_filter" class="input" placeholder="Buscar en admin…">
+        <div id="adm_list" class="list"></div>
+      </div>
 
-  await sb.from("productos").update(nuevo).eq("id", EDITING_ID);
+      <div class="line"></div>
+      <div class="actions" style="justify-content:space-between">
+        <button id="newBtn" class="icon">＋ Nuevo</button>
+        <button id="logoutBtn" class="icon">Cerrar sesión</button>
+      </div>
+    </div>
+  </aside>
 
-  closeEdit();
-  loadProducts();
-};
+  <!-- MODAL LOGIN -->
+  <div class="modal" id="loginModal">
+    <div class="sheet" role="dialog" aria-modal="true">
+      <header>
+        <h3>Iniciar sesión (Admin)</h3>
+        <button id="closeLogin" class="icon">✕</button>
+      </header>
+      <div style="display:grid;gap:10px">
+        <label>Email</label>
+        <input id="auth_email" class="input" type="email" placeholder="tuemail@dominio.com">
+        <label>Contraseña</label>
+        <input id="auth_password" class="input" type="password" placeholder="********">
+        <button id="loginBtn" class="btn" style="width:100%">Entrar</button>
+        <small class="muted">Tus credenciales no quedan en el HTML; se envían a Supabase.</small>
+      </div>
+    </div>
+  </div>
 
-// ✅ ELIMINAR PRODUCTO
-async function deleteProduct(id){
-  if(!confirm("¿Eliminar producto?")) return;
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script>
+    /* ====== CONFIG ====== */
+    const SUPABASE_URL = "https://dlmgvrejatqhjhxoejdm.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsbWd2cmVqYXRxaGpoeG9lamRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzM4MTcsImV4cCI6MjA3ODA0OTgxN30.5WfDT6qUBfXvvon-io4g-JntQ_EnptAUFyeue1v8tBc";
+    const TABLE = "productos";
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  await sb.from("productos").delete().eq("id", id);
-  loadProducts();
-}
+    /* ====== STATE/ELEMENTS ====== */
+    let CATALOGO = [];
+    let session = null;
+    let editingId = null;
 
-// ✅ SESIÓN ACTUAL
-sb.auth.getSession().then(({ data })=>{
-  session = data.session;
-  if(session) adminToggle.textContent = "Cerrar sesión (Admin)";
-  loadProducts();
-});
+    const grid = document.getElementById('grid');
+    const empty = document.getElementById('empty');
+    const q = document.getElementById('q');
 
-</script>
+    const drawer = document.getElementById('drawer');
+    const drawerClose = document.getElementById('drawerClose');
+    const adminToggle = document.getElementById('adminToggle');
+    const adminInfo = document.getElementById('adminInfo');
 
+    const f_titulo = document.getElementById('f_titulo');
+    const f_img = document.getElementById('f_img');
+    const f_desc = document.getElementById('f_desc');
+    const f_tags = document.getElementById('f_tags');
+    const saveBtn = document.getElementById('saveBtn');
+    const deleteBtn = document.getElementById('deleteBtn');
+    const newBtn = document.getElementById('newBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    const adm_filter = document.getElementById('adm_filter');
+    const adm_list = document.getElementById('adm_list');
+
+    const loginModal = document.getElementById('loginModal');
+    const closeLogin = document.getElementById('closeLogin');
+    const auth_email = document.getElementById('auth_email');
+    const auth_password = document.getElementById('auth_password');
+    const loginBtn = document.getElementById('loginBtn');
+
+    /* ====== UI HELPERS ====== */
+    function openDrawer(){ drawer.classList.add('open'); drawer.setAttribute('aria-hidden','false'); }
+    function closeDrawer(){ drawer.classList.remove('open'); drawer.setAttribute('aria-hidden','true'); }
+    drawerClose.onclick = closeDrawer;
+
+    function openLogin(){ loginModal.classList.add('open'); }
+    function closeLoginFn(){ loginModal.classList.remove('open'); auth_email.value=''; auth_password.value=''; }
+    closeLogin.onclick = closeLoginFn;
+
+    function clearForm(){ editingId=null; f_titulo.value=''; f_img.value=''; f_desc.value=''; f_tags.value=''; deleteBtn.style.display='none'; }
+
+    /* ====== RENDER CATÁLOGO ====== */
+    function cardHTML(p){
+      const chips = (p.tags||[]).map(t=>`<span class="chip">${t}</span>`).join('');
+      return `
+        <article class="card">
+          <div class="imgbox">
+            <img loading="lazy" src="${p.img}" alt="${p.titulo}" onload="this.classList.add('loaded')">
+          </div>
+          <div class="content">
+            <h3 class="title">${p.titulo}</h3>
+            <p class="desc">${p.desc||''}</p>
+            <div class="chips">${chips}</div>
+          </div>
+        </article>`;
+    }
+
+    function render(list){
+      const term = (q.value||'').toLowerCase();
+      const data = term ? list.filter(p =>
+        (p.titulo||'').toLowerCase().includes(term) ||
+        (p.desc||'').toLowerCase().includes(term) ||
+        (p.tags||[]).some(t => (t||'').toLowerCase().includes(term))
+      ) : list;
+
+      grid.innerHTML = data.map(cardHTML).join('');
+      grid.querySelectorAll('.card').forEach(el=>el.classList.add('reveal'));
+      empty.style.display = data.length ? 'none' : 'block';
+    }
+
+    /* ====== RENDER LISTA ADMIN ====== */
+    function renderAdminList(){
+      const term = (adm_filter.value||'').toLowerCase();
+      const data = term ? CATALOGO.filter(p =>
+        (p.titulo||'').toLowerCase().includes(term) ||
+        (p.desc||'').toLowerCase().includes(term) ||
+        (p.tags||[]).some(t => (t||'').toLowerCase().includes(term))
+      ) : CATALOGO;
+
+      adm_list.innerHTML = data.map(p => `
+        <div class="row">
+          <div style="min-width:0">
+            <div style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.titulo}</div>
+            <div class="tags">${(p.tags||[]).join(', ')}</div>
+          </div>
+          <div class="actions">
+            <button class="icon" data-edit="${p.id}" title="Editar">✏️</button>
+            <button class="icon danger" data-del="${p.id}" title="Eliminar">🗑️</button>
+          </div>
+        </div>
+      `).join('');
+
+      adm_list.querySelectorAll('[data-edit]').forEach(b=> b.onclick = () => loadToForm(b.dataset.edit));
+      adm_list.querySelectorAll('[data-del]').forEach(b=> b.onclick = () => delProduct(b.dataset.del));
+    }
+
+    /* ====== CRUD ====== */
+    async function loadCatalog(){
+      const { data, error } = await sb.from(TABLE).select('*').order('created_at',{ascending:false});
+      if(error){ console.error(error); alert('Error cargando productos'); return; }
+      CATALOGO = (data||[]).map(r=>({
+        id:r.id, titulo:r.titulo, img:r.img, desc:r.desc,
+        tags: Array.isArray(r.tags) ? r.tags : (r.tags ? String(r.tags).split(',').map(s=>s.trim()) : [])
+      }));
+      render(CATALOGO);
+      renderAdminList();
+    }
+
+    function loadToForm(id){
+      const p = CATALOGO.find(x=>String(x.id)===String(id));
+      if(!p) return;
+      editingId = p.id;
+      f_titulo.value = p.titulo||'';
+      f_img.value = p.img||'';
+      f_desc.value = p.desc||'';
+      f_tags.value = (p.tags||[]).join(', ');
+      deleteBtn.style.display = 'inline-flex';
+    }
+
+    async function upsertProduct(obj){
+      const payload = { id: obj.id || undefined, titulo: obj.titulo, img: obj.img, desc: obj.desc || null, tags: obj.tags || [] };
+      const { error } = await sb.from(TABLE).upsert(payload);
+      if(error){ console.error(error); alert('Error guardando: '+error.message); return false; }
+      return true;
+    }
+
+    async function delProduct(id){
+      if(!session) return alert('No autorizado');
+      if(!confirm('¿Eliminar este producto?')) return;
+      const { error } = await sb.from(TABLE).delete().eq('id',id);
+      if(error){ console.error(error); alert('Error eliminando: '+error.message); return; }
+      clearForm();
+      await loadCatalog();
+    }
+
+    /* ====== EVENTS ====== */
+    q.oninput = ()=>render(CATALOGO);
+    adm_filter.oninput = renderAdminList;
+
+    adminToggle.onclick = async ()=>{
+      if(session){ // si ya está logueado, abrir panel
+        adminInfo.textContent = `Conectado como: ${session.user.email}`;
+        openDrawer();
+      }else{
+        openLogin();
+      }
+    };
+
+    loginBtn.onclick = async ()=>{
+      const email = auth_email.value.trim();
+      const pass  = auth_password.value;
+      if(!email || !pass) return alert('Completá email y contraseña');
+      const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+      if(error){ alert('Login inválido'); return; }
+      session = data.session;
+      adminInfo.textContent = `Conectado como: ${session.user.email}`;
+      closeLoginFn();
+      openDrawer();
+    };
+    auth_password.addEventListener('keydown', e=>{ if(e.key==='Enter') loginBtn.click(); });
+
+    logoutBtn.onclick = async ()=>{
+      await sb.auth.signOut();
+      session = null;
+      closeDrawer();
+    };
+
+    newBtn.onclick = clearForm;
+
+    saveBtn.onclick = async ()=>{
+      if(!session) return alert('Necesitás iniciar sesión');
+      const data = {
+        id: editingId || undefined,
+        titulo: f_titulo.value.trim(),
+        img:    f_img.value.trim(),
+        desc:   f_desc.value.trim(),
+        tags:   f_tags.value.split(',').map(s=>s.trim()).filter(Boolean)
+      };
+      if(!data.titulo) return alert('Título obligatorio');
+      if(!data.img)    return alert('Imagen (URL) obligatoria');
+      const ok = await upsertProduct(data);
+      if(ok){ await loadCatalog(); clearForm(); }
+    };
+
+    /* ====== AUTH STATE & REALTIME ====== */
+    sb.auth.getSession().then(({ data })=>{
+      session = data.session;
+      if(session) adminInfo.textContent = `Conectado como: ${session.user.email}`;
+    });
+    sb.auth.onAuthStateChange((_e,s)=>{ session=s; if(s) adminInfo.textContent = `Conectado como: ${s.user.email}`; });
+
+    try{
+      sb.channel('realtime:public:productos')
+        .on('postgres_changes',{event:'*',schema:'public',table:TABLE}, loadCatalog)
+        .subscribe();
+    }catch(_){}
+
+    /* ====== INIT ====== */
+    document.addEventListener('DOMContentLoaded', ()=>{ loginModal.classList.remove('open'); });
+    loadCatalog();
+  </script>
 </body>
 </html>
+
