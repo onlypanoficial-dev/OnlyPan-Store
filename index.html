@@ -1,251 +1,175 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OnlyPan Store — Panes artesanales</title>
-  <meta name="description" content="OnlyPan Store: panes artesanales frescos. Mirá el catálogo y pedí por Instagram." />
-
+  <title>OnlyPan Store — Inicio</title>
+  <meta name="description" content="OnlyPan Store — panes artesanales de alumnos del Juan Bautista Alberdi."/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#fff8f1;            /* crema */
-      --card:#ffffff;
-      --ink:#2b2b2b;           /* gris oscuro */
-      --muted:#4b3e36;
-      --primary:#d4a373;       /* caramelo */
-      --primary-700:#8c5e3c;   /* tostado */
-      --ring:#00000014;
-      --shadow:0 10px 30px #00000010;
-      --radius:18px;
+      --bg:#fff8f1;        /* crema */
+      --paper:#fff;        /* tarjetas */
+      --text:#2b2b2b;      /* gris oscuro */
+      --muted:#6b5b51;     /* texto secundario */
+      --brand:#d4a373;     /* caramelo */
+      --brand-700:#8c5e3c; /* tostado */
+      --ring:#00000010;    /* sombra sutil */
+      --chip:#0000000f;
+      --br:18px;
     }
-
-    /* Reset y base */
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink)}
-    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
     a{color:inherit;text-decoration:none}
     img{max-width:100%;display:block}
 
-    /* Loader */
-    #loader{
-      position:fixed;inset:0;display:grid;place-items:center;
-      background:#0f0f0f; z-index:9999;
-    }
-    #loader .box{display:grid;gap:18px;place-items:center}
-    #loader .logo{
-      width:120px;height:120px;border-radius:999px;display:grid;place-items:center;
-      background:radial-gradient(120px 60px at 50% 30%, #2c2c2c, #111);
-      overflow:hidden;border:1px solid #ffffff10
-    }
-    #loader .logo img{width:86px;height:auto;filter:invert(0) brightness(2)}
-    #loader .spinner{
-      width:28px;height:28px;border-radius:50%;
-      border:3px solid #ffffff20;border-top-color:#fff;
-      animation:spin .9s linear infinite
-    }
-    @keyframes spin{to{transform:rotate(360deg)}}
+    /* Header */
+    .nav{position:sticky;top:0;z-index:50;background:rgba(255,248,241,.85);backdrop-filter:saturate(1.15) blur(8px);border-bottom:1px solid #0001}
+    .nav-inner{max-width:1100px;margin:0 auto;padding:14px 16px 10px}
+    .brand{display:flex;align-items:center;gap:10px}
+    .brand img{width:34px;height:34px;border-radius:50%;box-shadow:0 2px 8px var(--ring)}
+    .brand-name{font-family:"Playfair Display",serif;font-weight:800;font-size:1.15rem;letter-spacing:.2px}
 
-    /* Top bar */
-    .top{
-      position:sticky;top:0;z-index:50;
-      backdrop-filter:saturate(1.2) blur(8px);
-      background:linear-gradient(180deg, rgba(255,248,241,.95), rgba(255,248,241,.70));
-      border-bottom:1px solid #0001;
+    /* Tabs centradas */
+    .tabs{margin-top:10px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    .tab{
+      background:var(--paper); border:1px solid #0002; border-radius:14px; padding:10px 16px;
+      font-weight:700; box-shadow:0 6px 18px var(--ring);
     }
-    .top-inner{
-      max-width:1100px;margin:0 auto;padding:12px 18px;
-      display:grid;grid-template-columns:1fr;gap:10px;
-      justify-items:center;align-items:center
-    }
-    .brand{
-      display:flex;align-items:center;gap:10px
-    }
-    .brand img{
-      width:38px;height:38px;border-radius:10px;object-fit:contain;
-      background:#fff;border:1px solid #0001;padding:6px
-    }
-    .brand span{
-      font-family:"Playfair Display",serif;font-weight:700;font-size:1.3rem;letter-spacing:.3px
-    }
+    .tab:hover{transform:translateY(-1px)}
+    .tab.primary{background:var(--brand);color:#fff;border-color:transparent}
 
-    /* Nav pills centradas */
-    .nav{
-      display:flex;gap:10px;flex-wrap:wrap;justify-content:center
+    /* Hero en 2 columnas (se apila en mobile) */
+    .wrapper{max-width:1100px;margin:0 auto;padding:24px 16px 64px}
+    .hero{
+      display:grid; gap:18px; grid-template-columns:1.15fr .85fr; align-items:start;
     }
-    .pill{
-      background:#fff;border:1px solid #00000014;border-radius:14px;
-      padding:10px 14px;font-weight:700;box-shadow:0 6px 16px #00000008
-    }
-    .pill:hover{transform:translateY(-1px);box-shadow:0 10px 20px #00000012}
-    .pill.primary{background:var(--primary);color:#fff;border-color:#0000}
+    .headline{font-family:"Playfair Display",serif;font-size:clamp(28px,5.2vw,52px);line-height:1.05;margin:.2rem 0 .4rem}
+    .lead{color:var(--muted);margin:0 0 .8rem}
 
-    /* Hero */
-    .hero{max-width:1100px;margin:0 auto;padding:28px 18px 10px}
-    .hero-inner{
-      display:grid;gap:18px;
-      grid-template-columns:1fr auto; /* texto + imagen al costado */
-      align-items:center
-    }
-    .headline{
-      font-family:"Playfair Display",serif;
-      font-size:clamp(28px,6.2vw,48px);line-height:1.05;margin:0 0 8px
-    }
-    .sub{color:var(--muted);margin:0 0 10px}
-    .cta-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    .cta-col{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
     .btn{
-      display:inline-flex;align-items:center;justify-content:center;gap:8px;
-      background:var(--primary);color:#fff;border:1px solid #0000;
-      padding:14px 16px;border-radius:14px;font-weight:800;
-      box-shadow:0 10px 24px #d4a37366
+      display:inline-flex;align-items:center;gap:10px;padding:14px 18px;border-radius:14px;
+      border:1px solid #0002;background:var(--paper);font-weight:800;box-shadow:0 10px 24px var(--ring)
     }
-    .btn:hover{transform:translateY(-1px);box-shadow:0 14px 28px #d4a3736e}
-    .btn.ghost{
-      background:#fff;color:var(--ink);border:1px solid #0002;box-shadow:0 6px 14px #0000000a
-    }
+    .btn.primary{background:var(--brand);color:#fff;border-color:transparent}
+    .btn:hover{transform:translateY(-1px)}
 
-    /* Tarjeta imagen al costado (chica) */
-    .hero-card{
-      width:min(270px,40vw);
-      background:var(--card);border:1px solid #0001;border-radius:16px;
-      padding:10px;box-shadow:var(--shadow)
+    .card{
+      background:var(--paper);border:1px solid #0001;border-radius:18px;box-shadow:0 10px 30px var(--ring);overflow:hidden
     }
-    .hero-card img{
-      width:100%;height:190px;object-fit:cover;border-radius:12px;background:#f4eadf
-    }
-    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-    .chip{font-size:.78rem;background:#00000008;border:1px dashed #0000001a;border-radius:999px;padding:6px 10px}
+    .card-body{padding:12px 14px 16px}
+    .title-sm{font-weight:800;margin:0 0 8px}
+    .chips{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{font-size:.8rem;background:var(--chip);border:1px dashed #00000022;border-radius:999px;padding:6px 10px}
 
-    /* Secciones */
-    section{max-width:1100px;margin:0 auto;padding:8px 18px 40px}
-    .section-title{
-      font-family:"Playfair Display",serif;font-size:clamp(22px,5.2vw,34px);margin:0 0 10px
-    }
+    section{margin-top:28px}
+    .section-title{font-family:"Playfair Display",serif;font-size:clamp(22px,4.4vw,36px);margin:0 0 8px}
     .muted{color:var(--muted)}
 
-    /* Footer simple */
-    footer{border-top:1px solid #0001;background:linear-gradient(180deg,#fff3e3,var(--bg));padding:22px 18px}
+    .footer{
+      margin-top:48px;padding:28px 16px;background:linear-gradient(180deg,#fff3e3,var(--bg));border-top:1px solid #0001
+    }
     .socials{display:flex;gap:10px;flex-wrap:wrap}
-    .sm-pill{background:#fff;border:1px solid #0002;border-radius:999px;padding:9px 14px;font-weight:700}
+    .pill{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;background:#fff;border:1px solid #0002;border-radius:999px;font-weight:700}
 
-    /* Responsive */
-    @media (max-width:560px){
-      .top-inner{grid-template-columns:1fr}
-      .brand span{font-size:1.2rem}
-      .hero-inner{
-        grid-template-columns:1fr auto;
-      }
-      .hero-card{width:44vw;min-width:210px}
-      .hero-card img{height:165px}
-      .btn{padding:12px 14px}
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr}
+      .cta-col{order:2}
     }
   </style>
 </head>
 <body>
 
-  <!-- Loader -->
-  <div id="loader" aria-hidden="true">
-    <div class="box">
-      <div class="logo">
-        <!-- Cambiá la ruta si tu logo está en otro lugar -->
-        <img src="assets/onlypan-logo.png" alt="OnlyPan" />
+  <!-- HEADER -->
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <!-- LOGO: podés reemplazar src por tu archivo /logo.png -->
+        <img src="https://raw.githubusercontent.com/hampusborgos/country-flags/main/png250px/ar.png" alt="" style="opacity:.001;position:absolute;left:-9999px"> 
+        <img src="https://i.imgur.com/0C2ZJ1R.png" alt="OnlyPan logo" onerror="this.src='https://i.imgur.com/GJkQO1Z.png'">
+        <div class="brand-name">OnlyPan Store</div>
       </div>
-      <div class="spinner" role="progressbar" aria-label="Cargando"></div>
-    </div>
-  </div>
-
-  <!-- TOP -->
-  <header class="top">
-    <div class="top-inner">
-      <a class="brand" href="#home" aria-label="Ir al inicio">
-        <img src="assets/onlypan-logo.png" alt="OnlyPan logo" />
-        <span>OnlyPan Store</span>
-      </a>
-
-      <!-- Botones de categorías centrados -->
-      <nav class="nav" aria-label="Categorías">
-        <a class="pill" href="productos.html">Productos</a>
-        <a class="pill" href="#nosotros">Nosotros</a>
-        <a class="pill primary" href="https://instagram.com/Onlypansrl" target="_blank" rel="noopener">Instagram ↗</a>
+      <nav class="tabs" aria-label="Secciones">
+        <a class="tab" href="index.html">Inicio</a>
+        <a class="tab" href="nosotros.html">Nosotros</a>
+        <a class="tab" href="productos.html">Productos</a>
+        <a class="tab primary" href="informacion.html">Información</a>
       </nav>
     </div>
   </header>
 
-  <!-- HERO -->
-  <main id="home" class="hero">
-    <div class="hero-inner">
-      <div>
+  <main class="wrapper">
+    <section class="hero">
+      <div class="cta-col">
         <h1 class="headline">Panes artesanales, recién horneados.</h1>
-        <p class="sub">Elegí tus favoritos y escribinos por Instagram. ¡Así de simple!</p>
-        <div class="cta-row">
-          <a class="btn" href="productos.html">Ver catálogo completo</a>
-          <a class="btn ghost" href="https://instagram.com/Onlypansrl" target="_blank" rel="noopener">Pedir por Instagram</a>
-        </div>
+        <p class="lead">Elegí tus favoritos y escribinos por Instagram. ¡Así de simple!</p>
+
+        <a class="btn primary" href="productos.html">Ver catálogo completo</a>
+        <a class="btn" href="https://instagram.com/Onlypansrl" target="_blank" rel="noopener">Pedir por Instagram</a>
       </div>
 
-      <!-- Imagen pequeña al costado -->
-      <aside class="hero-card" aria-label="Foto de pan">
-        <img src="https://images.unsplash.com/photo-1549931296-3c132f3fc650?q=80&w=1200&auto=format&fit=crop" alt="Baguette artesanal" />
-        <div class="chips">
-          <span class="chip">Masa madre</span>
-          <span class="chip">Horneado diario</span>
-          <span class="chip">Ingredientes seleccionados</span>
+      <!-- Tarjeta chica a la derecha (no gigante y sin tapar) -->
+      <article class="card">
+        <img
+          src="https://images.unsplash.com/photo-1549931296-3c132f3fc650?q=80&w=1200&auto=format&fit=crop"
+          alt="Baguette artesanal" style="width:100%;height:210px;object-fit:cover">
+        <div class="card-body">
+          <h3 class="title-sm">Baguette artesanal</h3>
+          <div class="chips">
+            <span class="chip">Masa madre</span>
+            <span class="chip">Horneado diario</span>
+            <span class="chip">Ingredientes seleccionados</span>
+          </div>
         </div>
-      </aside>
-    </div>
+      </article>
+    </section>
+
+    <!-- NOSOTROS (resumen) -->
+    <section id="nosotros">
+      <h2 class="section-title">Nosotros</h2>
+      <p class="muted">
+        OnlyPan Store nació en <strong>2025</strong>, creado por alumnos del <strong>Juan Bautista Alberdi</strong>.
+        Elaboramos panes con procesos cuidados, ingredientes reales y fermentaciones largas.
+      </p>
+    </section>
+
+    <!-- VISIÓN & MISIÓN -->
+    <section>
+      <h2 class="section-title">Visión</h2>
+      <p class="muted">
+        Convertirnos en una empresa escolar modelo, reconocida por la calidad y variedad de nuestros productos de
+        panadería artesanal, así como por el trabajo en equipo, la responsabilidad y el compromiso de cada integrante.
+        Buscamos que OnlyPan sea un proyecto donde aprendamos sobre producción, administración, ventas y valores empresariales,
+        aplicando lo aprendido para lograr un resultado real en la feria de fin de año y dejar una experiencia positiva
+        para los futuros estudiantes que continúen con el emprendimiento.
+      </p>
+      <h2 class="section-title" style="margin-top:14px">Misión</h2>
+      <p class="muted">
+        Elaborar distintos tipos de panes frescos y de calidad. Trabajamos en equipo para ofrecer productos ricos,
+        variados y elaborados con responsabilidad, higiene y compromiso.
+      </p>
+    </section>
   </main>
 
-  <!-- NOSOTROS -->
-  <section id="nosotros">
-    <h2 class="section-title">Nosotros</h2>
-    <p class="muted">
-      OnlyPan Store nació en <strong>2025</strong>, creado por alumnos del <strong>Juan Bautista Alberdi</strong>.
-      Elaboramos panes con procesos cuidados, ingredientes reales y fermentaciones largas.
-    </p>
-
-    <h3 class="section-title" style="font-size:1.4rem;margin-top:16px">Visión</h3>
-    <p class="muted">
-      Convertirnos en una empresa escolar modelo, reconocida por la calidad y variedad de nuestros productos de panadería artesanal, así como por el trabajo en equipo, la responsabilidad y el compromiso de cada integrante. Buscamos que OnlyPan sea un proyecto donde aprendamos sobre producción, administración, ventas y valores empresariales, aplicando lo aprendido para lograr un resultado real en la feria de fin de año y dejar una experiencia positiva para los futuros estudiantes que continúen con el emprendimiento.
-    </p>
-
-    <h3 class="section-title" style="font-size:1.4rem;margin-top:16px">Misión</h3>
-    <p class="muted">
-      Elaborar distintos tipos de panes frescos y de calidad. Trabajamos en equipo para ofrecer productos ricos, variados y elaborados con responsabilidad, higiene y compromiso.
-    </p>
-  </section>
-
-  <!-- CONTACTO -->
-  <section id="contacto">
-    <h2 class="section-title">Contacto</h2>
-    <p class="muted" style="margin-bottom:10px">Escribinos por la red que prefieras:</p>
-    <div class="socials">
-      <a class="sm-pill" href="https://instagram.com/Onlypansrl" target="_blank" rel="noopener">Instagram</a>
-      <a class="sm-pill" href="https://tiktok.com/@Onlypansrl" target="_blank" rel="noopener">TikTok</a>
-      <a class="sm-pill" href="mailto:Onlypanoficial@gmail.com">Gmail</a>
-    </div>
-  </section>
-
-  <footer>
+  <footer class="footer">
     <section style="max-width:1100px;margin:0 auto">
-      <small class="muted">© <span id="y"></span> OnlyPan Store — onlypan.store</small>
+      <div class="socials">
+        <a class="pill" href="https://instagram.com/Onlypansrl" target="_blank" rel="noopener">Instagram</a>
+        <a class="pill" href="https://tiktok.com/@Onlypansrl" target="_blank" rel="noopener">TikTok</a>
+        <a class="pill" href="mailto:Onlypanoficial@gmail.com">Gmail</a>
+      </div>
+      <small class="muted" style="display:block;margin-top:10px">
+        © <span id="y"></span> OnlyPan Store — onlypan.store
+      </small>
     </section>
   </footer>
 
   <script>
-    // Año dinámico
+    // año dinámico
     document.getElementById('y').textContent = new Date().getFullYear();
-
-    // Ocultar loader cuando la página esté lista
-    window.addEventListener('load', () => {
-      const loader = document.getElementById('loader');
-      loader.style.opacity = '0';
-      loader.style.transition = 'opacity .35s ease';
-      setTimeout(()=> loader.style.display = 'none', 380);
-    });
   </script>
 </body>
 </html>
