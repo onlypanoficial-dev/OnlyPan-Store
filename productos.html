@@ -1,368 +1,440 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>OnlyPan — Todos los productos</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#fff8f1;--text:#2b2b2b;--primary:#d4a373;--primary-700:#8c5e3c;--card:#fff;--ring:#00000012
-}
-*{box-sizing:border-box} html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
-a{color:inherit;text-decoration:none}
-.container{max-width:1100px;margin:0 auto;padding:16px}
-.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.55rem .85rem;border-radius:10px;border:1px solid var(--ring);background:var(--card);font-weight:700}
-.btn.primary{background:var(--primary);color:#fff;border-color:#0000}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Todos los productos — OnlyPan Store</title>
+  <meta name="description" content="Catálogo de productos de OnlyPan. Ver, buscar, y (si sos admin) agregar/editar/eliminar." />
+  <link rel="icon" href="/favicon.ico" />
+  <style>
+    :root{
+      --bg:#fff8f1; --paper:#ffffff; --ink:#2b2b2b;
+      --muted:#6a5b52; --caramel:#d4a373; --toast:#8c5e3c;
+      --ring:#00000010; --ring-strong:#00000014;
+      --ok:#2e7d32; --danger:#c62828;
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    a{color:inherit}
+    img{max-width:100%;display:block}
 
-/* NAV */
-.nav{position:sticky;top:0;z-index:40;background:linear-gradient(180deg,#fff9f3,rgba(255,249,243,.6));backdrop-filter:saturate(1.1) blur(8px);border-bottom:1px solid var(--ring)}
-.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.brand{display:flex;align-items:center;gap:.6rem}
-.logo{width:26px;height:26px;border-radius:8px;background:radial-gradient(120px 60px at 50% 30%, #ffe8cf, #d4a373)}
-.brand h1{font-family:"Playfair Display",serif;font-weight:700;font-size:1.05rem;margin:0}
-.actions{display:flex;gap:.5rem}
+    /* topbar */
+    .topbar{position:sticky;top:0;z-index:40;backdrop-filter:saturate(1.2) blur(8px);
+      background:linear-gradient(180deg, rgba(255,248,241,.92), rgba(255,248,241,.72)); border-bottom:1px solid var(--ring)}
+    .topbar-inner{max-width:1100px;margin:0 auto;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px 16px}
+    .brand{display:flex;gap:10px;align-items:center;text-decoration:none}
+    .logo{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:radial-gradient(120px 60px at 50% 30%, #ffe8cf, #d4a373);border:1px solid var(--ring)}
+    .brand span{font-weight:800;letter-spacing:.2px}
+    .nav-actions{display:flex;gap:8px;align-items:center}
+    .btn{padding:10px 14px;border-radius:12px;border:1px solid var(--ring);background:#fff;font-weight:700;text-decoration:none;display:inline-flex;gap:8px;align-items:center}
+    .btn.primary{background:var(--caramel);color:#fff;border-color:#0000;box-shadow:0 6px 18px #d4a37355}
+    .btn.ghost{background:#fff}
+    .btn.small{padding:8px 12px;border-radius:10px;font-weight:700}
+    .chip{font-size:.78rem;background:#00000008;border:1px dashed #0000001a;border-radius:999px;padding:6px 10px}
 
-/* HEADER */
-h2.title{font-family:"Playfair Display",serif;font-size:clamp(26px,4.8vw,44px);margin:12px 0 4px}
-.sub{color:#5a4a41;margin:0 0 12px}
-.search{width:100%;padding:.75rem 1rem;border-radius:12px;border:1px solid var(--ring);background:#fff}
+    main{max-width:1100px;margin:0 auto;padding:22px 16px 64px}
+    h1{font-family:"Playfair Display",serif;font-size:clamp(28px,5.4vw,48px);line-height:1.05;margin:6px 0 6px}
+    .subtle{color:var(--muted)}
+    .toolbar{display:flex;gap:10px;align-items:center;justify-content:space-between;margin:6px 0 16px}
+    .search{flex:1;min-width:0}
+    .search input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--ring-strong);background:#fff;outline:0;font-weight:600}
 
-/* GRID */
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
-.card{background:var(--card);border:1px solid var(--ring);border-radius:14px;overflow:hidden;position:relative}
-.card figure{margin:0;aspect-ratio:16/10;background:#f0e5d6}
-.card img{width:100%;height:100%;object-fit:cover;display:block}
-.card .content{padding:12px}
-.card h3{margin:0 0 4px;font-size:1.05rem}
-.price{color:var(--primary-700);font-weight:800}
-.tools{position:absolute;top:8px;right:8px;display:none;gap:6px}
-.card.admin .tools{display:flex}
-.icon{width:32px;height:32px;border-radius:8px;border:1px solid var(--ring);display:grid;place-items:center;background:#fff;cursor:pointer}
-.icon:hover{filter:brightness(1.03)}
+    /* grid */
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+    .card{background:var(--paper);border:1px solid var(--ring);border-radius:16px;overflow:hidden;box-shadow:0 6px 18px #0000000a;position:relative}
+    .thumb{aspect-ratio:4/3;background:#f4eadf;object-fit:cover;width:100%}
+    .card .box{padding:12px 12px 14px}
+    .price{font-weight:800}
+    .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .empty{padding:24px;border:1.5px dashed var(--ring-strong);border-radius:16px;text-align:center;color:var(--muted)}
 
-/* MODALS */
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.3);display:none;align-items:center;justify-content:center;padding:14px;z-index:60}
-.modal.open{display:flex}
-.modal .box{background:#fff;border-radius:14px;box-shadow:0 18px 40px #0003;max-width:520px;width:100%;padding:16px}
-.modal h3{margin:.2rem 0 .6rem}
-.field{display:grid;gap:6px;margin:10px 0}
-.field input,.field textarea{width:100%;padding:.7rem .9rem;border-radius:10px;border:1px solid var(--ring);background:#fff}
-.row{display:flex;gap:8px;flex-wrap:wrap}
-.right{margin-left:auto}
+    /* row of action icons on each card (only admin) */
+    .card-actions{position:absolute;right:10px;top:10px;display:flex;gap:8px;opacity:0;transition:opacity .2s}
+    .card:hover .card-actions{opacity:1}
+    .iconbtn{width:34px;height:34px;border-radius:10px;border:1px solid var(--ring);background:#fff;display:grid;place-items:center;cursor:pointer}
+    .iconbtn.danger{border-color:#0000;background:#ffe8e8}
+    .iconbtn svg{width:18px;height:18px}
 
-/* Admin drawer */
-.drawer{position:fixed;inset:0 0 0 auto;width:360px;max-width:100vw;transform:translateX(105%);transition:transform .25s ease;background:#fff;border-left:1px solid var(--ring);z-index:55;display:flex;flex-direction:column}
-.drawer.open{transform:translateX(0)}
-.drawer header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--ring)}
-.drawer .body{padding:12px 14px;overflow:auto}
-.drawer .muted{color:#5a4a41;font-size:.9rem}
-.small{font-size:.85rem}
+    /* product modal */
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;place-items:center;z-index:60;padding:16px}
+    .modal.open{display:grid}
+    .sheet{background:#fff;border-radius:18px;max-width:860px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:0;overflow:hidden;border:1px solid var(--ring)}
+    .sheet .p{padding:16px}
+    .sheet img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3}
+    .sheet h3{margin:0 0 8px}
+    .sheet .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    @media (max-width:820px){
+      .sheet{grid-template-columns:1fr}
+    }
 
-/* Mobile */
-@media (max-width:900px){
-  .container{padding:14px}
-  .grid{grid-template-columns:1fr}
-  .actions .btn{padding:.5rem .75rem}
-  .drawer{width:100%}
-}
-</style>
+    /* admin drawer */
+    .drawer{position:fixed;inset:0;display:none;z-index:70}
+    .drawer.open{display:block}
+    .drawer .backdrop{position:absolute;inset:0;background:rgba(0,0,0,.35)}
+    .panel{position:absolute;inset:auto auto 0 0;top:0;height:100%;width:min(380px,92%);background:#fff;border-right:1px solid var(--ring);box-shadow:18px 0 40px #00000025;display:flex;flex-direction:column}
+    .panel header{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--ring)}
+    .panel .sec{padding:12px 14px;border-bottom:1px dashed var(--ring)}
+    .panel input,.panel textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--ring-strong);outline:0}
+    .panel textarea{min-height:100px;resize:vertical}
+    .panel .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .panel .actions{display:flex;gap:10px;margin-top:10px}
+    .hint{color:var(--muted);font-size:.9rem}
+    .seplist{padding:10px 14px}
+
+    /* small helpers */
+    .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  </style>
 </head>
 <body>
-  <nav class="nav">
-    <div class="container nav-inner">
-      <a class="brand" href="index.html"><span class="logo"></span><h1>OnlyPan Store</h1></a>
-      <div class="actions">
-        <a class="btn" href="index.html">Volver</a>
-        <button id="btnAdmin" class="btn primary">Admin</button>
-        <a class="btn" href="https://instagram.com/Onlypansrl" target="_blank" rel="noopener">Hacer pedido ↗</a>
+
+  <!-- Topbar -->
+  <nav class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html">
+        <span class="logo" aria-hidden="true">🥖</span>
+        <span>OnlyPan Store</span>
+      </a>
+      <div class="nav-actions">
+        <a class="btn small ghost" href="index.html">Inicio</a>
+        <button id="btnAdmin" class="btn small primary">Admin</button>
+        <a class="btn small ghost" target="_blank" rel="noopener" href="https://instagram.com/Onlypansrl">Hacer pedido ↗</a>
       </div>
     </div>
   </nav>
 
-  <main class="container">
-    <h2 class="title">Todos los productos</h2>
-    <p class="sub">Catálogo completo. Para editar usá el panel <strong>Admin</strong>.</p>
-    <input id="q" class="search" placeholder="Buscar productos, descripciones o tags…"/>
-    <div id="list" class="grid" aria-live="polite"></div>
-    <p id="empty" class="sub" style="text-align:center;margin:18px 0;display:none">Sin resultados.</p>
+  <main>
+    <header>
+      <h1>Todos los productos</h1>
+      <p class="subtle">Catálogo completo. Para editar usá el panel <strong>Admin</strong>.</p>
+    </header>
+
+    <div class="toolbar">
+      <div class="search"><input id="q" type="search" placeholder="Buscar productos, descripciones o tags…" /></div>
+    </div>
+
+    <section id="list" class="grid" aria-live="polite">
+      <!-- cartas aquí -->
+    </section>
+
+    <div id="empty" class="empty" style="display:none">Sin resultados.</div>
   </main>
 
-  <!-- FICHA (bottom modal) -->
-  <div id="mFicha" class="modal" role="dialog" aria-modal="true">
-    <div class="box">
-      <div class="row">
-        <h3 id="fTitle">Producto</h3>
-        <button id="fClose" class="btn right">Cerrar</button>
+  <!-- Ficha de producto -->
+  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="md-title">
+    <div class="sheet">
+      <img id="md-img" alt="" />
+      <div class="p">
+        <h3 id="md-title"></h3>
+        <div class="price" id="md-price"></div>
+        <p id="md-desc" class="subtle"></p>
+        <div id="md-tags" class="tags"></div>
+        <div class="cta">
+          <a class="btn primary" id="md-ig" target="_blank" rel="noopener">Pedir por Instagram</a>
+          <button class="btn ghost" id="md-close">Cerrar</button>
+        </div>
       </div>
-      <img id="fImg" alt="" style="width:100%;height:220px;object-fit:cover;border-radius:12px;background:#f3ebde">
-      <p class="price" id="fPrice" style="margin:.6rem 0 .2rem"></p>
-      <p id="fDesc" style="margin:.2rem 0 .6rem"></p>
-      <a class="btn primary" id="fCta" href="https://instagram.com/Onlypansrl" target="_blank" rel="noopener">Pedir por Instagram</a>
     </div>
   </div>
 
-  <!-- LOGIN -->
-  <div id="mLogin" class="modal" role="dialog" aria-modal="true">
-    <div class="box">
-      <div class="row">
-        <h3>Iniciar sesión (Admin)</h3>
-        <button id="lClose" class="btn right">Cerrar</button>
-      </div>
-      <div class="field"><label>Email</label><input id="lEmail" type="email" placeholder="onlypanadmin@gmail.com" autocomplete="username"></div>
-      <div class="field"><label>Contraseña</label><input id="lPass" type="password" placeholder="••••••••" autocomplete="current-password"></div>
-      <button id="lGo" class="btn primary" style="width:100%;justify-content:center">Entrar</button>
-      <p class="small" style="margin-top:8px">Tus credenciales no quedan en el HTML; van directo a Supabase.</p>
-    </div>
-  </div>
-
-  <!-- ADMIN DRAWER -->
+  <!-- Admin drawer -->
   <aside id="drawer" class="drawer" aria-hidden="true">
-    <header>
-      <strong>Panel Admin</strong>
-      <button id="dClose" class="btn">✕</button>
-    </header>
-    <div class="body">
-      <p class="muted">Conectado como: <span id="who">—</span></p>
-      <hr style="border:none;border-top:1px solid var(--ring);margin:10px 0">
-      <h4 style="margin:0 0 8px">Crear / Editar</h4>
+    <div class="backdrop" id="dk"></div>
+    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="p-title">
+      <header>
+        <strong id="p-title">Panel Admin</strong>
+        <button id="closeDrawer" class="btn small ghost">✕</button>
+      </header>
 
-      <div class="field"><label>Título</label><input id="pTitulo" placeholder="Ej: Pan de campo"></div>
-      <div class="row">
-        <div class="field" style="flex:1;min-width:160px">
-          <label>Precio</label><input id="pPrecio" placeholder="$1200">
+      <!-- LOGIN -->
+      <section id="secLogin" class="sec">
+        <h3 style="margin:0 0 8px">Iniciar sesión</h3>
+        <div class="row">
+          <div><label class="sr" for="email">Email</label><input id="email" type="email" placeholder="tuemail@dominio.com" autocomplete="username"></div>
+          <div><label class="sr" for="pass">Contraseña</label><input id="pass" type="password" placeholder="********" autocomplete="current-password"></div>
         </div>
-        <div class="field" style="flex:1;min-width:160px">
-          <label>Etiquetas (coma)</label><input id="pTags" placeholder="masa madre, integral">
+        <div class="actions">
+          <button id="btnLogin" class="btn primary">Entrar</button>
         </div>
+        <p class="hint">Las credenciales no quedan en el HTML; se envían a Supabase.</p>
+      </section>
+
+      <!-- FORM CRUD -->
+      <section id="secForm" class="sec" style="display:none">
+        <div class="hint" id="who"></div>
+        <h3 style="margin:8px 0 10px">Crear / Editar</h3>
+        <div><input id="fTitulo" placeholder="Título" /></div>
+        <div class="row">
+          <input id="fPrecio" type="number" step="0.01" placeholder="Precio (ej: 1500.00)" />
+          <input id="fTags" placeholder="Etiquetas (coma)" />
+        </div>
+        <div><textarea id="fDesc" placeholder="Descripción"></textarea></div>
+
+        <div style="display:grid;gap:8px">
+          <input id="fImgUrl" placeholder="URL de imagen (opcional si subís archivo)" />
+          <div class="row">
+            <input id="fFile" type="file" accept="image/*" capture="environment" />
+            <button id="btnUpload" class="btn ghost">Subir imagen</button>
+          </div>
+          <p class="hint">En móvil podés sacar foto; en PC podés elegir una imagen. Se sube al bucket de Storage y se guarda su URL pública.</p>
+        </div>
+
+        <div class="actions">
+          <button id="btnSave" class="btn" style="background:#e9f7ef;border-color:#cde8d6">💾 Guardar</button>
+          <button id="btnNew" class="btn ghost">+ Nuevo</button>
+          <button id="btnLogout" class="btn" style="background:#ffe8e8;border-color:#f5c6c6">Cerrar sesión</button>
+        </div>
+      </section>
+
+      <!-- Lista admin (para click/editar rápido) -->
+      <div id="secList" class="seplist" style="display:none">
+        <input id="qAdmin" type="search" placeholder="Buscar en admin…" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--ring-strong)">
+        <div id="adminList" style="margin-top:10px;display:grid;gap:8px"></div>
       </div>
-
-      <div class="field"><label>Descripción</label><textarea id="pDesc" rows="3" placeholder="Notas de cata, fermentación, etc."></textarea></div>
-
-      <details>
-        <summary class="small" style="cursor:pointer">Imagen (URL o subir archivo)</summary>
-        <div class="field" style="margin-top:8px"><input id="pImgUrl" placeholder="https://…"></div>
-        <input id="pFile" type="file" accept="image/*" capture="environment">
-        <p class="small muted">En celular podés sacar foto; en PC elegir una imagen.</p>
-      </details>
-
-      <div class="row" style="margin-top:10px">
-        <button id="save" class="btn primary">💾 Guardar</button>
-        <button id="new" class="btn">+ Nuevo</button>
-        <button id="logout" class="btn right">Cerrar sesión</button>
-      </div>
-
-      <hr style="border:none;border-top:1px solid var(--ring);margin:12px 0">
-      <input id="adminSearch" class="search" placeholder="Buscar en admin…">
-      <div id="adminList" class="grid" style="margin-top:10px"></div>
     </div>
   </aside>
 
-  <script src="https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <!-- Supabase -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <script>
-  // ====== CONFIG ======
-  const SUPABASE_URL = "https://dlmgvrejatqhjhxoejdm.supabase.co";       // ← poné el tuyo
-  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsbWd2cmVqYXRxaGpoeG9lamRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzM4MTcsImV4cCI6MjA3ODA0OTgxN30.5WfDT6qUBfXvvon-io4g-JntQ_EnptAUFyeue1v8tBc";                      // ← poné el tuyo
-  const BUCKET = "onlypan-images";                                // creado en Storage UI
+    // ========= CONFIG =========
+    const SUPABASE_URL      = "https://dlmgvrejatqhjhxoejdm.supabase.co";          // <- pega tu URL aquí
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsbWd2cmVqYXRxaGpoeG9lamRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzM4MTcsImV4cCI6MjA3ODA0OTgxN30.5WfDT6qUBfXvvon-io4g-JntQ_EnptAUFyeue1v8tBc";     // <- pega tu anon key aquí
+    const STORAGE_BUCKET    = "onlypan-images";        // <- cambia si usaste otro nombre
 
-  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const IG_LINK = "https://instagram.com/Onlypansrl";
+    const supa = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  // ====== UI elems ======
-  const list = document.getElementById('list');
-  const empty = document.getElementById('empty');
-  const q = document.getElementById('q');
+    // ========= STATE =========
+    let ADMIN=false, CURRENT=null, LIST=[], FILTERED=[];
 
-  // ficha
-  const mFicha = document.getElementById('mFicha');
-  const fClose = document.getElementById('fClose');
-  const fTitle = document.getElementById('fTitle');
-  const fImg = document.getElementById('fImg');
-  const fPrice = document.getElementById('fPrice');
-  const fDesc = document.getElementById('fDesc');
+    const el = s => document.querySelector(s);
+    const els = s => Array.from(document.querySelectorAll(s));
 
-  // login + admin
-  const btnAdmin = document.getElementById('btnAdmin');
-  const drawer = document.getElementById('drawer');
-  const dClose = document.getElementById('dClose');
-  const mLogin = document.getElementById('mLogin');
-  const lEmail = document.getElementById('lEmail');
-  const lPass  = document.getElementById('lPass');
-  const lGo    = document.getElementById('lGo');
-  const lClose = document.getElementById('lClose');
-  const who    = document.getElementById('who');
+    // ========= UI BIND =========
+    const list  = el('#list');
+    const empty = el('#empty');
+    const q     = el('#q');
 
-  // admin form
-  const pTitulo = document.getElementById('pTitulo');
-  const pPrecio = document.getElementById('pPrecio');
-  const pTags   = document.getElementById('pTags');
-  const pDesc   = document.getElementById('pDesc');
-  const pImgUrl = document.getElementById('pImgUrl');
-  const pFile   = document.getElementById('pFile');
-  const saveBtn = document.getElementById('save');
-  const newBtn  = document.getElementById('new');
-  const logoutBtn = document.getElementById('logout');
-  const adminSearch = document.getElementById('adminSearch');
-  const adminList   = document.getElementById('adminList');
+    const modal = el('#modal');
+    const mdImg = el('#md-img');
+    const mdTitle = el('#md-title');
+    const mdPrice = el('#md-price');
+    const mdDesc = el('#md-desc');
+    const mdTags = el('#md-tags');
+    const mdIg   = el('#md-ig');
+    el('#md-close').onclick = ()=> modal.classList.remove('open');
+    modal.addEventListener('click', (e)=>{ if(e.target===modal) modal.classList.remove('open'); });
 
-  let session = null;
-  let editId = null;
-  let cache = [];
+    // drawer
+    const drawer = el('#drawer');
+    el('#btnAdmin').onclick = ()=> openDrawer();
+    el('#dk').onclick = ()=> closeDrawer();
+    el('#closeDrawer').onclick = ()=> closeDrawer();
 
-  // ====== helpers ======
-  const fmtTags = (arr=[]) => (arr||[]).slice(0,5).map(t=>`<span class="chip">${t}</span>`).join('');
+    // login + admin
+    const secLogin = el('#secLogin');
+    const secForm  = el('#secForm');
+    const secList  = el('#secList');
+    const who      = el('#who');
 
-  function cardHTML(p, isAdmin=false){
-    return `
-    <article class="card ${isAdmin?'admin':''}" data-id="${p.id}">
-      <div class="tools">
-        <div class="icon" data-act="edit" title="Editar">✎</div>
-        <div class="icon" data-act="del"  title="Eliminar">🗑</div>
-      </div>
-      <figure>${p.img?`<img src="${p.img}" alt="${p.titulo||'Producto'}">`:''}</figure>
-      <div class="content">
-        <h3>${p.titulo||'—'}</h3>
-        ${p.precio?`<div class="price">${p.precio}</div>`:''}
-        <p class="small" style="margin:.3rem 0 .2rem">${(p.desc||'').slice(0,110)}</p>
-      </div>
-    </article>`;
-  }
+    // form fields
+    const fTitulo = el('#fTitulo');
+    const fPrecio = el('#fPrecio');
+    const fDesc   = el('#fDesc');
+    const fTags   = el('#fTags');
+    const fImgUrl = el('#fImgUrl');
+    const fFile   = el('#fFile');
 
-  function paint(listEl, items, isAdmin=false){
-    listEl.innerHTML = items.map(p=>cardHTML(p,isAdmin)).join('');
-    empty.style.display = items.length? 'none':'block';
-    // open ficha
-    listEl.querySelectorAll('.card').forEach(el=>{
-      el.addEventListener('click', e=>{
-        if(e.target.closest('.tools')) return; // tools handled separately
-        const id = el.dataset.id;
-        const p = cache.find(x=>x.id===id);
-        if(!p) return;
-        fTitle.textContent = p.titulo||'Producto';
-        fImg.src = p.img||'';
-        fPrice.textContent = p.precio||'';
-        fDesc.textContent = p.desc||'';
-        mFicha.classList.add('open');
+    el('#btnLogin').onclick = login;
+    el('#btnLogout').onclick = logout;
+    el('#btnSave').onclick = saveProduct;
+    el('#btnNew').onclick  = ()=> setForm();
+    el('#btnUpload').onclick = uploadFromFile;
+
+    el('#q').addEventListener('input', applyFilter);
+    el('#qAdmin').addEventListener('input', buildAdminList);
+
+    // ========= START =========
+    boot();
+    async function boot(){
+      await fetchProducts();
+      const { data: { user } } = await supa.auth.getUser();
+      if(user){ adminOn(user.email); } else { adminOff(); }
+    }
+
+    // ========= PRODUCTS =========
+    async function fetchProducts(){
+      const { data, error } = await supa.from('productos')
+        .select('*').order('created_at', { ascending:false });
+      if(error){ console.error(error); return; }
+      LIST = data || [];
+      applyFilter();
+    }
+
+    function applyFilter(){
+      const term = q.value.trim().toLowerCase();
+      FILTERED = LIST.filter(p=>{
+        const pool = [p.titulo, p.desc, ...(p.tags||[])].join(' ').toLowerCase();
+        return pool.includes(term);
       });
-    });
-    // admin tools
-    if(isAdmin){
-      listEl.querySelectorAll('.tools .icon').forEach(ic=>{
-        ic.addEventListener('click', async (e)=>{
-          const id = ic.closest('.card').dataset.id;
-          const act = ic.dataset.act;
-          const item = cache.find(x=>x.id===id);
-          if(act==='edit'){
-            // cargar en formulario
-            editId = id;
-            pTitulo.value = item.titulo||'';
-            pPrecio.value = item.precio||'';
-            pTags.value   = (item.tags||[]).join(', ');
-            pDesc.value   = item.desc||'';
-            pImgUrl.value = item.img||'';
-            drawer.classList.add('open');
-          }else if(act==='del'){
-            if(confirm('¿Eliminar producto?')){
-              const {error} = await sb.from('productos').delete().eq('id', id);
-              if(error){ alert('Error: '+error.message); return; }
-              await load();
-              await load(true);
-            }
-          }
-        });
+      renderList(FILTERED);
+    }
+
+    function renderList(rows){
+      list.innerHTML = '';
+      if(!rows.length){ empty.style.display='block'; return; }
+      empty.style.display='none';
+      for(const p of rows){
+        const card = document.createElement('article');
+        card.className='card';
+        card.innerHTML = `
+          <img class="thumb" alt="${escapeHtml(p.titulo||'Producto')}" src="${escapeAttr(p.img||'')}" onerror="this.src='https://images.unsplash.com/photo-1549931296-3c132f3fc650?w=1200&auto=format&fit=crop'">
+          <div class="box">
+            <strong>${escapeHtml(p.titulo||'Producto')}</strong>
+            <div class="subtle"><span class="price">${fmtMoney(p.precio)}</span></div>
+            ${p.desc ? `<p class="subtle">${escapeHtml(p.desc)}</p>`:''}
+            <div class="tags">${(p.tags||[]).map(t=>`<span class="chip">${escapeHtml(t)}</span>`).join('')}</div>
+          </div>
+          <div class="card-actions" ${ADMIN?'':'style="display:none"'} >
+            <button class="iconbtn" title="Editar" aria-label="Editar">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 21h4l11-11a2.828 2.828 0 1 0-4-4L3 17v4z" stroke="#333"/></svg>
+            </button>
+            <button class="iconbtn danger" title="Eliminar" aria-label="Eliminar">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18M8 6v14a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V6M9 6l1-2h4l1 2" stroke="#333"/></svg>
+            </button>
+          </div>
+        `;
+        card.querySelector('.thumb').addEventListener('click', ()=> openModal(p));
+        card.querySelector('.box').addEventListener('click', ()=> openModal(p));
+        if(ADMIN){
+          card.querySelector('.iconbtn').onclick = ()=> setForm(p);
+          card.querySelector('.iconbtn.danger').onclick = ()=> del(p);
+        }
+        list.appendChild(card);
+      }
+    }
+
+    function openModal(p){
+      mdImg.src = p.img || '';
+      mdImg.onerror = ()=> mdImg.src='https://images.unsplash.com/photo-1549931296-3c132f3fc650?w=1200&auto=format&fit=crop';
+      mdTitle.textContent = p.titulo || 'Producto';
+      mdPrice.textContent = fmtMoney(p.precio);
+      mdDesc.textContent = p.desc||'';
+      mdTags.innerHTML = (p.tags||[]).map(t=>`<span class="chip">${escapeHtml(t)}</span>`).join('');
+      mdIg.href = IG_LINK;
+      modal.classList.add('open');
+    }
+
+    // ========= ADMIN =========
+    function openDrawer(){ drawer.classList.add('open'); }
+    function closeDrawer(){ drawer.classList.remove('open'); }
+
+    async function login(){
+      const email = el('#email').value.trim();
+      const pass  = el('#pass').value;
+      if(!email || !pass) return alert('Completá email y contraseña');
+      const { data, error } = await supa.auth.signInWithPassword({ email, password: pass });
+      if(error){ alert('Login inválido'); return; }
+      adminOn(data.user?.email || email);
+    }
+
+    async function logout(){
+      await supa.auth.signOut();
+      adminOff();
+    }
+
+    function adminOn(mail){
+      ADMIN = true;
+      secLogin.style.display='none';
+      secForm.style.display='block';
+      secList.style.display='block';
+      who.textContent = 'Conectado como: '+mail;
+      renderList(FILTERED.length?FILTERED:LIST);
+      buildAdminList();
+    }
+    function adminOff(){
+      ADMIN = false;
+      secLogin.style.display='block';
+      secForm.style.display='none';
+      secList.style.display='none';
+      renderList(FILTERED.length?FILTERED:LIST);
+    }
+
+    function setForm(p=null){
+      CURRENT = p?.id || null;
+      fTitulo.value = p?.titulo || '';
+      fPrecio.value = (p?.precio ?? '').toString();
+      fDesc.value   = p?.desc || '';
+      fTags.value   = (p?.tags||[]).join(', ');
+      fImgUrl.value = p?.img || '';
+    }
+
+    async function uploadFromFile(ev){
+      ev?.preventDefault?.();
+      if(!fFile.files[0]) return alert('Elegí una imagen');
+      if(!ADMIN) return;
+      const file = fFile.files[0];
+      const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+      const path = `${crypto.randomUUID()}.${ext}`;
+      const { error } = await supa.storage.from(STORAGE_BUCKET).upload(path, file, { upsert:false, cacheControl:'3600' });
+      if(error){ alert('Error subiendo: '+error.message); return; }
+      const { data } = supa.storage.from(STORAGE_BUCKET).getPublicUrl(path);
+      fImgUrl.value = data.publicUrl;
+      alert('Imagen subida ✔');
+    }
+
+    async function saveProduct(){
+      if(!ADMIN) return;
+      const payload = {
+        titulo: fTitulo.value.trim(),
+        precio: fPrecio.value ? Number(fPrecio.value) : null,
+        desc:   fDesc.value.trim(),
+        img:    fImgUrl.value.trim(),
+        tags:   fTags.value.split(',').map(s=>s.trim()).filter(Boolean)
+      };
+      if(!payload.titulo) return alert('Poné un título');
+
+      if(CURRENT){
+        const { error } = await supa.from('productos').update(payload).eq('id', CURRENT);
+        if(error){ alert('Error actualizando'); return; }
+      }else{
+        const { error } = await supa.from('productos').insert(payload);
+        if(error){ alert('Error creando'); return; }
+      }
+      CURRENT=null; setForm();
+      await fetchProducts(); buildAdminList();
+      alert('Guardado ✔');
+    }
+
+    async function del(p){
+      if(!confirm(`Eliminar "${p.titulo}" ?`)) return;
+      const { error } = await supa.from('productos').delete().eq('id', p.id);
+      if(error){ alert('No se pudo eliminar'); return; }
+      await fetchProducts(); buildAdminList();
+    }
+
+    function buildAdminList(){
+      const wrap = el('#adminList');
+      wrap.innerHTML='';
+      const term = (el('#qAdmin').value||'').toLowerCase();
+      LIST.filter(p => (p.titulo||'').toLowerCase().includes(term)).forEach(p=>{
+        const row = document.createElement('button');
+        row.className='btn ghost'; row.style.justifyContent='space-between';
+        row.innerHTML = `<span>${escapeHtml(p.titulo)}</span><span class="subtle">${fmtMoney(p.precio)}</span>`;
+        row.onclick = ()=> setForm(p);
+        wrap.appendChild(row);
       });
     }
-  }
 
-  // ====== data ======
-  async function load(forAdmin=false){
-    const {data, error} = await sb.from('productos').select('*').order('created_at', {ascending:false});
-    if(error){ console.error(error); return; }
-    cache = data || [];
-    const term = (forAdmin? adminSearch.value : q.value || '').toLowerCase();
-    const filtered = term
-      ? cache.filter(p=>(p.titulo||'').toLowerCase().includes(term) || (p.desc||'').toLowerCase().includes(term) || (p.tags||[]).join(' ').toLowerCase().includes(term))
-      : cache;
-    if(forAdmin) paint(adminList, filtered, true);
-    else paint(list, filtered, !!session);
-  }
-
-  q.addEventListener('input', ()=>load(false));
-  adminSearch.addEventListener('input', ()=>load(true));
-
-  // ====== ficha modal ======
-  fClose.onclick = ()=>mFicha.classList.remove('open');
-  mFicha.addEventListener('click',e=>{ if(e.target===mFicha) mFicha.classList.remove('open') });
-
-  // ====== auth + admin ======
-  btnAdmin.addEventListener('click', async ()=>{
-    session = (await sb.auth.getSession()).data.session;
-    if(!session){ mLogin.classList.add('open'); return; }
-    who.textContent = session.user.email;
-    drawer.classList.add('open');
-    load(true);
-  });
-  dClose.onclick = ()=>drawer.classList.remove('open');
-
-  lClose.onclick = ()=>mLogin.classList.remove('open');
-  mLogin.addEventListener('click',e=>{ if(e.target===mLogin) mLogin.classList.remove('open') });
-  lGo.addEventListener('click', async ()=>{
-    const {data, error} = await sb.auth.signInWithPassword({ email:lEmail.value.trim(), password:lPass.value.trim() });
-    if(error){ alert('Login: '+error.message); return; }
-    session = data.session;
-    mLogin.classList.remove('open');
-    who.textContent = session.user.email;
-    drawer.classList.add('open');
-    load(true);
-  });
-  logoutBtn.onclick = async ()=>{
-    await sb.auth.signOut();
-    session = null;
-    drawer.classList.remove('open');
-  };
-
-  newBtn.onclick = ()=>{ editId=null; pTitulo.value=''; pPrecio.value=''; pTags.value=''; pDesc.value=''; pImgUrl.value=''; pFile.value=''; };
-
-  async function uploadIfNeeded(){
-    const file = pFile.files?.[0];
-    if(!file) return pImgUrl.value.trim(); // solo URL
-    // subir a Storage
-    const ext = file.name.split('.').pop() || 'jpg';
-    const path = `p/${Date.now()}-${Math.random().toString(16).slice(2)}.${ext}`;
-    const up = await sb.storage.from(BUCKET).upload(path, file, { cacheControl:'3600', upsert:true, contentType:file.type });
-    if(up.error){
-      alert('Error subiendo archivo: '+up.error.message+'\nRevisá que exista el bucket "'+BUCKET+'" y sea público.');
-      return '';
+    // ========= HELPERS =========
+    function fmtMoney(v){
+      if(v==null || v==='') return '';
+      try{ return new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0}).format(v); }
+      catch{ return `$ ${v}`; }
     }
-    const pub = sb.storage.from(BUCKET).getPublicUrl(path);
-    return pub.data.publicUrl || '';
-  }
-
-  saveBtn.addEventListener('click', async ()=>{
-    if(!session){ alert('Iniciá sesión como admin.'); return; }
-    const imgUrl = await uploadIfNeeded();
-    const payload = {
-      titulo:pTitulo.value.trim(),
-      precio:pPrecio.value.trim(),
-      desc:pDesc.value.trim(),
-      img: imgUrl || pImgUrl.value.trim(),
-      tags: pTags.value.split(',').map(t=>t.trim()).filter(Boolean)
-    };
-    let error;
-    if(editId){
-      ({error} = await sb.from('productos').update(payload).eq('id', editId));
-    }else{
-      ({error} = await sb.from('productos').insert(payload));
-    }
-    if(error){ alert('Error: '+error.message); return; }
-    newBtn.click();
-    await load(false);
-    await load(true);
-  });
-
-  // Init
-  (async()=>{ await load(false); })();
+    function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+    function escapeAttr(s){ return escapeHtml(s).replace(/"/g,'&quot;'); }
   </script>
 </body>
 </html>
