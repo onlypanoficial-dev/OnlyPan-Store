@@ -1,387 +1,391 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>OnlyPan Store — Todos los productos</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Todos los productos — OnlyPan Store</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
 <style>
-  :root{
-    --bg:#fff8f1; --card:#ffffff; --ink:#2b2b2b; --muted:#6b5b4e; --line:#0002;
-    --primary:#d4a373; --primary-700:#8c5e3c; --danger:#c53b3b; --ok:#2e7d32;
-    --shadow:0 10px 30px #00000010; --shadow2:0 16px 40px #00000018;
-  }
+  :root{ --bg:#fff8f1; --text:#2b2b2b; --primary:#d4a373; --primary-700:#8c5e3c; --card:#ffffff; --muted:#5a4a41; --chip:#00000012 }
   *{box-sizing:border-box}
-  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial}
   a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
 
-  /* NAV */
-  .nav{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rgba(255,248,241,.95),rgba(255,248,241,.7));backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-  .nav-inner{max-width:1100px;margin:auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
-  .brand{display:flex;gap:10px;align-items:center;font-family:"Playfair Display",serif;font-weight:700}
-  .brand .dot{width:26px;height:26px;border-radius:8px;background:radial-gradient(120px 60px at 50% 30%, #ffe8cf, #d4a373)}
-  .btn{display:inline-flex;align-items:center;gap:8px;border-radius:12px;border:1px solid var(--line);background:var(--primary);color:#fff;font-weight:700;padding:10px 14px;box-shadow:0 6px 18px #d4a37355;cursor:pointer}
-  .btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px #d4a37366}
-  .btn-ghost{background:#fff;color:var(--ink)}
+  /* NAV SIMPLE (sin botón Inicio) */
+  .top{position:sticky;top:0;z-index:40;backdrop-filter:saturate(1.1) blur(8px);background:linear-gradient(180deg, rgba(255,248,241,.9), rgba(255,248,241,.65));border-bottom:1px solid #0001}
+  .inner{max-width:1100px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:12px;justify-content:space-between}
+  .brand{display:flex;align-items:center;gap:10px}
+  .logo{width:32px;height:32px;border-radius:10px;background:radial-gradient(120px 60px at 50% 30%, #ffe8cf, #d4a373);display:grid;place-items:center}
+  .brand-name{font-family:"Playfair Display",serif;font-weight:700}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:9px 13px;border-radius:12px;border:1px solid #0002;background:var(--primary);color:#fff;font-weight:700;box-shadow:0 6px 18px #d4a37355}
+  .btn:hover{transform:translateY(-1px)}
+  .ghost{background:#fff;color:#2b2b2b}
 
-  /* CONTENT */
-  .wrap{max-width:1100px;margin:auto;padding:22px 18px}
-  .back{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);padding:10px 14px;border-radius:12px;font-weight:600}
-  h1{font-family:"Playfair Display",serif;font-size:clamp(26px,5.5vw,42px);margin:12px 0 6px}
+  /* PAGE */
+  .wrap{max-width:1100px;margin:0 auto;padding:28px 16px}
+  h1{font-family:"Playfair Display",serif;font-size:clamp(26px,4vw,42px);margin:8px 0}
   .muted{color:var(--muted)}
-  .toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:14px}
-  .search{flex:1;min-width:220px;max-width:420px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:#fff}
+  .search{width:100%;max-width:420px;border:1px solid #0002;border-radius:12px;padding:10px 12px;background:#fff}
 
-  /* GRID CATÁLOGO */
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-top:18px}
-  .card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);transform:translateY(6px);opacity:0;transition:.35s}
-  .card.reveal{transform:translateY(0);opacity:1}
-  .card:hover{box-shadow:var(--shadow2)}
-  .imgbox{width:100%;aspect-ratio:4/3;background:#f4eadf;position:relative}
-  .imgbox img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:.3s}
-  .imgbox img.loaded{opacity:1}
-  .content{padding:14px}
-  .title{margin:0 0 6px;font-weight:700;font-size:1.05rem}
-  .desc{margin:0;color:#6b5b4e}
-  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-  .chip{padding:6px 10px;font-size:.78rem;background:#0001;border:1px dashed #0002;border-radius:999px}
-  .empty{text-align:center;padding:38px;border:1px dashed var(--line);border-radius:14px;background:#fff6eb;color:#6b5b4e;margin-top:18px;display:none}
+  /* GRID */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-top:16px}
+  .card{background:#fff;border:1px solid #0001;border-radius:16px;overflow:hidden;box-shadow:0 8px 20px #0000000a;position:relative}
+  .card img{height:170px;object-fit:cover;background:#f4eadf}
+  .card .c{padding:12px}
+  .card h3{margin:0 0 6px;font-size:1.05rem}
+  .chip{display:inline-block;font-size:.78rem;background:var(--chip);border:1px dashed #00000020;border-radius:999px;padding:6px 10px;margin-right:6px}
+  .price{font-weight:700;margin-top:6px}
 
-  /* DRAWER ADMIN */
-  .drawer{
-    position:fixed; inset:0 auto 0 0; width:min(420px,90vw);
-    background:#fff; border-right:1px solid var(--line);
-    box-shadow:10px 0 30px #00000018; transform:translateX(-100%);
-    transition:transform .35s cubic-bezier(.2,.8,.2,1); z-index:120;
-    display:flex; flex-direction:column;
-  }
-  .drawer.open{ transform:translateX(0); }
-  .drawer header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line)}
-  .drawer h3{margin:0;font-size:1.05rem}
-  .drawer .inner{padding:12px 14px 16px;display:grid;gap:12px;overflow:auto}
-  .input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line)}
-  .list{display:grid;gap:8px;max-height:38vh;overflow:auto;border:1px dashed var(--line);border-radius:12px;background:#fff8}
-  .row{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid #00000010}
-  .row:last-child{border-bottom:none}
-  .tags{font-size:.8rem;color:#6b5b4e}
-  .actions{display:flex;gap:6px}
-  .icon{border:1px solid var(--line);background:#fff;border-radius:10px;padding:6px 8px;cursor:pointer}
-  .icon.danger{background:var(--danger);color:#fff;border-color:#b33030}
-  .save{background:var(--ok);color:#fff;border:1px solid #1b5e20}
-  .line{height:1px;background:var(--line);margin:6px 0}
-  .small{font-size:.86rem;color:#6b5b4e}
-
-  /* MODAL LOGIN */
-  .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.28);backdrop-filter:blur(2px);z-index:150}
+  /* MODAL detalle */
+  .modal{position:fixed;inset:0;background:#0006;display:none;align-items:center;justify-content:center;padding:16px;z-index:60}
   .modal.open{display:flex}
-  .sheet{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow2);padding:16px; width:min(520px,92vw)}
-  .sheet header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-  .btn-danger{background:var(--danger);color:#fff;border:1px solid #b33030}
+  .modal-card{max-width:720px;width:100%;background:#fff;border-radius:16px;overflow:hidden}
+  .modal-body{display:grid;grid-template-columns:1fr 1fr}
+  .modal-body img{height:100%;object-fit:cover}
+  .modal-content{padding:16px}
+  .modal-top{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid #0001}
+  .close{border:1px solid #0002;background:#fff;border-radius:10px;padding:6px 10px;cursor:pointer}
 
-  /* MOBILE */
-  @media (max-width:640px){
-    .grid{grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
-    .nav-inner{padding:12px 14px}
-    .btn,.btn-ghost,.icon{min-height:44px}
-    .drawer{width:100vw}
+  /* ADMIN SIDEBAR */
+  .side{position:fixed;inset:0 auto 0 0;width:320px;max-width:86vw;background:#fff;border-right:1px solid #0001;box-shadow:12px 0 30px #00000014;transform:translateX(-100%);transition:transform .25s;z-index:70}
+  .side.open{transform:translateX(0)}
+  .side-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid #0001}
+  .side-body{padding:12px 14px;display:grid;gap:10px}
+  .input, textarea, select{width:100%;border:1px solid #0002;border-radius:10px;padding:10px 12px;background:#fff}
+  .row{display:grid;gap:10px}
+  .pill{display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border-radius:999px;border:1px solid #0002;background:#f7f7f7;font-weight:600;cursor:pointer}
+  .danger{background:#ffebe9;border-color:#ffb3a8;color:#a83225}
+  .ok{background:#e9ffe9;border-color:#b7f0b7;color:#216d21}
+
+  @media (max-width:900px){
+    .modal-body{grid-template-columns:1fr}
   }
 </style>
 </head>
 <body>
-  <!-- NAV -->
-  <nav class="nav">
-    <div class="nav-inner">
-      <a class="brand" href="index.html"><span class="dot"></span>OnlyPan Store</a>
-      <div style="display:flex;gap:10px;align-items:center">
-        <button id="adminToggle" class="btn-ghost btn" type="button">Admin</button>
-        <a class="btn" href="https://instagram.com/Onlypansrl" target="_blank" rel="noopener">Hacer pedido ↗</a>
+
+  <!-- TOP -->
+  <div class="top">
+    <div class="inner">
+      <a class="brand" href="#">
+        <span class="logo">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 14c0 3.866 4.03 7 9 7s9-3.134 9-7-4.03-7-9-7-9 3.134-9 7Z" fill="#fff"/>
+            <path d="M8 14a4 4 0 1 1 8 0" stroke="#8c5e3c" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="brand-name">OnlyPan Store</span>
+      </a>
+      <div style="display:flex;gap:10px">
+        <a class="btn ghost" href="index.html">Volver</a>
+        <button class="btn" id="btn-admin">Admin</button>
+        <a class="btn ghost" href="https://instagram.com/Onlypansrl" target="_blank" rel="noopener">Hacer pedido ↗</a>
       </div>
     </div>
-  </nav>
+  </div>
 
-  <!-- CONTENT -->
   <div class="wrap">
-    <a class="back" href="index.html">← Volver al inicio</a>
     <h1>Todos los productos</h1>
     <p class="muted">Catálogo completo. Para editar usá el panel <strong>Admin</strong>.</p>
 
-    <div class="toolbar">
-      <input id="q" class="search" type="search" placeholder="Buscar productos, descripciones o tags…">
-    </div>
+    <input id="q" class="search" placeholder="Buscar productos, descripciones o tags…"/>
 
-    <div id="grid" class="grid"></div>
-    <div id="empty" class="empty">Sin resultados.</div>
+    <div class="grid" id="grid"></div>
+
+    <p id="empty" class="muted" style="text-align:center;margin-top:18px;display:none">Sin resultados.</p>
   </div>
 
-  <!-- DRAWER ADMIN -->
-  <aside id="drawer" class="drawer" aria-hidden="true">
-    <header>
-      <h3>Panel Admin</h3>
-      <div class="actions">
-        <button id="drawerClose" class="icon" title="Cerrar">✕</button>
+  <!-- MODAL detalle -->
+  <div class="modal" id="m">
+    <div class="modal-card">
+      <div class="modal-top">
+        <strong id="m-title"></strong>
+        <button class="close" id="m-close">Cerrar</button>
       </div>
-    </header>
+      <div class="modal-body">
+        <img id="m-img" alt="">
+        <div class="modal-content">
+          <p class="muted" id="m-desc"></p>
+          <p style="font-weight:700;margin:0 0 16px;font-size:1.2rem" id="m-precio"></p>
+          <a class="btn" href="https://instagram.com/Onlypansrl" target="_blank" rel="noopener">Pedir por Instagram ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <div class="inner">
-      <div class="small" id="adminInfo">No autenticado</div>
+  <!-- SIDEBAR ADMIN -->
+  <aside class="side" id="side">
+    <div class="side-head">
+      <strong>Panel Admin</strong>
+      <button class="pill" id="side-close">✕</button>
+    </div>
+    <div class="side-body">
+      <div id="who" class="muted" style="font-size:.92rem"></div>
 
-      <div class="line"></div>
-      <div style="display:grid;gap:8px">
-        <strong>Crear / Editar</strong>
-        <input id="f_titulo" class="input" placeholder="Título">
-        <input id="f_img" class="input" placeholder="Imagen (URL)">
-        <textarea id="f_desc" class="input" rows="3" placeholder="Descripción"></textarea>
-        <input id="f_tags" class="input" placeholder="Etiquetas (coma)">
-        <div class="actions" style="justify-content:flex-end">
-          <button id="deleteBtn" class="icon btn-danger" style="display:none">🗑️ Eliminar</button>
-          <button id="saveBtn" class="icon save">💾 Guardar</button>
+      <div class="row">
+        <label class="muted" style="font-weight:700">Crear / Editar</label>
+        <input class="input" id="f-titulo" placeholder="Título">
+        <input class="input" id="f-precio" placeholder="Precio (ej: $3.500)">
+        <textarea class="input" id="f-desc" rows="3" placeholder="Descripción"></textarea>
+
+        <!-- Imagen: URL o archivo/cámara -->
+        <details>
+          <summary class="muted" style="cursor:pointer">▼ Imagen (URL o subir archivo)</summary>
+          <div class="row" style="margin-top:6px">
+            <input class="input" id="f-imgurl" placeholder="URL de imagen (opcional si subís archivo)">
+            <input class="input" id="f-file" type="file" accept="image/*" capture="environment">
+            <small class="muted">En celular podés sacar foto; en PC podés elegir un archivo.</small>
+          </div>
+        </details>
+
+        <input class="input" id="f-tags" placeholder="Etiquetas separadas por coma (opcional)">
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="pill ok" id="btn-save">💾 Guardar</button>
+          <button class="pill" id="btn-new">＋ Nuevo</button>
+          <button class="pill danger" id="btn-del" style="margin-left:auto;display:none">🗑 Eliminar</button>
+          <button class="pill" id="btn-logout" style="margin-left:auto;display:none">Cerrar sesión</button>
         </div>
       </div>
 
-      <div class="line"></div>
-      <div style="display:grid;gap:8px">
-        <strong>Productos</strong>
-        <input id="adm_filter" class="input" placeholder="Buscar en admin…">
-        <div id="adm_list" class="list"></div>
-      </div>
-
-      <div class="line"></div>
-      <div class="actions" style="justify-content:space-between">
-        <button id="newBtn" class="icon">＋ Nuevo</button>
-        <button id="logoutBtn" class="icon">Cerrar sesión</button>
-      </div>
+      <input class="input" id="admin-search" placeholder="Buscar en admin…">
+      <div id="admin-list" class="row"></div>
     </div>
   </aside>
 
-  <!-- MODAL LOGIN -->
-  <div class="modal" id="loginModal">
-    <div class="sheet" role="dialog" aria-modal="true">
-      <header>
-        <h3>Iniciar sesión (Admin)</h3>
-        <button id="closeLogin" class="icon">✕</button>
-      </header>
-      <div style="display:grid;gap:10px">
-        <label>Email</label>
-        <input id="auth_email" class="input" type="email" placeholder="tuemail@dominio.com">
-        <label>Contraseña</label>
-        <input id="auth_password" class="input" type="password" placeholder="********">
-        <button id="loginBtn" class="btn" style="width:100%">Entrar</button>
-        <small class="muted">Tus credenciales no quedan en el HTML; se envían a Supabase.</small>
+  <!-- LOGIN (modal simple) -->
+  <div class="modal" id="login">
+    <div class="modal-card" style="max-width:460px">
+      <div class="modal-top">
+        <strong>Iniciar sesión (Admin)</strong>
+        <button class="close" id="login-close">Cerrar</button>
+      </div>
+      <div style="padding:16px;display:grid;gap:10px">
+        <input class="input" id="email" placeholder="Email (no se guarda en el HTML)">
+        <input class="input" id="pass" type="password" placeholder="Contraseña">
+        <button class="btn" id="do-login">Entrar</button>
+        <small class="muted">Tus credenciales se envían a Supabase; no quedan visibles en el sitio.</small>
       </div>
     </div>
   </div>
 
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <!-- Supabase -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2.46.1/dist/umd/supabase.js"></script>
   <script>
-    /* ====== CONFIG ====== */
-    const SUPABASE_URL = "https://dlmgvrejatqhjhxoejdm.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsbWd2cmVqYXRxaGpoeG9lamRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzM4MTcsImV4cCI6MjA3ODA0OTgxN30.5WfDT6qUBfXvvon-io4g-JntQ_EnptAUFyeue1v8tBc";
-    const TABLE = "productos";
-    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  /* ================== CONFIG =================== */
+  const SUPABASE_URL = "https://dlmgvrejatqhjhxoejdm.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsbWd2cmVqYXRxaGpoeG9lamRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzM4MTcsImV4cCI6MjA3ODA0OTgxN30.5WfDT6qUBfXvvon-io4g-JntQ_EnptAUFyeue1v8tBc";
+  const BUCKET = "onlypan-images"; // Debe existir en Storage (crear por UI)
 
-    /* ====== STATE/ELEMENTS ====== */
-    let CATALOGO = [];
-    let session = null;
-    let editingId = null;
+  const ADMIN_EMAIL = "onlypanadmin@gmail.com";
+  const ADMIN_PASS_PLACEHOLDER = "Onlypan123"; // solo referencia para que recuerdes
 
-    const grid = document.getElementById('grid');
-    const empty = document.getElementById('empty');
-    const q = document.getElementById('q');
+  const supa = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    const drawer = document.getElementById('drawer');
-    const drawerClose = document.getElementById('drawerClose');
-    const adminToggle = document.getElementById('adminToggle');
-    const adminInfo = document.getElementById('adminInfo');
+  /* ================== UI helpers =================== */
+  const qs = (s)=>document.querySelector(s);
+  const qsa = (s)=>Array.from(document.querySelectorAll(s));
 
-    const f_titulo = document.getElementById('f_titulo');
-    const f_img = document.getElementById('f_img');
-    const f_desc = document.getElementById('f_desc');
-    const f_tags = document.getElementById('f_tags');
-    const saveBtn = document.getElementById('saveBtn');
-    const deleteBtn = document.getElementById('deleteBtn');
-    const newBtn = document.getElementById('newBtn');
-    const logoutBtn = document.getElementById('logoutBtn');
+  // modales
+  const openModal = (el)=>el.classList.add('open');
+  const closeModal = (el)=>el.classList.remove('open');
 
-    const adm_filter = document.getElementById('adm_filter');
-    const adm_list = document.getElementById('adm_list');
+  /* ================== PRODUCTOS =================== */
+  let all = [];
+  let currentEdit = null;
 
-    const loginModal = document.getElementById('loginModal');
-    const closeLogin = document.getElementById('closeLogin');
-    const auth_email = document.getElementById('auth_email');
-    const auth_password = document.getElementById('auth_password');
-    const loginBtn = document.getElementById('loginBtn');
+  async function loadProducts(){
+    const { data, error } = await supa.from('productos').select('*').order('created_at',{ascending:false});
+    if(error){ console.error(error); return; }
+    all = data || [];
+    renderList();
+    renderAdminList();
+  }
 
-    /* ====== UI HELPERS ====== */
-    function openDrawer(){ drawer.classList.add('open'); drawer.setAttribute('aria-hidden','false'); }
-    function closeDrawer(){ drawer.classList.remove('open'); drawer.setAttribute('aria-hidden','true'); }
-    drawerClose.onclick = closeDrawer;
-
-    function openLogin(){ loginModal.classList.add('open'); }
-    function closeLoginFn(){ loginModal.classList.remove('open'); auth_email.value=''; auth_password.value=''; }
-    closeLogin.onclick = closeLoginFn;
-
-    function clearForm(){ editingId=null; f_titulo.value=''; f_img.value=''; f_desc.value=''; f_tags.value=''; deleteBtn.style.display='none'; }
-
-    /* ====== RENDER CATÁLOGO ====== */
-    function cardHTML(p){
-      const chips = (p.tags||[]).map(t=>`<span class="chip">${t}</span>`).join('');
-      return `
-        <article class="card">
-          <div class="imgbox">
-            <img loading="lazy" src="${p.img}" alt="${p.titulo}" onload="this.classList.add('loaded')">
-          </div>
-          <div class="content">
-            <h3 class="title">${p.titulo}</h3>
-            <p class="desc">${p.desc||''}</p>
-            <div class="chips">${chips}</div>
-          </div>
-        </article>`;
-    }
-
-    function render(list){
-      const term = (q.value||'').toLowerCase();
-      const data = term ? list.filter(p =>
-        (p.titulo||'').toLowerCase().includes(term) ||
-        (p.desc||'').toLowerCase().includes(term) ||
-        (p.tags||[]).some(t => (t||'').toLowerCase().includes(term))
-      ) : list;
-
-      grid.innerHTML = data.map(cardHTML).join('');
-      grid.querySelectorAll('.card').forEach(el=>el.classList.add('reveal'));
-      empty.style.display = data.length ? 'none' : 'block';
-    }
-
-    /* ====== RENDER LISTA ADMIN ====== */
-    function renderAdminList(){
-      const term = (adm_filter.value||'').toLowerCase();
-      const data = term ? CATALOGO.filter(p =>
-        (p.titulo||'').toLowerCase().includes(term) ||
-        (p.desc||'').toLowerCase().includes(term) ||
-        (p.tags||[]).some(t => (t||'').toLowerCase().includes(term))
-      ) : CATALOGO;
-
-      adm_list.innerHTML = data.map(p => `
-        <div class="row">
-          <div style="min-width:0">
-            <div style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.titulo}</div>
-            <div class="tags">${(p.tags||[]).join(', ')}</div>
-          </div>
-          <div class="actions">
-            <button class="icon" data-edit="${p.id}" title="Editar">✏️</button>
-            <button class="icon danger" data-del="${p.id}" title="Eliminar">🗑️</button>
-          </div>
-        </div>
-      `).join('');
-
-      adm_list.querySelectorAll('[data-edit]').forEach(b=> b.onclick = () => loadToForm(b.dataset.edit));
-      adm_list.querySelectorAll('[data-del]').forEach(b=> b.onclick = () => delProduct(b.dataset.del));
-    }
-
-    /* ====== CRUD ====== */
-    async function loadCatalog(){
-      const { data, error } = await sb.from(TABLE).select('*').order('created_at',{ascending:false});
-      if(error){ console.error(error); alert('Error cargando productos'); return; }
-      CATALOGO = (data||[]).map(r=>({
-        id:r.id, titulo:r.titulo, img:r.img, desc:r.desc,
-        tags: Array.isArray(r.tags) ? r.tags : (r.tags ? String(r.tags).split(',').map(s=>s.trim()) : [])
-      }));
-      render(CATALOGO);
-      renderAdminList();
-    }
-
-    function loadToForm(id){
-      const p = CATALOGO.find(x=>String(x.id)===String(id));
-      if(!p) return;
-      editingId = p.id;
-      f_titulo.value = p.titulo||'';
-      f_img.value = p.img||'';
-      f_desc.value = p.desc||'';
-      f_tags.value = (p.tags||[]).join(', ');
-      deleteBtn.style.display = 'inline-flex';
-    }
-
-    async function upsertProduct(obj){
-      const payload = { id: obj.id || undefined, titulo: obj.titulo, img: obj.img, desc: obj.desc || null, tags: obj.tags || [] };
-      const { error } = await sb.from(TABLE).upsert(payload);
-      if(error){ console.error(error); alert('Error guardando: '+error.message); return false; }
-      return true;
-    }
-
-    async function delProduct(id){
-      if(!session) return alert('No autorizado');
-      if(!confirm('¿Eliminar este producto?')) return;
-      const { error } = await sb.from(TABLE).delete().eq('id',id);
-      if(error){ console.error(error); alert('Error eliminando: '+error.message); return; }
-      clearForm();
-      await loadCatalog();
-    }
-
-    /* ====== EVENTS ====== */
-    q.oninput = ()=>render(CATALOGO);
-    adm_filter.oninput = renderAdminList;
-
-    adminToggle.onclick = async ()=>{
-      if(session){ // si ya está logueado, abrir panel
-        adminInfo.textContent = `Conectado como: ${session.user.email}`;
-        openDrawer();
-      }else{
-        openLogin();
-      }
-    };
-
-    loginBtn.onclick = async ()=>{
-      const email = auth_email.value.trim();
-      const pass  = auth_password.value;
-      if(!email || !pass) return alert('Completá email y contraseña');
-      const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
-      if(error){ alert('Login inválido'); return; }
-      session = data.session;
-      adminInfo.textContent = `Conectado como: ${session.user.email}`;
-      closeLoginFn();
-      openDrawer();
-    };
-    auth_password.addEventListener('keydown', e=>{ if(e.key==='Enter') loginBtn.click(); });
-
-    logoutBtn.onclick = async ()=>{
-      await sb.auth.signOut();
-      session = null;
-      closeDrawer();
-    };
-
-    newBtn.onclick = clearForm;
-
-    saveBtn.onclick = async ()=>{
-      if(!session) return alert('Necesitás iniciar sesión');
-      const data = {
-        id: editingId || undefined,
-        titulo: f_titulo.value.trim(),
-        img:    f_img.value.trim(),
-        desc:   f_desc.value.trim(),
-        tags:   f_tags.value.split(',').map(s=>s.trim()).filter(Boolean)
-      };
-      if(!data.titulo) return alert('Título obligatorio');
-      if(!data.img)    return alert('Imagen (URL) obligatoria');
-      const ok = await upsertProduct(data);
-      if(ok){ await loadCatalog(); clearForm(); }
-    };
-
-    /* ====== AUTH STATE & REALTIME ====== */
-    sb.auth.getSession().then(({ data })=>{
-      session = data.session;
-      if(session) adminInfo.textContent = `Conectado como: ${session.user.email}`;
+  function renderList(){
+    const grid = qs('#grid');
+    grid.innerHTML = '';
+    const q = qs('#q').value?.toLowerCase().trim() || '';
+    const rows = all.filter(p=>{
+      const inTags = (p.tags||[]).join(',').toLowerCase();
+      return !q || (p.titulo?.toLowerCase().includes(q) || p.desc?.toLowerCase().includes(q) || inTags.includes(q) || (p.precio||'').toLowerCase().includes(q));
     });
-    sb.auth.onAuthStateChange((_e,s)=>{ session=s; if(s) adminInfo.textContent = `Conectado como: ${s.user.email}`; });
+    qs('#empty').style.display = rows.length ? 'none' : 'block';
 
-    try{
-      sb.channel('realtime:public:productos')
-        .on('postgres_changes',{event:'*',schema:'public',table:TABLE}, loadCatalog)
-        .subscribe();
-    }catch(_){}
+    for(const p of rows){
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.innerHTML = `
+        <img src="${p.img||'https://placehold.co/800x600?text=Sin+imagen'}" alt="${p.titulo||''}">
+        <div class="c">
+          <h3>${p.titulo||'Producto'}</h3>
+          ${p.tags?.length ? `<div>${p.tags.map(t=>`<span class="chip">${t}</span>`).join('')}</div>` : ''}
+          <div class="price">${p.precio||''}</div>
+        </div>
+      `;
+      card.addEventListener('click', ()=>openDetail(p));
+      grid.appendChild(card);
+    }
+  }
 
-    /* ====== INIT ====== */
-    document.addEventListener('DOMContentLoaded', ()=>{ loginModal.classList.remove('open'); });
-    loadCatalog();
+  function openDetail(p){
+    qs('#m-title').textContent = p.titulo||'Producto';
+    qs('#m-desc').textContent = p.desc||'';
+    qs('#m-precio').textContent = p.precio||'';
+    qs('#m-img').src = p.img||'';
+    openModal(qs('#m'));
+  }
+
+  qs('#m-close').onclick = ()=>closeModal(qs('#m'));
+  qs('#q').addEventListener('input', renderList);
+
+  /* ================== AUTH / ADMIN =================== */
+  async function checkSession(){
+    const { data:{ session } } = await supa.auth.getSession();
+    if(session && session.user){
+      // ya logueado
+      afterLogin(session.user);
+    }
+  }
+
+  function afterLogin(user){
+    qs('#login').classList.remove('open');
+    qs('#side').classList.add('open');
+    qs('#who').textContent = `Conectado como: ${user.email}`;
+    qs('#btn-logout').style.display = 'inline-flex';
+  }
+
+  // abrir admin → si no hay sesión, mostrar login
+  qs('#btn-admin').onclick = async ()=>{
+    const { data:{ session } } = await supa.auth.getSession();
+    if(session) qs('#side').classList.add('open');
+    else openModal(qs('#login'));
+  };
+  qs('#login-close').onclick = ()=>closeModal(qs('#login'));
+  qs('#side-close').onclick = ()=>qs('#side').classList.remove('open');
+
+  // login
+  qs('#do-login').onclick = async ()=>{
+    const email = qs('#email').value.trim();
+    const pass = qs('#pass').value;
+    const { data, error } = await supa.auth.signInWithPassword({ email, password: pass });
+    if(error){ alert('Login inválido'); return; }
+    afterLogin(data.user);
+  };
+
+  // logout
+  qs('#btn-logout').onclick = async ()=>{
+    await supa.auth.signOut();
+    qs('#side').classList.remove('open');
+    qs('#btn-logout').style.display = 'none';
+  };
+
+  /* ================== ADMIN CRUD =================== */
+  function resetForm(){
+    currentEdit = null;
+    qs('#f-titulo').value = '';
+    qs('#f-precio').value = '';
+    qs('#f-desc').value = '';
+    qs('#f-imgurl').value = '';
+    qs('#f-file').value = '';
+    qs('#f-tags').value = '';
+    qs('#btn-del').style.display = 'none';
+  }
+  qs('#btn-new').onclick = resetForm;
+
+  // guardar (insert/update)
+  qs('#btn-save').onclick = async ()=>{
+    const { data:{ session } } = await supa.auth.getSession();
+    if(!session){ alert('Necesitás iniciar sesión'); return; }
+
+    let imgURL = qs('#f-imgurl').value.trim();
+    const file = qs('#f-file').files[0];
+
+    // Si hay archivo, subimos al bucket
+    if(file){
+      // nombre único
+      const path = `${session.user.id}/${Date.now()}-${file.name.replace(/\s+/g,'_')}`;
+      const up = await supa.storage.from(BUCKET).upload(path, file, { cacheControl: '3600', upsert: false });
+      if(up.error){
+        alert('Error subiendo archivo: ' + up.error.message + '\n(Revisá que el bucket "'+BUCKET+'" exista y sea público)');
+        return;
+      }
+      const pub = supa.storage.from(BUCKET).getPublicUrl(path);
+      imgURL = pub.data.publicUrl;
+    }
+
+    const payload = {
+      titulo: qs('#f-titulo').value.trim(),
+      precio: qs('#f-precio').value.trim(),
+      desc: qs('#f-desc').value.trim(),
+      img: imgURL || null,
+      tags: qs('#f-tags').value ? qs('#f-tags').value.split(',').map(s=>s.trim()).filter(Boolean) : []
+    };
+
+    let res;
+    if(currentEdit){
+      res = await supa.from('productos').update(payload).eq('id', currentEdit).select().single();
+    }else{
+      res = await supa.from('productos').insert(payload).select().single();
+    }
+    if(res.error){ alert('Error guardando: '+res.error.message); return; }
+    resetForm();
+    await loadProducts();
+  };
+
+  // eliminar
+  qs('#btn-del').onclick = async ()=>{
+    if(!currentEdit) return;
+    if(!confirm('¿Eliminar este producto?')) return;
+    const res = await supa.from('productos').delete().eq('id', currentEdit);
+    if(res.error){ alert('Error eliminando: '+res.error.message); return; }
+    resetForm();
+    await loadProducts();
+  };
+
+  // listado admin para editar
+  function renderAdminList(){
+    const box = qs('#admin-list');
+    if(!box) return;
+    const q = qs('#admin-search').value?.toLowerCase().trim() || '';
+    const rows = all.filter(p=>{
+      const inTags = (p.tags||[]).join(',').toLowerCase();
+      return !q || (p.titulo?.toLowerCase().includes(q) || p.desc?.toLowerCase().includes(q) || inTags.includes(q));
+    });
+
+    box.innerHTML = rows.map(p=>`
+      <button class="pill" data-id="${p.id}" title="Editar">${p.titulo||'Producto'}</button>
+    `).join('') || `<small class="muted">Sin productos.</small>`;
+
+    qsa('#admin-list .pill').forEach(b=>{
+      b.onclick = ()=>{
+        const p = all.find(x=>x.id===b.dataset.id);
+        if(!p) return;
+        currentEdit = p.id;
+        qs('#f-titulo').value = p.titulo||'';
+        qs('#f-precio').value = p.precio||'';
+        qs('#f-desc').value = p.desc||'';
+        qs('#f-imgurl').value = p.img||'';
+        qs('#f-file').value = '';
+        qs('#f-tags').value = (p.tags||[]).join(', ');
+        qs('#btn-del').style.display = 'inline-flex';
+      };
+    });
+  }
+  qs('#admin-search').addEventListener('input', renderAdminList);
+
+  // cerrar modales con fondo
+  qsa('.modal').forEach(el=>{
+    el.addEventListener('click', (e)=>{ if(e.target===el) el.classList.remove('open'); });
+  });
+
+  // inicio
+  loadProducts();
+  checkSession();
   </script>
 </body>
 </html>
-
