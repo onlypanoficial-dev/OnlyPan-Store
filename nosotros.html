@@ -1,46 +1,65 @@
+<!-- nosotros.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OnlyPan — Nosotros</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
-  <style>
-    :root{--bg:#fff8f1;--paper:#fff;--text:#2b2b2b;--brand:#d4a373}
-    html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui}
-    .nav{position:sticky;top:0;background:rgba(255,248,241,.9);backdrop-filter:blur(8px);border-bottom:1px solid #0001}
-    .nav-inner{max-width:1100px;margin:0 auto;padding:14px 16px 10px}
-    .brand{display:flex;gap:10px;align-items:center}
-    .brand img{width:34px;height:34px;border-radius:50%}
-    .brand-name{font-family:"Playfair Display",serif;font-weight:800}
-    .tabs{margin-top:10px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-    .tab{background:#fff;border:1px solid #0002;border-radius:14px;padding:10px 16px;font-weight:700}
-    .wrapper{max-width:900px;margin:0 auto;padding:28px 16px 64px}
-    h1{font-family:"Playfair Display",serif}
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>OnlyPan — Nosotros</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff8f1;--text:#2b2b2b;--brand:#d4a373;--ring:#00000012}
+*{box-sizing:border-box} html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
+a{text-decoration:none;color:inherit}
+.nav{position:sticky;top:0;background:rgba(255,248,241,.9);backdrop-filter:saturate(1.1) blur(8px);border-bottom:1px solid var(--ring);z-index:30}
+.nav-inner{max-width:1100px;margin:0 auto;padding:12px 16px}
+.brandbar{display:flex;align-items:center;justify-content:center;gap:10px}
+.brandbar img{width:28px;height:28px;border-radius:8px;box-shadow:0 2px 8px var(--ring)}
+.brandbar h1{font-family:"Playfair Display",serif;font-size:1.1rem;margin:0}
+.tabs{margin-top:10px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.tab{background:#fff;border:1px solid #0002;border-radius:14px;padding:10px 16px;font-weight:700;box-shadow:0 6px 18px var(--ring)}
+.wrapper{max-width:1000px;margin:0 auto;padding:24px 16px 56px}
+h2{font-family:"Playfair Display",serif;font-size:clamp(26px,4.4vw,40px);margin:0 0 10px}
+p{line-height:1.6}
+.card{background:#fff;border:1px solid #0002;border-radius:16px;box-shadow:0 8px 24px var(--ring);padding:16px}
+.grid{display:grid;gap:16px;grid-template-columns:1fr}
+@media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
+</style>
 </head>
 <body>
-  <header class="nav">
-    <div class="nav-inner">
-      <div class="brand">
-        <img src="https://i.imgur.com/0C2ZJ1R.png" alt="OnlyPan logo" onerror="this.src='https://i.imgur.com/GJkQO1Z.png'">
-        <div class="brand-name">OnlyPan Store</div>
-      </div>
-      <nav class="tabs">
-        <a class="tab" href="index.html">Inicio</a>
-        <a class="tab" href="nosotros.html">Nosotros</a>
-        <a class="tab" href="productos.html">Productos</a>
-        <a class="tab" href="informacion.html">Información</a>
-      </nav>
-    </div>
-  </header>
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brandbar" href="index.html"><img src="assets/onlypan-logo.png" alt="OnlyPan logo"><h1>OnlyPan Store</h1></a>
+    <nav class="tabs">
+      <a class="tab" href="index.html">Inicio</a>
+      <a class="tab" href="nosotros.html">Nosotros</a>
+      <a class="tab" href="productos.html">Productos</a>
+      <a class="tab" href="informacion.html">Información</a>
+    </nav>
+  </div>
+</header>
 
-  <main class="wrapper">
-    <h1>Nosotros</h1>
-    <p>
-      Somos un proyecto escolar del <strong>Juan Bautista Alberdi</strong> (2025). Hacemos pan de verdad,
-      con tiempo, fermentaciones largas y materia prima seleccionada.
-    </p>
-  </main>
+<main class="wrapper">
+  <h2>Quiénes somos</h2>
+  <div class="grid">
+    <section class="card">
+      <p>
+        OnlyPan Store nació en <strong>2025</strong>, creado por alumnos del <strong>Juan Bautista Alberdi</strong>.
+        Elaboramos panes con procesos cuidados, ingredientes reales y fermentaciones largas. Nos organizamos como
+        una empresa escolar para aprender producción, administración y ventas, trabajando siempre en equipo.
+      </p>
+    </section>
+    <section class="card">
+      <h3 style="margin:0 0 8px">Nuestros valores</h3>
+      <ul style="margin:0;padding-left:18px;line-height:1.8">
+        <li>Calidad artesanal y frescura.</li>
+        <li>Trabajo en equipo y responsabilidad.</li>
+        <li>Aprendizaje continuo y compromiso.</li>
+        <li>Respeto por el cliente y por el proceso.</li>
+      </ul>
+    </section>
+  </div>
+</main>
 </body>
 </html>
