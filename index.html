@@ -10,46 +10,56 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#fff8f1; --paper:#fff; --text:#2b2b2b; --muted:#6b5b51;
-      --brand:#d4a373; --brand-700:#8c5e3c; --ring:#00000012; --chip:#0000000f;
+      --bg:#fff8f1;        /* crema */
+      --paper:#fff;        /* tarjetas */
+      --text:#2b2b2b;      /* gris oscuro */
+      --muted:#6b5b51;     /* texto secundario */
+      --brand:#d4a373;     /* caramelo */
+      --brand-700:#8c5e3c; /* tostado */
+      --ring:#00000010;    /* sombra sutil */
+      --chip:#0000000f;
+      --br:18px;
     }
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
     a{color:inherit;text-decoration:none}
     img{max-width:100%;display:block}
 
-    /* Splash (solo en Inicio) */
-    .splash{position:fixed;inset:0;background:var(--bg);display:grid;place-items:center;z-index:999}
-    .s-card{display:flex;flex-direction:column;align-items:center;gap:10px;background:#fff;border:1px solid #0001;border-radius:16px;padding:20px 24px;box-shadow:0 18px 50px var(--ring)}
-    .s-logo{width:64px;height:64px;border-radius:50%;object-fit:contain;box-shadow:0 6px 20px var(--ring)}
-    .dots{display:flex;gap:6px;margin-top:6px}
-    .dots span{width:8px;height:8px;border-radius:50%;background:var(--brand)}
-    .dots span:nth-child(1){animation:b 1s infinite}
-    .dots span:nth-child(2){animation:b 1s .15s infinite}
-    .dots span:nth-child(3){animation:b 1s .3s infinite}
-    @keyframes b{0%,80%,100%{transform:scale(.6);opacity:.5}40%{transform:scale(1);opacity:1}}
-
-    /* Header / Tabs */
+    /* Header */
     .nav{position:sticky;top:0;z-index:50;background:rgba(255,248,241,.85);backdrop-filter:saturate(1.15) blur(8px);border-bottom:1px solid #0001}
-    .nav-inner{max-width:1100px;margin:0 auto;padding:12px 16px 10px}
+    .nav-inner{max-width:1100px;margin:0 auto;padding:14px 16px 10px}
     .brand{display:flex;align-items:center;gap:10px}
     .brand img{width:34px;height:34px;border-radius:50%;box-shadow:0 2px 8px var(--ring)}
     .brand-name{font-family:"Playfair Display",serif;font-weight:800;font-size:1.15rem;letter-spacing:.2px}
-    .tabs{margin-top:10px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-    .tab{background:var(--paper);border:1px solid #0002;border-radius:14px;padding:10px 16px;font-weight:700;box-shadow:0 6px 18px var(--ring)}
-    .tab:hover{transform:translateY(-1px)}
-    .tab.active{background:var(--brand);color:#fff;border-color:transparent}
 
-    /* Layout */
+    /* Tabs centradas */
+    .tabs{margin-top:10px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    .tab{
+      background:var(--paper); border:1px solid #0002; border-radius:14px; padding:10px 16px;
+      font-weight:700; box-shadow:0 6px 18px var(--ring);
+    }
+    .tab:hover{transform:translateY(-1px)}
+    .tab.primary{background:var(--brand);color:#fff;border-color:transparent}
+
+    /* Hero en 2 columnas (se apila en mobile) */
     .wrapper{max-width:1100px;margin:0 auto;padding:24px 16px 64px}
-    .hero{display:grid;gap:18px;grid-template-columns:1.15fr .85fr;align-items:start}
+    .hero{
+      display:grid; gap:18px; grid-template-columns:1.15fr .85fr; align-items:start;
+    }
     .headline{font-family:"Playfair Display",serif;font-size:clamp(28px,5.2vw,52px);line-height:1.05;margin:.2rem 0 .4rem}
     .lead{color:var(--muted);margin:0 0 .8rem}
+
     .cta-col{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
-    .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 18px;border-radius:14px;border:1px solid #0002;background:var(--paper);font-weight:800;box-shadow:0 10px 24px var(--ring)}
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;padding:14px 18px;border-radius:14px;
+      border:1px solid #0002;background:var(--paper);font-weight:800;box-shadow:0 10px 24px var(--ring)
+    }
     .btn.primary{background:var(--brand);color:#fff;border-color:transparent}
     .btn:hover{transform:translateY(-1px)}
-    .card{background:var(--paper);border:1px solid #0001;border-radius:18px;box-shadow:0 10px 30px var(--ring);overflow:hidden}
+
+    .card{
+      background:var(--paper);border:1px solid #0001;border-radius:18px;box-shadow:0 10px 30px var(--ring);overflow:hidden
+    }
     .card-body{padding:12px 14px 16px}
     .title-sm{font-weight:800;margin:0 0 8px}
     .chips{display:flex;gap:8px;flex-wrap:wrap}
@@ -59,7 +69,9 @@
     .section-title{font-family:"Playfair Display",serif;font-size:clamp(22px,4.4vw,36px);margin:0 0 8px}
     .muted{color:var(--muted)}
 
-    .footer{margin-top:48px;padding:28px 16px;background:linear-gradient(180deg,#fff3e3,var(--bg));border-top:1px solid #0001}
+    .footer{
+      margin-top:48px;padding:28px 16px;background:linear-gradient(180deg,#fff3e3,var(--bg));border-top:1px solid #0001
+    }
     .socials{display:flex;gap:10px;flex-wrap:wrap}
     .pill{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;background:#fff;border:1px solid #0002;border-radius:999px;font-weight:700}
 
@@ -71,27 +83,20 @@
 </head>
 <body>
 
-  <!-- SPLASH: solo en Inicio (2s) -->
-  <div id="splash" class="splash" aria-hidden="true">
-    <div class="s-card">
-      <img class="s-logo" src="assets/onlypan-logo.png" alt="OnlyPan logo">
-      <strong>OnlyPan Store</strong>
-      <div class="dots"><span></span><span></span><span></span></div>
-    </div>
-  </div>
-
   <!-- HEADER -->
   <header class="nav">
     <div class="nav-inner">
       <div class="brand">
-        <img src="assets/onlypan-logo.png" alt="OnlyPan logo">
+        <!-- LOGO: podés reemplazar src por tu archivo /logo.png -->
+        <img src="https://raw.githubusercontent.com/hampusborgos/country-flags/main/png250px/ar.png" alt="" style="opacity:.001;position:absolute;left:-9999px"> 
+        <img src="https://i.imgur.com/0C2ZJ1R.png" alt="OnlyPan logo" onerror="this.src='https://i.imgur.com/GJkQO1Z.png'">
         <div class="brand-name">OnlyPan Store</div>
       </div>
       <nav class="tabs" aria-label="Secciones">
-        <a class="tab active" href="index.html">Inicio</a>
+        <a class="tab" href="index.html">Inicio</a>
         <a class="tab" href="nosotros.html">Nosotros</a>
         <a class="tab" href="productos.html">Productos</a>
-        <a class="tab" href="informacion.html">Información</a>
+        <a class="tab primary" href="informacion.html">Información</a>
       </nav>
     </div>
   </header>
@@ -163,10 +168,6 @@
   </footer>
 
   <script>
-    // Splash 2s solo en Inicio
-    window.addEventListener('load', () => {
-      setTimeout(()=>{ document.getElementById('splash')?.remove(); }, 2000);
-    });
     // año dinámico
     document.getElementById('y').textContent = new Date().getFullYear();
   </script>
