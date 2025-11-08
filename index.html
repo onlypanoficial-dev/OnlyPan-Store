@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,68 +11,48 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#fff8f1;        /* crema */
-      --paper:#fff;        /* tarjetas */
-      --text:#2b2b2b;      /* gris oscuro */
-      --muted:#6b5b51;     /* texto secundario */
-      --brand:#d4a373;     /* caramelo */
-      --brand-700:#8c5e3c; /* tostado */
-      --ring:#00000010;    /* sombra sutil */
-      --chip:#0000000f;
-      --br:18px;
+      --bg:#fff8f1; --paper:#fff; --text:#2b2b2b; --muted:#6b5b51;
+      --brand:#d4a373; --brand-700:#8c5e3c; --ring:#00000012; --br:18px;
     }
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
     a{color:inherit;text-decoration:none}
     img{max-width:100%;display:block}
 
+    /* Splash (solo Inicio) */
+    #splash{position:fixed;inset:0;display:none;place-items:center;background:linear-gradient(180deg,#fff3e3,var(--bg));z-index:999}
+    #splash.show{display:grid}
+    .spinner{margin-top:14px;width:36px;height:36px;border-radius:50%;border:3px solid #0001;border-top-color:var(--brand);animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
     /* Header */
-    .nav{position:sticky;top:0;z-index:50;background:rgba(255,248,241,.85);backdrop-filter:saturate(1.15) blur(8px);border-bottom:1px solid #0001}
-    .nav-inner{max-width:1100px;margin:0 auto;padding:14px 16px 10px}
+    .nav{position:sticky;top:0;z-index:50;background:rgba(255,248,241,.9);backdrop-filter:saturate(1.15) blur(8px);border-bottom:1px solid #0001}
+    .nav-inner{max-width:1100px;margin:0 auto;padding:10px 16px}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px}
     .brand{display:flex;align-items:center;gap:10px}
-    .brand img{width:34px;height:34px;border-radius:50%;box-shadow:0 2px 8px var(--ring)}
-    .brand-name{font-family:"Playfair Display",serif;font-weight:800;font-size:1.15rem;letter-spacing:.2px}
-
-    /* Tabs centradas */
+    .brand img{width:34px;height:34px;border-radius:10px;box-shadow:0 2px 8px var(--ring)}
+    .brand-name{font-family:"Playfair Display",serif;font-weight:800;font-size:1.1rem}
     .tabs{margin-top:10px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-    .tab{
-      background:var(--paper); border:1px solid #0002; border-radius:14px; padding:10px 16px;
-      font-weight:700; box-shadow:0 6px 18px var(--ring);
-    }
+    .tab{background:var(--paper);border:1px solid #0002;border-radius:14px;padding:10px 16px;font-weight:700;box-shadow:0 6px 18px var(--ring)}
     .tab:hover{transform:translateY(-1px)}
-    .tab.primary{background:var(--brand);color:#fff;border-color:transparent}
 
-    /* Hero en 2 columnas (se apila en mobile) */
     .wrapper{max-width:1100px;margin:0 auto;padding:24px 16px 64px}
-    .hero{
-      display:grid; gap:18px; grid-template-columns:1.15fr .85fr; align-items:start;
-    }
+    .hero{display:grid;gap:18px;grid-template-columns:1.15fr .85fr;align-items:start}
     .headline{font-family:"Playfair Display",serif;font-size:clamp(28px,5.2vw,52px);line-height:1.05;margin:.2rem 0 .4rem}
     .lead{color:var(--muted);margin:0 0 .8rem}
-
-    .cta-col{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
-    .btn{
-      display:inline-flex;align-items:center;gap:10px;padding:14px 18px;border-radius:14px;
-      border:1px solid #0002;background:var(--paper);font-weight:800;box-shadow:0 10px 24px var(--ring)
-    }
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:14px;border:1px solid #0002;background:#fff;font-weight:800;box-shadow:0 10px 24px var(--ring)}
     .btn.primary{background:var(--brand);color:#fff;border-color:transparent}
     .btn:hover{transform:translateY(-1px)}
-
-    .card{
-      background:var(--paper);border:1px solid #0001;border-radius:18px;box-shadow:0 10px 30px var(--ring);overflow:hidden
-    }
+    .card{background:var(--paper);border:1px solid #0001;border-radius:18px;box-shadow:0 10px 30px var(--ring);overflow:hidden}
     .card-body{padding:12px 14px 16px}
-    .title-sm{font-weight:800;margin:0 0 8px}
     .chips{display:flex;gap:8px;flex-wrap:wrap}
-    .chip{font-size:.8rem;background:var(--chip);border:1px dashed #00000022;border-radius:999px;padding:6px 10px}
+    .chip{font-size:.8rem;background:#00000010;border:1px dashed #00000022;border-radius:999px;padding:6px 10px}
 
     section{margin-top:28px}
     .section-title{font-family:"Playfair Display",serif;font-size:clamp(22px,4.4vw,36px);margin:0 0 8px}
     .muted{color:var(--muted)}
 
-    .footer{
-      margin-top:48px;padding:28px 16px;background:linear-gradient(180deg,#fff3e3,var(--bg));border-top:1px solid #0001
-    }
+    .footer{margin-top:48px;padding:28px 16px;background:linear-gradient(180deg,#fff3e3,var(--bg));border-top:1px solid #0001}
     .socials{display:flex;gap:10px;flex-wrap:wrap}
     .pill{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;background:#fff;border:1px solid #0002;border-radius:999px;font-weight:700}
 
@@ -83,20 +64,24 @@
 </head>
 <body>
 
-  <!-- HEADER -->
+  <!-- Splash sólo para Inicio -->
+  <div id="splash" aria-hidden="true">
+    <div style="display:flex;flex-direction:column;align-items:center">
+      <img src="assets/onlypan-logo.png" alt="OnlyPan logo" style="width:86px;height:86px;border-radius:16px;box-shadow:0 6px 24px var(--ring)">
+      <div class="spinner"></div>
+    </div>
+  </div>
+
   <header class="nav">
     <div class="nav-inner">
-      <div class="brand">
-        <!-- LOGO: podés reemplazar src por tu archivo /logo.png -->
-        <img src="https://raw.githubusercontent.com/hampusborgos/country-flags/main/png250px/ar.png" alt="" style="opacity:.001;position:absolute;left:-9999px"> 
-        <img src="https://i.imgur.com/0C2ZJ1R.png" alt="OnlyPan logo" onerror="this.src='https://i.imgur.com/GJkQO1Z.png'">
-        <div class="brand-name">OnlyPan Store</div>
+      <div class="topbar">
+        <a class="brand" href="index.html"><img src="assets/onlypan-logo.png" alt="OnlyPan logo"><span class="brand-name">OnlyPan Store</span></a>
       </div>
       <nav class="tabs" aria-label="Secciones">
         <a class="tab" href="index.html">Inicio</a>
         <a class="tab" href="nosotros.html">Nosotros</a>
         <a class="tab" href="productos.html">Productos</a>
-        <a class="tab primary" href="informacion.html">Información</a>
+        <a class="tab" href="informacion.html">Información</a>
       </nav>
     </div>
   </header>
@@ -106,18 +91,15 @@
       <div class="cta-col">
         <h1 class="headline">Panes artesanales, recién horneados.</h1>
         <p class="lead">Elegí tus favoritos y escribinos por Instagram. ¡Así de simple!</p>
-
         <a class="btn primary" href="productos.html">Ver catálogo completo</a>
         <a class="btn" href="https://instagram.com/Onlypansrl" target="_blank" rel="noopener">Pedir por Instagram</a>
       </div>
 
-      <!-- Tarjeta chica a la derecha (no gigante y sin tapar) -->
+      <!-- Tarjeta a la derecha (no gigante) -->
       <article class="card">
-        <img
-          src="https://images.unsplash.com/photo-1549931296-3c132f3fc650?q=80&w=1200&auto=format&fit=crop"
-          alt="Baguette artesanal" style="width:100%;height:210px;object-fit:cover">
+        <img src="https://images.unsplash.com/photo-1549931296-3c132f3fc650?q=80&w=1280&auto=format&fit=crop" alt="Baguette artesanal" style="width:100%;height:210px;object-fit:cover">
         <div class="card-body">
-          <h3 class="title-sm">Baguette artesanal</h3>
+          <h3 style="margin:0 0 6px">Baguette artesanal</h3>
           <div class="chips">
             <span class="chip">Masa madre</span>
             <span class="chip">Horneado diario</span>
@@ -127,7 +109,6 @@
       </article>
     </section>
 
-    <!-- NOSOTROS (resumen) -->
     <section id="nosotros">
       <h2 class="section-title">Nosotros</h2>
       <p class="muted">
@@ -136,15 +117,13 @@
       </p>
     </section>
 
-    <!-- VISIÓN & MISIÓN -->
     <section>
       <h2 class="section-title">Visión</h2>
       <p class="muted">
-        Convertirnos en una empresa escolar modelo, reconocida por la calidad y variedad de nuestros productos de
-        panadería artesanal, así como por el trabajo en equipo, la responsabilidad y el compromiso de cada integrante.
-        Buscamos que OnlyPan sea un proyecto donde aprendamos sobre producción, administración, ventas y valores empresariales,
-        aplicando lo aprendido para lograr un resultado real en la feria de fin de año y dejar una experiencia positiva
-        para los futuros estudiantes que continúen con el emprendimiento.
+        Convertirnos en una empresa escolar modelo, reconocida por la calidad y variedad de nuestros productos de panadería artesanal,
+        así como por el trabajo en equipo, la responsabilidad y el compromiso de cada integrante. Buscamos que OnlyPan sea un proyecto
+        donde aprendamos sobre producción, administración, ventas y valores empresariales, aplicando lo aprendido para lograr un
+        resultado real en la feria de fin de año y dejar una experiencia positiva para los futuros estudiantes que continúen con el emprendimiento.
       </p>
       <h2 class="section-title" style="margin-top:14px">Misión</h2>
       <p class="muted">
@@ -168,8 +147,23 @@
   </footer>
 
   <script>
-    // año dinámico
+    // Año
     document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Splash SOLO en Inicio y por 2s. Si se hace click en "Inicio", mostrar.
+    const splash = document.getElementById('splash');
+    const shouldShow = sessionStorage.getItem('onlypan_show_splash') === '1' || !sessionStorage.getItem('onlypan_seen');
+    if (shouldShow) {
+      splash.classList.add('show');
+      setTimeout(()=>{
+        splash.classList.remove('show');
+        sessionStorage.setItem('onlypan_seen','1');
+        sessionStorage.removeItem('onlypan_show_splash');
+      }, 2000); // 2s
+    }
+    document.querySelectorAll('a[href="index.html"]').forEach(a=>{
+      a.addEventListener('click', ()=> sessionStorage.setItem('onlypan_show_splash','1'));
+    });
   </script>
 </body>
 </html>
