@@ -1,224 +1,370 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OnlyPan — Todos los productos</title>
-  <meta name="description" content="Catálogo de panes artesanales de OnlyPan." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#fff7ef;--paper:#fffdfa;--text:#2b2b2b;--muted:#7a6d64;
-      --brand:#d4a373;--brand-700:#8c5e3c;--stroke:#00000012;--radius:16px;
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
-    a{color:inherit;text-decoration:none}
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>OnlyPan — Todos los productos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fff8f1;--text:#2b2b2b;--primary:#d4a373;--primary-700:#8c5e3c;--card:#fff;--ring:#00000012
+}
+*{box-sizing:border-box} html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
+a{color:inherit;text-decoration:none}
 
-    /* Header (igual al index) */
-    .nav{position:sticky;top:0;z-index:50;backdrop-filter:saturate(1.1) blur(10px);
-      background:linear-gradient(180deg,#fffaf2dd,#fffaf2aa);border-bottom:1px solid var(--stroke)}
-    .nav-inner{max-width:1100px;margin:0 auto;padding:12px 18px;display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center}
-    .brand{display:flex;align-items:center;gap:10px}
-    .mark{width:38px;height:38px;border-radius:12px;background:#fff url('assets/logo-onlypan.png') center/80% no-repeat;border:1px solid var(--stroke)}
-    .name{font-family:"Playfair Display",serif;font-weight:700;font-size:1.25rem}
+/* NAV tabs centradas */
+.nav{position:sticky;top:0;z-index:40;background:linear-gradient(180deg,#fff9f3,rgba(255,249,243,.6));backdrop-filter:saturate(1.1) blur(8px);border-bottom:1px solid var(--ring)}
+.nav-inner{max-width:1100px;margin:0 auto;padding:14px 16px}
+.tabs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.tab{background:#fff;border:1px solid var(--ring);border-radius:14px;padding:10px 16px;font-weight:700;box-shadow:0 6px 18px var(--ring)}
+.tab:hover{transform:translateY(-1px)}
+.tab.active{background:var(--primary);color:#fff;border-color:transparent}
 
-    .tabs{justify-self:center;display:flex;gap:10px;flex-wrap:wrap}
-    .pill{display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;border-radius:999px;background:#fff;border:1px solid var(--stroke);font-weight:700;min-width:128px;box-shadow:0 6px 14px #0000000a}
-    .pill.primary{background:var(--brand);color:#fff;border-color:#0000}
+/* HEADER compact */
+.header-brand{max-width:1100px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px}
+.logo{width:28px;height:28px;border-radius:50%;object-fit:contain;box-shadow:0 2px 8px var(--ring)}
+.brand-name{font-family:"Playfair Display",serif;font-weight:700}
 
-    /* Page */
-    .wrap{max-width:1100px;margin:0 auto;padding:26px 18px}
-    h1{font-family:"Playfair Display",serif;font-size:clamp(28px,5.2vw,40px);margin:0 0 8px}
-    .muted{color:var(--muted)}
-    .search{margin-top:12px}
-    .search input{width:100%;padding:14px 14px;border-radius:12px;border:1px solid var(--stroke);background:#fff}
+/* BODY */
+.container{max-width:1100px;margin:0 auto;padding:14px 16px 70px}
+.title{font-family:"Playfair Display",serif;font-size:clamp(26px,4.8vw,38px);margin:6px 0}
+.muted{color:#5a4a41}
+.search{width:100%;padding:.75rem 1rem;border-radius:12px;border:1px solid var(--ring);background:#fff}
 
-    /* Grid */
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:18px}
-    .card{background:var(--paper);border:1px solid var(--stroke);border-radius:16px;overflow:hidden;box-shadow:0 10px 28px #00000010}
-    .card .img{height:170px;background:#efe5d9}
-    .card img{display:block;width:100%;height:100%;object-fit:cover}
-    .card .body{padding:12px}
-    .card h3{margin:0 0 6px;font-size:1.06rem}
-    .chips{display:flex;gap:8px;flex-wrap:wrap}
-    .chip{font-size:.82rem;background:#fff;border:1px dashed #00000022;border-radius:999px;padding:6px 10px}
-    .card .price{margin-top:10px;font-weight:800}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+.card{background:var(--card);border:1px solid var(--ring);border-radius:14px;overflow:hidden;position:relative}
+.card figure{margin:0;aspect-ratio:16/10;background:#f0e5d6}
+.card img{width:100%;height:100%;object-fit:cover;display:block}
+.card .content{padding:12px}
+.card h3{margin:0 0 4px;font-size:1.05rem}
+.price{color:var(--primary-700);font-weight:800}
+.tools{position:absolute;top:8px;right:8px;display:none;gap:6px}
+.card.admin .tools{display:flex}
+.icon{width:32px;height:32px;border-radius:8px;border:1px solid var(--ring);display:grid;place-items:center;background:#fff;cursor:pointer}
+.icon:hover{filter:brightness(1.03)}
 
-    /* Empty */
-    .empty{margin-top:18px;padding:22px;border:1px dashed #00000018;border-radius:14px;color:var(--muted);text-align:center;background:#fffaf5}
+/* MODALS */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.3);display:none;align-items:center;justify-content:center;padding:14px;z-index:60}
+.modal.open{display:flex}
+.modal .box{background:#fff;border-radius:14px;box-shadow:0 18px 40px #0003;max-width:520px;width:100%;padding:16px}
+.modal h3{margin:.2rem 0 .6rem}
+.field{display:grid;gap:6px;margin:10px 0}
+.field input,.field textarea{width:100%;padding:.7rem .9rem;border-radius:10px;border:1px solid var(--ring);background:#fff}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.right{margin-left:auto}
 
-    /* Modal (detalle) */
-    .modal{position:fixed;inset:0;background:#00000060;display:none;place-items:center;padding:16px;z-index:60}
-    .modal.show{display:grid}
-    .sheet{max-width:680px;width:100%;background:var(--paper);border-radius:18px;border:1px solid var(--stroke);overflow:hidden;box-shadow:0 30px 60px #00000030}
-    .sheet .media{height:300px;background:#efe5d9}
-    .sheet img{width:100%;height:100%;object-fit:cover}
-    .sheet .content{padding:16px}
-    .sheet h2{margin:0 0 8px;font-family:"Playfair Display",serif}
-    .sheet .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-    .close{position:absolute;top:16px;right:16px;background:#fff;border:1px solid var(--stroke);border-radius:999px;padding:8px 12px;font-weight:700}
+/* Admin drawer */
+.drawer{position:fixed;inset:0 0 0 auto;width:360px;max-width:100vw;transform:translateX(105%);transition:transform .25s ease;background:#fff;border-left:1px solid var(--ring);z-index:55;display:flex;flex-direction:column}
+.drawer.open{transform:translateX(0)}
+.drawer header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--ring)}
+.drawer .body{padding:12px 14px;overflow:auto}
+.drawer .muted{color:#5a4a41;font-size:.9rem}
+.small{font-size:.85rem}
 
-    /* Footer */
-    footer{border-top:1px solid var(--stroke);background:linear-gradient(180deg,#fffaf2,#fff7ef)}
-  </style>
+/* Admin button bottom */
+.bottom-bar{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.85);backdrop-filter:saturate(1.1) blur(8px);border-top:1px solid var(--ring);padding:10px 14px;display:flex;justify-content:center;z-index:50}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.55rem .95rem;border-radius:10px;border:1px solid var(--ring);background:#fff;font-weight:700}
+.btn.primary{background:var(--primary);color:#fff;border-color:#0000}
+
+/* Mobile */
+@media (max-width:900px){
+  .grid{grid-template-columns:1fr}
+  .drawer{width:100%}
+}
+</style>
 </head>
 <body>
-
   <!-- NAV -->
-  <nav class="nav">
-    <div class="nav-inner">
-      <a class="brand" href="index.html">
-        <span class="mark" aria-hidden="true"></span>
-        <span class="name">OnlyPan Store</span>
-      </a>
-
-      <div class="tabs">
-        <a class="pill" href="index.html">Inicio</a>
-        <a class="pill" href="index.html#nosotros">Nosotros</a>
-        <a class="pill primary" href="productos.html">Productos</a>
-        <a class="pill" href="index.html#informacion">Información</a>
+  <header class="nav">
+    <div class="header-brand">
+      <img class="logo" src="assets/onlypan-logo.png" alt="OnlyPan logo">
+      <div class="brand-name">OnlyPan Store</div>
+    </div>
+    <nav class="nav-inner">
+      <div class="tabs" aria-label="Secciones">
+        <a class="tab" href="index.html">Inicio</a>
+        <a class="tab" href="nosotros.html">Nosotros</a>
+        <a class="tab active" href="productos.html">Productos</a>
+        <a class="tab" href="informacion.html">Información</a>
       </div>
-    </div>
-  </nav>
+    </nav>
+  </header>
 
-  <main class="wrap">
-    <h1>Todos los productos</h1>
-    <p class="muted">Catálogo completo. Tocá cualquier producto para ver la ficha.</p>
-
-    <div class="search">
-      <input id="q" type="search" placeholder="Buscar productos, descripciones o tags…">
-    </div>
-
-    <div id="grid" class="grid"></div>
-    <div id="empty" class="empty" style="display:none">Sin resultados.</div>
+  <!-- MAIN -->
+  <main class="container">
+    <h2 class="title">Todos los productos</h2>
+    <p class="muted">Catálogo completo. Para editar usá el panel <strong>Admin</strong>.</p>
+    <input id="q" class="search" placeholder="Buscar productos, descripciones o tags…"/>
+    <div id="list" class="grid" aria-live="polite"></div>
+    <p id="empty" class="muted" style="text-align:center;margin:18px 0;display:none">Sin resultados.</p>
   </main>
 
-  <!-- Modal detalle -->
-  <div class="modal" id="modal" aria-hidden="true">
-    <div class="sheet">
-      <button class="close" id="close">Cerrar</button>
-      <div class="media"><img id="mimg" alt=""></div>
-      <div class="content">
-        <h2 id="mtitle"></h2>
-        <div class="muted" id="mdesc"></div>
-        <div class="row" id="mtags" style="margin-top:12px"></div>
-        <div class="price" id="mprice" style="margin-top:12px;font-weight:800"></div>
+  <!-- FICHA -->
+  <div id="mFicha" class="modal" role="dialog" aria-modal="true">
+    <div class="box">
+      <div class="row">
+        <h3 id="fTitle">Producto</h3>
+        <button id="fClose" class="btn right">Cerrar</button>
       </div>
+      <img id="fImg" alt="" style="width:100%;height:220px;object-fit:cover;border-radius:12px;background:#f3ebde">
+      <p class="price" id="fPrice" style="margin:.6rem 0 .2rem"></p>
+      <p id="fDesc" style="margin:.2rem 0 .6rem"></p>
+      <a class="btn primary" id="fCta" href="https://instagram.com/Onlypansrl" target="_blank" rel="noopener">Pedir por Instagram</a>
     </div>
   </div>
 
-  <footer>
-    <section class="wrap" style="padding-top:0;padding-bottom:18px">
-      <small class="muted">© <span id="y"></span> OnlyPan Store — onlypan.store</small>
-    </section>
-  </footer>
+  <!-- LOGIN -->
+  <div id="mLogin" class="modal" role="dialog" aria-modal="true">
+    <div class="box">
+      <div class="row">
+        <h3>Iniciar sesión (Admin)</h3>
+        <button id="lClose" class="btn right">Cerrar</button>
+      </div>
+      <div class="field"><label>Email</label><input id="lEmail" type="email" placeholder="onlypanadmin@gmail.com" autocomplete="username"></div>
+      <div class="field"><label>Contraseña</label><input id="lPass" type="password" placeholder="••••••••" autocomplete="current-password"></div>
+      <button id="lGo" class="btn primary" style="width:100%;justify-content:center">Entrar</button>
+      <p class="small" style="margin-top:8px">Tus credenciales no quedan en el HTML; van directo a Supabase.</p>
+    </div>
+  </div>
 
-  <script>
-    // Año
-    document.getElementById('y').textContent = new Date().getFullYear();
+  <!-- ADMIN DRAWER -->
+  <aside id="drawer" class="drawer" aria-hidden="true">
+    <header>
+      <strong>Panel Admin</strong>
+      <button id="dClose" class="btn">✕</button>
+    </header>
+    <div class="body">
+      <p class="muted">Conectado como: <span id="who">—</span></p>
+      <hr style="border:none;border-top:1px solid var(--ring);margin:10px 0">
+      <h4 style="margin:0 0 8px">Crear / Editar</h4>
 
-    // Datos de ejemplo (podés borrarlos y reemplazar por tu fetch a Supabase)
-    const DATA = [
-      {
-        id:'p1',
-        titulo:'Baguette clásica',
-        img:'https://images.unsplash.com/photo-1549931296-3c132f3fc650?q=80&w=1200&auto=format&fit=crop',
-        desc:'Corte crujiente y miga aireada. Ideal para sándwiches.',
-        tags:['Trigo','Crusty'],
-        precio: 'AR$ 2.200'
-      },
-      {
-        id:'p2',
-        titulo:'Pan de campo',
-        img:'https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=1200&auto=format&fit=crop',
-        desc:'Masa madre, fermentación lenta, sabor profundo.',
-        tags:['Masa madre','Fermentación'],
-        precio: 'AR$ 2.900'
-      },
-      {
-        id:'p3',
-        titulo:'Pan integral',
-        img:'https://images.unsplash.com/photo-1617195737496-89ae090afcca?q=80&w=1200&auto=format&fit=crop',
-        desc:'Harinas integrales y semillas.',
-        tags:['Semillas','Fibra'],
-        precio: 'AR$ 3.200'
-      }
-    ];
-
-    const $grid = document.getElementById('grid');
-    const $empty = document.getElementById('empty');
-    const $q = document.getElementById('q');
-
-    function card(p){
-      const el = document.createElement('article');
-      el.className = 'card';
-      el.innerHTML = `
-        <div class="img"><img src="${p.img}" alt="${p.titulo}"></div>
-        <div class="body">
-          <h3>${p.titulo}</h3>
-          <div class="chips">${(p.tags||[]).map(t=>`<span class="chip">${t}</span>`).join('')}</div>
-          <div class="price">${p.precio? p.precio : ''}</div>
+      <div class="field"><label>Título</label><input id="pTitulo" placeholder="Ej: Pan de campo"></div>
+      <div class="row">
+        <div class="field" style="flex:1;min-width:160px">
+          <label>Precio</label><input id="pPrecio" placeholder="$1200">
         </div>
-      `;
-      el.addEventListener('click', ()=>openModal(p));
-      return el;
-    }
+        <div class="field" style="flex:1;min-width:160px">
+          <label>Etiquetas (coma)</label><input id="pTags" placeholder="masa madre, integral">
+        </div>
+      </div>
 
-    function render(list){
-      $grid.innerHTML = '';
-      if(!list.length){ $empty.style.display='block'; return }
-      $empty.style.display='none';
-      list.forEach(p=>$grid.appendChild(card(p)));
-    }
+      <div class="field"><label>Descripción</label><textarea id="pDesc" rows="3" placeholder="Notas de cata, fermentación, etc."></textarea></div>
 
-    // Búsqueda simple
-    let all = DATA.slice();
-    $q.addEventListener('input', ()=>{
-      const t = $q.value.toLowerCase().trim();
-      const res = all.filter(p =>
-        p.titulo.toLowerCase().includes(t) ||
-        (p.desc||'').toLowerCase().includes(t) ||
-        (p.tags||[]).some(tag=>tag.toLowerCase().includes(t))
-      );
-      render(res);
+      <details>
+        <summary class="small" style="cursor:pointer">Imagen (URL o subir archivo)</summary>
+        <div class="field" style="margin-top:8px"><input id="pImgUrl" placeholder="https://…"></div>
+        <input id="pFile" type="file" accept="image/*" capture="environment">
+        <p class="small muted">En celular podés sacar foto; en PC elegir una imagen.</p>
+      </details>
+
+      <div class="row" style="margin-top:10px">
+        <button id="save" class="btn primary">💾 Guardar</button>
+        <button id="new" class="btn">+ Nuevo</button>
+        <button id="logout" class="btn right">Cerrar sesión</button>
+      </div>
+
+      <hr style="border:none;border-top:1px solid var(--ring);margin:12px 0">
+      <input id="adminSearch" class="search" placeholder="Buscar en admin…">
+      <div id="adminList" class="grid" style="margin-top:10px"></div>
+    </div>
+  </aside>
+
+  <!-- ADMIN BUTTON (abajo del todo) -->
+  <div class="bottom-bar">
+    <button id="btnAdmin" class="btn primary">Abrir Admin</button>
+  </div>
+
+  <script src="https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script>
+  // ====== CONFIG (pegá tus claves) ======
+  const SUPABASE_URL = "https://dlmgvrejatqhjhxoejdm.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsbWd2cmVqYXRxaGpoeG9lamRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzM4MTcsImV4cCI6MjA3ODA0OTgxN30.5WfDT6qUBfXvvon-io4g-JntQ_EnptAUFyeue1v8tBc";
+  const BUCKET = "onlypan-images";
+
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // UI elems
+  const list = document.getElementById('list');
+  const empty = document.getElementById('empty');
+  const q = document.getElementById('q');
+
+  // ficha
+  const mFicha = document.getElementById('mFicha');
+  const fClose = document.getElementById('fClose');
+  const fTitle = document.getElementById('fTitle');
+  const fImg = document.getElementById('fImg');
+  const fPrice = document.getElementById('fPrice');
+  const fDesc = document.getElementById('fDesc');
+
+  // login + admin
+  const btnAdmin = document.getElementById('btnAdmin');
+  const drawer = document.getElementById('drawer');
+  const dClose = document.getElementById('dClose');
+  const mLogin = document.getElementById('mLogin');
+  const lEmail = document.getElementById('lEmail');
+  const lPass  = document.getElementById('lPass');
+  const lGo    = document.getElementById('lGo');
+  const lClose = document.getElementById('lClose');
+  const who    = document.getElementById('who');
+
+  // admin form
+  const pTitulo = document.getElementById('pTitulo');
+  const pPrecio = document.getElementById('pPrecio');
+  const pTags   = document.getElementById('pTags');
+  const pDesc   = document.getElementById('pDesc');
+  const pImgUrl = document.getElementById('pImgUrl');
+  const pFile   = document.getElementById('pFile');
+  const saveBtn = document.getElementById('save');
+  const newBtn  = document.getElementById('new');
+  const logoutBtn = document.getElementById('logout');
+  const adminSearch = document.getElementById('adminSearch');
+  const adminList   = document.getElementById('adminList');
+
+  let session = null;
+  let editId = null;
+  let cache = [];
+
+  function cardHTML(p, isAdmin=false){
+    return `
+    <article class="card ${isAdmin?'admin':''}" data-id="${p.id}">
+      <div class="tools">
+        <div class="icon" data-act="edit" title="Editar">✎</div>
+        <div class="icon" data-act="del"  title="Eliminar">🗑</div>
+      </div>
+      <figure>${p.img?`<img src="${p.img}" alt="${p.titulo||'Producto'}">`:''}</figure>
+      <div class="content">
+        <h3>${p.titulo||'—'}</h3>
+        ${p.precio?`<div class="price">${p.precio}</div>`:''}
+        <p class="small" style="margin:.3rem 0 .2rem">${(p.desc||'').slice(0,110)}</p>
+      </div>
+    </article>`;
+  }
+
+  function paint(listEl, items, isAdmin=false){
+    listEl.innerHTML = items.map(p=>cardHTML(p,isAdmin)).join('');
+    empty.style.display = items.length? 'none':'block';
+    listEl.querySelectorAll('.card').forEach(el=>{
+      el.addEventListener('click', e=>{
+        if(e.target.closest('.tools')) return;
+        const id = el.dataset.id;
+        const p = cache.find(x=>x.id===id);
+        if(!p) return;
+        fTitle.textContent = p.titulo||'Producto';
+        fImg.src = p.img||'';
+        fPrice.textContent = p.precio||'';
+        fDesc.textContent = p.desc||'';
+        mFicha.classList.add('open');
+      });
     });
-
-    render(all);
-
-    // Modal
-    const $modal = document.getElementById('modal');
-    const $close = document.getElementById('close');
-    const $mt = document.getElementById('mtitle');
-    const $md = document.getElementById('mdesc');
-    const $mi = document.getElementById('mimg');
-    const $mp = document.getElementById('mprice');
-    const $tg = document.getElementById('mtags');
-
-    function openModal(p){
-      $mt.textContent = p.titulo || '';
-      $md.textContent = p.desc || '';
-      $mi.src = p.img || '';
-      $mi.alt = p.titulo || '';
-      $mp.textContent = p.precio || '';
-      $tg.innerHTML = (p.tags||[]).map(t=>`<span class="chip">${t}</span>`).join('');
-      $modal.classList.add('show');
-      $modal.setAttribute('aria-hidden','false');
+    if(isAdmin){
+      listEl.querySelectorAll('.tools .icon').forEach(ic=>{
+        ic.addEventListener('click', async (e)=>{
+          const id = ic.closest('.card').dataset.id;
+          const act = ic.dataset.act;
+          const item = cache.find(x=>x.id===id);
+          if(act==='edit'){
+            editId = id;
+            pTitulo.value = item.titulo||'';
+            pPrecio.value = item.precio||'';
+            pTags.value   = (item.tags||[]).join(', ');
+            pDesc.value   = item.desc||'';
+            pImgUrl.value = item.img||'';
+            drawer.classList.add('open');
+          }else if(act==='del'){
+            if(confirm('¿Eliminar producto?')){
+              const {error} = await sb.from('productos').delete().eq('id', id);
+              if(error){ alert('Error: '+error.message); return; }
+              await load();
+              await load(true);
+            }
+          }
+        });
+      });
     }
-    function closeModal(){
-      $modal.classList.remove('show');
-      $modal.setAttribute('aria-hidden','true');
-    }
-    $close.addEventListener('click', closeModal);
-    $modal.addEventListener('click', (e)=>{ if(e.target===$modal) closeModal(); });
+  }
 
-    /* —— Si más adelante conectás Supabase —— 
-       1) Obtené los productos con fetch o el SDK y llená "all".
-       2) Llamá a render(all).
-       Mantuvimos todo sin exponer claves en el front para mayor seguridad.
-    */
+  async function load(forAdmin=false){
+    const {data, error} = await sb.from('productos').select('*').order('created_at', {ascending:false});
+    if(error){ console.error(error); return; }
+    cache = data || [];
+    const term = (forAdmin? adminSearch.value : q.value || '').toLowerCase();
+    const filtered = term
+      ? cache.filter(p=>(p.titulo||'').toLowerCase().includes(term) || (p.desc||'').toLowerCase().includes(term) || (p.tags||[]).join(' ').toLowerCase().includes(term))
+      : cache;
+    if(forAdmin) paint(adminList, filtered, true);
+    else paint(list, filtered, !!session);
+  }
+
+  q.addEventListener('input', ()=>load(false));
+  const adminSearch = document.getElementById('adminSearch');
+
+  // ficha modal
+  const mFichaEl = document.getElementById('mFicha');
+  fClose.onclick = ()=>mFicha.classList.remove('open');
+  mFicha.addEventListener('click',e=>{ if(e.target===mFicha) mFicha.classList.remove('open') });
+
+  // admin logic
+  btnAdmin.addEventListener('click', async ()=>{
+    session = (await sb.auth.getSession()).data.session;
+    if(!session){ mLogin.classList.add('open'); return; }
+    who.textContent = session.user.email;
+    drawer.classList.add('open');
+    load(true);
+  });
+  const adminSearchEl = document.getElementById('adminSearch');
+  dClose.onclick = ()=>drawer.classList.remove('open');
+
+  lClose.onclick = ()=>mLogin.classList.remove('open');
+  mLogin.addEventListener('click',e=>{ if(e.target===mLogin) mLogin.classList.remove('open') });
+  lGo.addEventListener('click', async ()=>{
+    const {data, error} = await sb.auth.signInWithPassword({ email:lEmail.value.trim(), password:lPass.value.trim() });
+    if(error){ alert('Login: '+error.message); return; }
+    session = data.session;
+    mLogin.classList.remove('open');
+    who.textContent = session.user.email;
+    drawer.classList.add('open');
+    load(true);
+  });
+  logoutBtn.onclick = async ()=>{ await sb.auth.signOut(); session = null; drawer.classList.remove('open'); };
+
+  newBtn.onclick = ()=>{ editId=null; pTitulo.value=''; pPrecio.value=''; pTags.value=''; pDesc.value=''; pImgUrl.value=''; pFile.value=''; };
+
+  async function uploadIfNeeded(){
+    const file = pFile.files?.[0];
+    if(!file) return pImgUrl.value.trim();
+    const ext = (file.name.split('.').pop()||'jpg').toLowerCase();
+    const path = `p/${Date.now()}-${Math.random().toString(16).slice(2)}.${ext}`;
+    const up = await sb.storage.from(BUCKET).upload(path, file, { cacheControl:'3600', upsert:true, contentType:file.type });
+    if(up.error){
+      alert('Error subiendo archivo: '+up.error.message+'\nRevisá bucket "'+BUCKET+'" y policies.');
+      return '';
+    }
+    const pub = sb.storage.from(BUCKET).getPublicUrl(path);
+    return pub.data.publicUrl || '';
+  }
+
+  saveBtn.addEventListener('click', async ()=>{
+    if(!session){ alert('Iniciá sesión como admin.'); return; }
+    const imgUrl = await uploadIfNeeded();
+    const payload = {
+      titulo:pTitulo.value.trim(),
+      precio:pPrecio.value.trim(),
+      desc:pDesc.value.trim(),
+      img: imgUrl || pImgUrl.value.trim(),
+      tags: pTags.value.split(',').map(t=>t.trim()).filter(Boolean)
+    };
+    let error;
+    if(editId){ ({error} = await sb.from('productos').update(payload).eq('id', editId)); }
+    else{ ({error} = await sb.from('productos').insert(payload)); }
+    if(error){ alert('Error: '+error.message); return; }
+    newBtn.click();
+    await load(false);
+    await load(true);
+  });
+
+  (async()=>{ await load(false); })();
   </script>
 </body>
 </html>
